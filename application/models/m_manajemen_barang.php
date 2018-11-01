@@ -15,6 +15,11 @@ class m_manajemen_barang extends CI_Model
 			return $query->result_array();
 		}
 	}
+
+	public function hapus_barang($id_barang) {
+		$this->db->where('id_barang', $id_barang);
+		$this->db->delete('barang');
+	}
     
 }
 ?>

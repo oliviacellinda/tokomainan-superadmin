@@ -33,7 +33,10 @@
 						</li>
 						<!-- Menu footer -->
 						<li class="user-footer">
-							<div>
+							<div class="pull-left">
+								<a href="#" class="btn btn-default btn-flat">Ganti Password</a>
+							</div>
+							<div class="pull-right">
 								<a href="#" class="btn btn-default btn-flat">Keluar</a>
 							</div>
 						</li>

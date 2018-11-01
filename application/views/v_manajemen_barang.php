@@ -10,8 +10,8 @@
 	<link rel="stylesheet" href="<?php echo base_url('assets/AdminLTE-2.4.2/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css');?>">
 	<link rel="stylesheet" href="<?php echo base_url('assets/AdminLTE-2.4.2/dist/css/AdminLTE.css');?>">
 	<link rel="stylesheet" href="<?php echo base_url('assets/AdminLTE-2.4.2/dist/css/skins/skin-blue.css');?>">
-	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
-	
+	<link rel="stylesheet" href="<?php echo base_url('assets/css-custom.css');?>">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">	
 </head>
 
 <body class="hold-transition skin-blue sidebar-mini">
@@ -34,7 +34,15 @@
 		<section class="content container-fluid">
 			<div class="row">
 				<div class="col-xs-12">
+
+					<!-- Lokasi pesan pemberitahuan akan ditampilkan -->
+					<div id="pesanPemberitahuan"></div>
+
+					<!-- Kotak berisi tabel data -->
 					<div class="box">
+						<div class="box-header">
+							<button id="btnTambah" class="btn btn-primary"><i class="fa fa-plus"></i> Tambah Data</button>
+						</div>
 						<div class="box-body">
 							<table id="tabelBarang" class="table table-bordered table-striped">
 
@@ -59,9 +67,10 @@
 								</thead>
 
 								<!-- Isi Tabel -->
+								<tbody>
 								<?php for($i=0; $i<count($barang); $i++) { ?> 
-								<tr>
-									<td id="idBarang"><?php echo $barang[$i]['id_barang'];?></td>
+								<tr data-id="<?php echo $barang[$i]['id_barang'];?>">
+									<td><?php echo $barang[$i]['id_barang'];?></td>
 									<td><?php echo $barang[$i]['nama_barang'];?></td>
 									<td><?php echo $barang[$i]['harga_beli'];?></td>
 									<td><?php echo $barang[$i]['jumlah_dlm_koli'];?></td>
@@ -72,10 +81,11 @@
 									<td><?php echo $barang[$i]['harga_jual_3'];?></td>
 									<td><?php echo $barang[$i]['harga_jual_4'];?></td>
 									<td>
-										<button id="btnHapus" class="btn btn-xs btn-danger"><i class="fa fa-small fa-times"></i></button>
+										<button onClick="eventHapus('<?php echo $barang[$i]['id_barang'];?>')" class="btn btn-xs btn-danger"><i class="fa fa-small fa-times"></i></button>
 									</td>
 								</tr>
 								<?php } ?>
+								</tbody>
 
 							</table>
 						</div>
@@ -93,23 +103,49 @@
 	<script src="<?php echo base_url('assets/AdminLTE-2.4.2/dist/js/adminlte.js');?>"></script>
 
 	<script>
-		$(document).ready(function() {
-			// Tandai menu Manajemen Barang sebagai menu aktif pada sidebar
-			$('#manajemenBarang').addClass('active');
-			
-			// Event untuk tombol Hapus
-			$('#btnHapus').click(function() {
-				var idBarang = $(this).closest('tr')		// Cari baris yang sama dengan button Hapus yang diklik 
-									  .find('#idBarang')	// Temukan elemen yang akan diambil nilainya
-									  .text();
-				alert(idBarang);
-				$.ajax(
-					{
+		// Tandai menu Manajemen Barang sebagai menu aktif pada sidebar
+		$('#manajemenBarang').addClass('active');
 
-					}
-				);
-			});
+		// Gunakan DataTable
+		$('#tabelBarang').DataTable( {
+			'scrollX'	: true
 		});
+
+		// Fungsi yang dijalankan ketika mengklik tombol Tambah Data
+		// Jika diklik, baris baru untuk memasukkan data baru akan muncul di bagian bawah tabel
+		$('#btnTambah').click(function() {
+
+		});
+
+		// var table = $('#tabelBarang').DataTable();
+		// $('#tabelBarang tbody').on('click', 'tr', function () {
+		// 	var data = table.row( this ).data();
+		// 	alert( 'You clicked on '+data[0]+'\'s row' );
+		// } );
+		
+		// Fungsi yang dijalankan ketika mengklik tombol Hapus (silang)
+		function eventHapus(id_barang) {
+			// alert(id_barang);
+			$.ajax({
+				type	: 'post',
+				url		: 'hapus-barang',
+				data	: { id_barang : id_barang },
+				success	: function(response) {
+					// Hilangkan baris data yang dihapus
+					$('tr[data-id="' + id_barang + '"]').fadeOut('fast', function() {
+						$(this).remove();
+					});
+
+					// Tambahkan pesan pemberitahuan bahwa data telah dihapus
+					var alert = '<div class="alert alert-danger alert-dismissible" role="alert">';
+					alert += '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
+					alert += 'Data telah dihapus.';
+					alert += '</div>';
+					$('#pesanPemberitahuan').append(alert);
+				}
+			});
+		}
+		
 	</script>
 </body>
 </html>
