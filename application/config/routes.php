@@ -54,4 +54,5 @@ $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 
 $route['manajemen-barang']      = 'c_manajemen_barang/lihat_daftar_barang';
+$route['tambah-barang']         = 'c_manajemen_barang/tambah_barang';
 $route['hapus-barang']          = 'c_manajemen_barang/hapus_barang';
