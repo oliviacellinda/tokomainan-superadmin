@@ -11,7 +11,7 @@ class c_manajemen_barang extends CI_Controller {
 		$this->load->model('m_manajemen_barang');
 
 		$data['barang'] = $this->m_manajemen_barang->ambil_data_barang();
-
+		
 		$this->load->view('v_manajemen_barang',$data);
 	}
 
@@ -32,7 +32,7 @@ class c_manajemen_barang extends CI_Controller {
 		$this->load->model('m_manajemen_barang');
 
 		$this->m_manajemen_barang->tambah_data($input);
-		return($this->m_manajemen_barang->ambil_data_barang());
+		print_r($this->m_manajemen_barang->ambil_data_barang());
 	}
 
 	public function hapus_barang() {
@@ -41,5 +41,6 @@ class c_manajemen_barang extends CI_Controller {
 		$this->load->model('m_manajemen_barang');
 
 		$this->m_manajemen_barang->hapus_barang($id_barang);
+		echo json_encode($this->m_manajemen_barang->ambil_data_barang());
 	}
 }
