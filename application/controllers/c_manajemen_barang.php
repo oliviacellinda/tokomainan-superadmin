@@ -19,6 +19,7 @@ class c_manajemen_barang extends CI_Controller {
 		$input = array(
 			'id_barang' => $this->input->post('id_barang'),
 			'nama_barang' => $this->input->post('nama_barang'),
+			'harga_beli' => $this->input->post('harga_beli'),
 			'jumlah_dlm_koli' => $this->input->post('jumlah_dlm_koli'),
 			'kategori' => $this->input->post('kategori'),
 			'fungsi' => $this->input->post('fungsi'),
@@ -31,7 +32,7 @@ class c_manajemen_barang extends CI_Controller {
 		$this->load->model('m_manajemen_barang');
 
 		$this->m_manajemen_barang->tambah_data($input);
-		echo json_encode($this->m_manajemen_barang->ambil_data_barang());
+		print_r($this->m_manajemen_barang->ambil_data_barang());
 	}
 
 	public function hapus_barang() {
