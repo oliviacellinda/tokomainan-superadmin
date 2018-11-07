@@ -8,10 +8,9 @@
 	<link rel="stylesheet" href="<?php echo base_url('assets/AdminLTE-2.4.2/bower_components/bootstrap/dist/css/bootstrap.css');?>">
 	<link rel="stylesheet" href="<?php echo base_url('assets/AdminLTE-2.4.2/bower_components/font-awesome/css/font-awesome.css');?>">
 	<link rel="stylesheet" href="<?php echo base_url('assets/AdminLTE-2.4.2/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css');?>">
-	<link rel="stylesheet" href="<?php echo base_url('assets/KeyTable-2.5.0/css/keyTable.dataTables.min.css');?>">
 	<link rel="stylesheet" href="<?php echo base_url('assets/AdminLTE-2.4.2/dist/css/AdminLTE.css');?>">
 	<link rel="stylesheet" href="<?php echo base_url('assets/AdminLTE-2.4.2/dist/css/skins/skin-blue.css');?>">
-	<!--<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">-->
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 </head>
 
 <body class="hold-transition skin-blue sidebar-mini">
@@ -84,15 +83,15 @@
 								<!-- Daftar data barang -->
 								<?php for($i=0; $i<count($barang); $i++) { ?> 
 								<tr data-id="<?php echo $barang[$i]['id_barang'];?>">
-									<td><input type="text" class="form-control" name="id_barang" value="<?php echo $barang[$i]['id_barang'];?>"></td>
-									<td><input type="text" class="form-control" name="nama_barang" value="<?php echo $barang[$i]['nama_barang'];?>"></td>
-									<td><input type="text" class="form-control" name="jumlah_dlm_koli" value="<?php echo $barang[$i]['jumlah_dlm_koli'];?>"></td>
-									<td><input type="text" class="form-control" name="kategori" value="<?php echo $barang[$i]['kategori'];?>"></td>
-									<td><input type="text" class="form-control" name="fungsi" value="<?php echo $barang[$i]['fungsi'];?>"></td>
-									<td><input type="text" class="form-control" name="harga_jual_1" value="<?php echo $barang[$i]['harga_jual_1'];?>"></td>
-									<td><input type="text" class="form-control" name="harga_jual_2" value="<?php echo $barang[$i]['harga_jual_2'];?>"></td>
-									<td><input type="text" class="form-control" name="harga_jual_3" value="<?php echo $barang[$i]['harga_jual_3'];?>"></td>
-									<td><input type="text" class="form-control" name="harga_jual_4" value="<?php echo $barang[$i]['harga_jual_4'];?>"></td>
+									<td><p hidden><?php echo $barang[$i]['id_barang'];?></p><input type="text" class="form-control" name="id_barang" value="<?php echo $barang[$i]['id_barang'];?>" onkeypress="ambilNilaiBaru(this)"></td>
+									<td><p hidden><?php echo $barang[$i]['nama_barang'];?></p><input type="text" class="form-control" name="nama_barang" value="<?php echo $barang[$i]['nama_barang'];?>" onkeypress="ambilNilaiBaru(this)"></td>
+									<td><p hidden><?php echo $barang[$i]['jumlah_dlm_koli'];?></p><input type="text" class="form-control" name="jumlah_dlm_koli" value="<?php echo $barang[$i]['jumlah_dlm_koli'];?>" onkeypress="ambilNilaiBaru(this)"></td>
+									<td><p hidden><?php echo $barang[$i]['kategori'];?></p><input type="text" class="form-control" name="kategori" value="<?php echo $barang[$i]['kategori'];?>" onkeypress="ambilNilaiBaru(this)"></td>
+									<td><p hidden><?php echo $barang[$i]['fungsi'];?></p><input type="text" class="form-control" name="fungsi" value="<?php echo $barang[$i]['fungsi'];?>" onkeypress="ambilNilaiBaru(this)"></td>
+									<td><p hidden><?php echo $barang[$i]['harga_jual_1'];?></p><input type="text" class="form-control" name="harga_jual_1" value="<?php echo $barang[$i]['harga_jual_1'];?>" onkeypress="ambilNilaiBaru(this)"></td>
+									<td><p hidden><?php echo $barang[$i]['harga_jual_2'];?></p><input type="text" class="form-control" name="harga_jual_2" value="<?php echo $barang[$i]['harga_jual_2'];?>" onkeypress="ambilNilaiBaru(this)"></td>
+									<td><p hidden><?php echo $barang[$i]['harga_jual_3'];?></p><input type="text" class="form-control" name="harga_jual_3" value="<?php echo $barang[$i]['harga_jual_3'];?>" onkeypress="ambilNilaiBaru(this)"></td>
+									<td><p hidden><?php echo $barang[$i]['harga_jual_4'];?></p><input type="text" class="form-control" name="harga_jual_4" value="<?php echo $barang[$i]['harga_jual_4'];?>" onkeypress="ambilNilaiBaru(this)"></td>
 									<td>
 										<button id="btnHapus" class="btn btn-xs btn-danger"><i class="fa fa-times"></i></button>
 									</td>
@@ -113,17 +112,26 @@
 	<script src="<?php echo base_url('assets/AdminLTE-2.4.2/bower_components/bootstrap/dist/js/bootstrap.js');?>"></script>
 	<script src="<?php echo base_url('assets/AdminLTE-2.4.2/bower_components/datatables.net/js/jquery.dataTables.min.js');?>"></script>
 	<script src="<?php echo base_url('assets/AdminLTE-2.4.2/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js');?>"></script>
-	<script src="<?php echo base_url('assets/KeyTable-2.5.0/js/dataTables.keyTable.min.js');?>"></script>
 	<script src="<?php echo base_url('assets/AdminLTE-2.4.2/dist/js/adminlte.js');?>"></script>
 
 	<script>
+		var nilaibaru = 0; 
+		// Ambil nilai baru
+		function ambilNilaiBaru(a) {
+			nilaibaru = a.value;
+		}
+
 	$(document).ready(function() {
 		// Tandai menu Manajemen Barang sebagai menu aktif pada sidebar
 		$('#manajemenBarang').addClass('active');
 
 		// Gunakan DataTable
 		var tabel = $('#tabelBarang').DataTable( {
-			'scrollX'	: true
+			'scrollX'		: true,
+			'bInfo'			: false,
+			'columnDefs'	: [
+				{ 'orderable' : false, 'targets' : 9 }
+			]
 		});
 
 		// Fokuskan pada sel ID Barang pada baris input data barang baru
@@ -243,15 +251,15 @@
 			// Untuk daftar barang
 			for(var i=0; i<data.length; i++) {
 				isi += '<tr>';
-				isi += '<td><input type="text" class="form-control" name="id_barang" value="'+data[i].id_barang+'"></td>';
-				isi += '<td><input type="text" class="form-control" name="nama_barang" value="'+data[i].nama_barang+'"></td>';
-				isi += '<td><input type="text" class="form-control" name="jumlah_dlm_koli" value="'+data[i].jumlah_dlm_koli+'"></td>';
-				isi += '<td><input type="text" class="form-control" name="kategori" value="'+data[i].kategori+'"></td>';
-				isi += '<td><input type="text" class="form-control" name="fungsi" value="'+data[i].fungsi+'"></td>';
-				isi += '<td><input type="text" class="form-control" name="harga_jual_1" value="'+data[i].harga_jual_1+'"></td>';
-				isi += '<td><input type="text" class="form-control" name="harga_jual_2" value="'+data[i].harga_jual_2+'"></td>';
-				isi += '<td><input type="text" class="form-control" name="harga_jual_3" value="'+data[i].harga_jual_3+'"></td>';
-				isi += '<td><input type="text" class="form-control" name="harga_jual_4" value="'+data[i].harga_jual_4+'"></td>';
+				isi += '<td><p hidden>'+data[i].id_barang+'</p><input type="text" class="form-control" name="id_barang" value="'+data[i].id_barang+'" onkeypress="ambilNilaiBaru(this)"></td>';
+				isi += '<td><p hidden>'+data[i].nama_barang+'</p><input type="text" class="form-control" name="nama_barang" value="'+data[i].nama_barang+'" onkeypress="ambilNilaiBaru(this)"></td>';
+				isi += '<td><p hidden>'+data[i].jumlah_dlm_koli+'</p><input type="text" class="form-control" name="jumlah_dlm_koli" value="'+data[i].jumlah_dlm_koli+'" onkeypress="ambilNilaiBaru(this)"></td>';
+				isi += '<td><p hidden>'+data[i].kategori+'</p><input type="text" class="form-control" name="kategori" value="'+data[i].kategori+'" onkeypress="ambilNilaiBaru(this)"></td>';
+				isi += '<td><p hidden>'+data[i].fungsi+'</p><input type="text" class="form-control" name="fungsi" value="'+data[i].fungsi+'" onkeypress="ambilNilaiBaru(this)"></td>';
+				isi += '<td><p hidden>'+data[i].harga_jual_1+'</p><input type="text" class="form-control" name="harga_jual_1" value="'+data[i].harga_jual_1+'" onkeypress="ambilNilaiBaru(this)"></td>';
+				isi += '<td><p hidden>'+data[i].harga_jual_2+'</p><input type="text" class="form-control" name="harga_jual_2" value="'+data[i].harga_jual_2+'" onkeypress="ambilNilaiBaru(this)"></td>';
+				isi += '<td><p hidden>'+data[i].harga_jual_3+'</p><input type="text" class="form-control" name="harga_jual_3" value="'+data[i].harga_jual_3+'" onkeypress="ambilNilaiBaru(this)"></td>';
+				isi += '<td><p hidden>'+data[i].harga_jual_4+'</p><input type="text" class="form-control" name="harga_jual_4" value="'+data[i].harga_jual_4+'" onkeypress="ambilNilaiBaru(this)"></td>';
 				isi += '<td><button id="btnHapus" class="btn btn-xs btn-danger"><i class="fa fa-times"></i></button></td>';
 				isi += '</tr>';
 			}
@@ -263,7 +271,11 @@
 			// Reinitialize DataTable
 			tabel.clear().destroy();
 			tabel = $('#tabelBarang').DataTable({
-				'scrollX'	: true,
+				'scrollX'		: true,
+				'bInfo'			: false,
+				'columnDefs'	: [
+					{ 'orderable' : false, 'targets' : 9 }
+				]
 			});
 
 			// Fokuskan pada sel ID Barang pada baris input data barang baru
@@ -283,7 +295,7 @@
 			var id_barang = data[0];
 			// Karena data yang diperoleh berupa string <input type="text"... , data harus dibersihkan dulu
 			id_barang = id_barang.split('value="').pop();
-			id_barang = id_barang.replace('">', '');
+			id_barang = id_barang.replace('" onkeypress="ambilNilaiBaru(this)">', '');
 			//console.log(id_barang);
 
 			$.ajax({
@@ -305,12 +317,65 @@
 			});
 		});
 
-		// Kumpulan event handler untuk data barang
-		$('#tabelBarang').on('keypress', 'tr:not(#barisInput) input', function(event) {
+		//Event handler untuk data barang
+		$('#tabelBarang').on('keypress', 'td', function (event) {
 			if(event.keyCode === 13) {
-				console.log('yes');
+				if( tabel.row($(this).parents('tr')).id() != 'barisInput' ) {
+					// Tampilkan pesan loading
+					pesanLoading();
+
+					var dataBaris = tabel.row($(this).parents('tr')).data();
+					var dataSel = nilaibaru;
+					var kolom = tabel.cell(this).index().column;
+					// console.log(dataBaris);
+					// console.log(dataSel);
+					// console.log(kolom);
+
+					var id_barang = dataBaris[0];
+					id_barang = id_barang.split('value="').pop();
+					id_barang = id_barang.replace('" onkeypress="ambilNilaiBaru(this)">', '');
+					// console.log(id_barang);
+					// console.log(dataSel);
+					
+					var namaKolom;
+					switch(kolom) {
+						case 0 : namaKolom = 'id_barang'; break;
+						case 1 : namaKolom = 'nama_barang'; break;
+						case 2 : namaKolom = 'jumlah_dlm_koli'; break;
+						case 3 : namaKolom = 'kategori'; break;
+						case 4 : namaKolom = 'fungsi' ; break;
+						case 5 : namaKolom = 'harga_jual_1'; break;
+						case 6 : namaKolom = 'harga_jual_2'; break;
+						case 7 : namaKolom = 'harga_jual_3'; break;
+						case 8 : namaKolom = 'harga_jual_4'; break;
+					}
+					console.log(namaKolom);
+					
+					$.ajax({
+						type	: 'post',
+						url		: 'edit-barang',
+						dataType: 'json',
+						data	: {
+							id_barang : id_barang,
+							nama_kolom: namaKolom,
+							nilai_baru: dataSel
+						},
+						success : function(data) {
+							refreshTabel(data);
+							// console.log(data);
+
+							pesanPemberitahuan('success', 'Data berhasil diperbarui');
+
+							// Hapus pesan loading
+							$('div.overlay').remove();
+						},
+						error : function() {
+							console.log('no');
+						}
+					});
+				}
 			}
-		});
+		} );
 
 	});
 

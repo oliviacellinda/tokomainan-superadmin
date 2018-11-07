@@ -20,6 +20,12 @@ class m_manajemen_barang extends CI_Model
 		$this->db->insert('barang', $input);
 	}
 
+	public function edit_data($id_barang, $nama_kolom, $nilai_baru) {
+		$this->db->set($nama_kolom, $nilai_baru);
+		$this->db->where('id_barang', $id_barang);
+		$this->db->update('barang');
+	}
+
 	public function hapus_barang($id_barang) {
 		$this->db->where('id_barang', $id_barang);
 		$this->db->delete('barang');

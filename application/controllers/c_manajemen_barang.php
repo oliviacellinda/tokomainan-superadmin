@@ -34,6 +34,17 @@ class c_manajemen_barang extends CI_Controller {
 		echo json_encode($this->m_manajemen_barang->ambil_data_barang());
 	}
 
+	public function edit_barang() {
+		$id_barang = $this->input->post('id_barang');
+		$nama_kolom = $this->input->post('nama_kolom');
+		$nilai_baru = $this->input->post('nilai_baru');
+
+		$this->load->model('m_manajemen_barang');
+
+		$this->m_manajemen_barang->edit_data($id_barang, $nama_kolom, $nilai_baru);
+		echo json_encode($this->m_manajemen_barang->ambil_data_barang());
+	}
+
 	public function hapus_barang() {
 		$id_barang = $this->input->post('id_barang');
 
