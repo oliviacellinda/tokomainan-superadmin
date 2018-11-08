@@ -7,12 +7,14 @@ class c_manajemen_barang extends CI_Controller {
 		parent::__construct();
 	}
 	
-	public function lihat_daftar_barang() {
+	public function manajemen_barang() {
+		$this->load->view('v_manajemen_barang');
+	}
+
+	public function lihat_barang() {
 		$this->load->model('m_manajemen_barang');
 
-		$data['barang'] = $this->m_manajemen_barang->ambil_data_barang();
-		
-		$this->load->view('v_manajemen_barang',$data);
+		echo json_encode($this->m_manajemen_barang->lihat_barang());
 	}
 
 	public function tambah_barang() {
@@ -31,7 +33,6 @@ class c_manajemen_barang extends CI_Controller {
 		$this->load->model('m_manajemen_barang');
 
 		$this->m_manajemen_barang->tambah_data($input);
-		echo json_encode($this->m_manajemen_barang->ambil_data_barang());
 	}
 
 	public function edit_barang() {
@@ -42,7 +43,6 @@ class c_manajemen_barang extends CI_Controller {
 		$this->load->model('m_manajemen_barang');
 
 		$this->m_manajemen_barang->edit_data($id_barang, $nama_kolom, $nilai_baru);
-		echo json_encode($this->m_manajemen_barang->ambil_data_barang());
 	}
 
 	public function hapus_barang() {
@@ -51,6 +51,5 @@ class c_manajemen_barang extends CI_Controller {
 		$this->load->model('m_manajemen_barang');
 
 		$this->m_manajemen_barang->hapus_barang($id_barang);
-		echo json_encode($this->m_manajemen_barang->ambil_data_barang());
 	}
 }

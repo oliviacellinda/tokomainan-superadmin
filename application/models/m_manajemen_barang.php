@@ -8,7 +8,7 @@ class m_manajemen_barang extends CI_Model
 		$this->load->database();
 	}
 
-	public function ambil_data_barang() {
+	public function lihat_barang() {
 		$query = $this->db->get('barang');
 
 		if($query->num_rows() > 0) {

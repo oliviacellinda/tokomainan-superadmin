@@ -48,55 +48,22 @@
 								<!-- Header Tabel -->
 								<thead>
 								<tr>
-									<th width="162.6px" rowspan="2">ID Barang</th>
-									<th width="162.6px" rowspan="2">Nama Barang</th>
-									<th width="162.6px" rowspan="2">Jumlah dlm Koli</th>
-									<th width="162.6px" rowspan="2">Kategori</th>
-									<th width="162.6px" rowspan="2">Fungsi</th>
-									<th colspan="4">Harga Jual</th>
-									<th rowspan="2">Menu</th>
-								</tr>
-								<tr>
-									<th width="162.6px">Level 1</th>
-									<th width="162.6px">Level 2</th>
-									<th width="162.6px">Level 3</th>
-									<th width="162.6px">Level 4</th>
+									<th width="162.6px">ID Barang</th>
+									<th width="162.6px">Nama Barang</th>
+									<th width="162.6px">Jumlah dalam Koli</th>
+									<th width="162.6px">Kategori</th>
+									<th width="162.6px">Fungsi</th>
+									<th width="162.6px">Harga Jual Level 1</th>
+									<th width="162.6px">Harga Jual Level 2</th>
+									<th width="162.6px">Harga Jual Level 3</th>
+									<th width="162.6px">Harga Jual Level 4</th>
+									<th>Menu</th>
 								</tr>
 								</thead>
 
 								<!-- Isi Tabel -->
 								<tbody>
-								<!-- Baris untuk tambah data barang baru -->
-								<tr id="barisInput">
-									<td><input type="text" class="form-control" placeholder="ID barang" name="id_barang"></td>
-									<td><input type="text" class="form-control" placeholder="Nama barang" name="nama_barang"></td>
-									<td><input type="text" class="form-control" placeholder="Jumlah dlm Koli" name="jumlah_dlm_koli"></td>
-									<td><input type="text" class="form-control" placeholder="Kategori" name="kategori"></td>
-									<td><input type="text" class="form-control" placeholder="Fungsi" name="fungsi"></td>
-									<td><input type="text" class="form-control" placeholder="Harga Jual 1" name="harga_jual_1"></td>
-									<td><input type="text" class="form-control" placeholder="Harga Jual 2" name="harga_jual_2"></td>
-									<td><input type="text" class="form-control" placeholder="Harga Jual 3" name="harga_jual_3"></td>
-									<td><input type="text" class="form-control" placeholder="Harga Jual 4" name="harga_jual_4"></td>
-									<td></td>
-								</tr>
-
-								<!-- Daftar data barang -->
-								<?php for($i=0; $i<count($barang); $i++) { ?> 
-								<tr data-id="<?php echo $barang[$i]['id_barang'];?>">
-									<td><p hidden><?php echo $barang[$i]['id_barang'];?></p><input type="text" class="form-control" name="id_barang" value="<?php echo $barang[$i]['id_barang'];?>" onkeypress="ambilNilaiBaru(this)"></td>
-									<td><p hidden><?php echo $barang[$i]['nama_barang'];?></p><input type="text" class="form-control" name="nama_barang" value="<?php echo $barang[$i]['nama_barang'];?>" onkeypress="ambilNilaiBaru(this)"></td>
-									<td><p hidden><?php echo $barang[$i]['jumlah_dlm_koli'];?></p><input type="text" class="form-control" name="jumlah_dlm_koli" value="<?php echo $barang[$i]['jumlah_dlm_koli'];?>" onkeypress="ambilNilaiBaru(this)"></td>
-									<td><p hidden><?php echo $barang[$i]['kategori'];?></p><input type="text" class="form-control" name="kategori" value="<?php echo $barang[$i]['kategori'];?>" onkeypress="ambilNilaiBaru(this)"></td>
-									<td><p hidden><?php echo $barang[$i]['fungsi'];?></p><input type="text" class="form-control" name="fungsi" value="<?php echo $barang[$i]['fungsi'];?>" onkeypress="ambilNilaiBaru(this)"></td>
-									<td><p hidden><?php echo $barang[$i]['harga_jual_1'];?></p><input type="text" class="form-control" name="harga_jual_1" value="<?php echo $barang[$i]['harga_jual_1'];?>" onkeypress="ambilNilaiBaru(this)"></td>
-									<td><p hidden><?php echo $barang[$i]['harga_jual_2'];?></p><input type="text" class="form-control" name="harga_jual_2" value="<?php echo $barang[$i]['harga_jual_2'];?>" onkeypress="ambilNilaiBaru(this)"></td>
-									<td><p hidden><?php echo $barang[$i]['harga_jual_3'];?></p><input type="text" class="form-control" name="harga_jual_3" value="<?php echo $barang[$i]['harga_jual_3'];?>" onkeypress="ambilNilaiBaru(this)"></td>
-									<td><p hidden><?php echo $barang[$i]['harga_jual_4'];?></p><input type="text" class="form-control" name="harga_jual_4" value="<?php echo $barang[$i]['harga_jual_4'];?>" onkeypress="ambilNilaiBaru(this)"></td>
-									<td>
-										<button id="btnHapus" class="btn btn-xs btn-danger"><i class="fa fa-times"></i></button>
-									</td>
-								</tr>
-								<?php } ?>
+									<!-- Isi tabel dimuat melalui fungsi refreshTabel di bawah -->
 								</tbody>
 
 								</table>
@@ -117,8 +84,8 @@
 	<script>
 		var nilaibaru = 0; 
 		// Ambil nilai baru
-		function ambilNilaiBaru(a) {
-			nilaibaru = a.value;
+		function ambilNilaiBaru(input) {
+			nilaibaru = input.value;
 		}
 
 	$(document).ready(function() {
@@ -126,13 +93,15 @@
 		$('#manajemenBarang').addClass('active');
 
 		// Gunakan DataTable
-		var tabel = $('#tabelBarang').DataTable( {
+		var tabel = $('#tabelBarang').DataTable({
 			'scrollX'		: true,
-			'bInfo'			: false,
+			'bInfo'			: false, // Untuk menghilangkan tulisan keterangan di bawah tabel
 			'columnDefs'	: [
 				{ 'orderable' : false, 'targets' : 9 }
 			]
 		});
+		// Isi tabel
+		refreshTabel();
 
 		// Fokuskan pada sel ID Barang pada baris input data barang baru
 		$('#barisInput input[name="id_barang"]').focus();
@@ -181,8 +150,7 @@
 
 				$.ajax({
 					type	: 'post',
-					url		: 'tambah-barang',	
-					dataType: 'json',
+					url		: 'tambah-barang',
 					data	: {
 						id_barang		: id_barang,
 						nama_barang		: nama_barang,
@@ -194,20 +162,23 @@
 						harga_jual_3 	: harga_jual_3,
 						harga_jual_4 	: harga_jual_4
 					},
-					success : function(data) {
+					success : function() {
 						// Perbarui isi tabel
-						// console.log(data);
-						refreshTabel(data);
+						refreshTabel();
 
 						// Tambahkan pesan pemberitahuan bahwa data berhasil ditambahkan
 						pesanPemberitahuan('info', 'Data berhasil ditambahkan.');
 
 						// Hapus pesan loading
 						$('div.overlay').remove();
+					},
+					error	: function() {
+						// Tampilkan pesan pemberitahuan
+						pesanPemberitahuan('warning', 'Terdapat kesalahan saat memuat data. Silakan mencoba kembali.');
 					}
 				});
 			}
-		});
+		}); // End event input data baru
 		
 		// Fungsi untuk menampilkan pesan loading selama proses berlangsung
 		function pesanLoading() {
@@ -215,72 +186,88 @@
 			loading += '<i class="fa fa-refresh fa-spin"></i>';
 			loading += '</div>';
 			$('div[class="box"]').append(loading);
-		}
+		} // End fungsi pesanLoading()
 
 		// Fungsi untuk menambahkan pesan pemberitahuan di atas tabel
 		// Variabel jenis menampung nilai yang berisi informasi jenis alert yang diinginkan
 		// Variabel pesan menampung string yang berisi pesan yang ingin disampaikan
 		function pesanPemberitahuan(jenis, pesan) {
+			// Hapus terlebih dahulu jika sudah ada pesan pemberitahuan sebelumnya
+			$('.alert').remove();
+
 			var alert = '<div class="alert alert-'+jenis+' alert-dismissible" role="alert">';
 			alert += '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
 			alert += pesan;
 			alert += '</div>';
 			$('#pesanPemberitahuan').append(alert);
-		}
+		} // End fungsi pesanPemberitahuan
 
 		// Fungsi untuk memuat ulang data tabel
 		function refreshTabel(data) {
-			// Hapus isi data tabel
-			$('#tabelBarang tbody').remove();
+			$.ajax({
+				type	: 'post',
+				url		: 'lihat-barang',
+				dataType: 'json',
+				success : function(data) {
+					// console.log(data);
+					// Hapus isi data tabel
+					$('#tabelBarang tbody').remove();
+					
+					// Buat variabel baru yang berisi HTML untuk isi data
+					var isi = '<tbody>';
+					// Untuk baris input data barang baru
+					isi += '<tr id="barisInput">';
+					isi += '<td><input type="text" class="form-control" placeholder="ID barang" name="id_barang"></td>';
+					isi += '<td><input type="text" class="form-control" placeholder="Nama barang" name="nama_barang"></td>';
+					isi += '<td><input type="text" class="form-control" placeholder="Jumlah dalam Koli" name="jumlah_dlm_koli"></td>';
+					isi += '<td><input type="text" class="form-control" placeholder="Kategori" name="kategori"></td>';
+					isi += '<td><input type="text" class="form-control" placeholder="Fungsi" name="fungsi"></td>';
+					isi += '<td><input type="text" class="form-control" placeholder="Harga Jual Level 1" name="harga_jual_1"></td>';
+					isi += '<td><input type="text" class="form-control" placeholder="Harga Jual Level 2" name="harga_jual_2"></td>';
+					isi += '<td><input type="text" class="form-control" placeholder="Harga Jual Level 3" name="harga_jual_3"></td>';
+					isi += '<td><input type="text" class="form-control" placeholder="Harga Jual Level 4" name="harga_jual_4"></td>';
+					isi += '<td></td>';
+					isi += '</tr>';
+					// Untuk daftar barang
+					// Tuliskan data dalam <p hidden></p> agar fungsi search DataTable dapat digunakan
+					for(var i=0; i<data.length; i++) {
+						isi += '<tr>';
+						isi += '<td><p hidden>'+data[i].id_barang+'</p><input type="text" class="form-control" name="id_barang" value="'+data[i].id_barang+'" onkeypress="ambilNilaiBaru(this)"></td>';
+						isi += '<td><p hidden>'+data[i].nama_barang+'</p><input type="text" class="form-control" name="nama_barang" value="'+data[i].nama_barang+'" onkeypress="ambilNilaiBaru(this)"></td>';
+						isi += '<td><p hidden>'+data[i].jumlah_dlm_koli+'</p><input type="text" class="form-control" name="jumlah_dlm_koli" value="'+data[i].jumlah_dlm_koli+'" onkeypress="ambilNilaiBaru(this)"></td>';
+						isi += '<td><p hidden>'+data[i].kategori+'</p><input type="text" class="form-control" name="kategori" value="'+data[i].kategori+'" onkeypress="ambilNilaiBaru(this)"></td>';
+						isi += '<td><p hidden>'+data[i].fungsi+'</p><input type="text" class="form-control" name="fungsi" value="'+data[i].fungsi+'" onkeypress="ambilNilaiBaru(this)"></td>';
+						isi += '<td><p hidden>'+data[i].harga_jual_1+'</p><input type="text" class="form-control" name="harga_jual_1" value="'+data[i].harga_jual_1+'" onkeypress="ambilNilaiBaru(this)"></td>';
+						isi += '<td><p hidden>'+data[i].harga_jual_2+'</p><input type="text" class="form-control" name="harga_jual_2" value="'+data[i].harga_jual_2+'" onkeypress="ambilNilaiBaru(this)"></td>';
+						isi += '<td><p hidden>'+data[i].harga_jual_3+'</p><input type="text" class="form-control" name="harga_jual_3" value="'+data[i].harga_jual_3+'" onkeypress="ambilNilaiBaru(this)"></td>';
+						isi += '<td><p hidden>'+data[i].harga_jual_4+'</p><input type="text" class="form-control" name="harga_jual_4" value="'+data[i].harga_jual_4+'" onkeypress="ambilNilaiBaru(this)"></td>';
+						isi += '<td><button id="btnHapus" class="btn btn-xs btn-danger"><i class="fa fa-times"></i></button></td>';
+						isi += '</tr>';
+					}
+					isi += '</tbody>';
 
-			// Buat variabel baru yang berisi HTML untuk isi data
-			var isi = '<tbody>';
-			// Untuk baris input data barang baru
-			isi += '<tr id="barisInput">';
-			isi += '<td><input type="text" class="form-control" placeholder="ID barang" name="id_barang"></td>';
-			isi += '<td><input type="text" class="form-control" placeholder="Nama barang" name="nama_barang"></td>';
-			isi += '<td><input type="text" class="form-control" placeholder="Jumlah dlm Koli" name="jumlah_dlm_koli"></td>';
-			isi += '<td><input type="text" class="form-control" placeholder="Kategori" name="kategori"></td>';
-			isi += '<td><input type="text" class="form-control" placeholder="Fungsi" name="fungsi"></td>';
-			isi += '<td><input type="text" class="form-control" placeholder="Harga Jual 1" name="harga_jual_1"></td>';
-			isi += '<td><input type="text" class="form-control" placeholder="Harga Jual 2" name="harga_jual_2"></td>';
-			isi += '<td><input type="text" class="form-control" placeholder="Harga Jual 3" name="harga_jual_3"></td>';
-			isi += '<td><input type="text" class="form-control" placeholder="Harga Jual 4" name="harga_jual_4"></td>';
-			isi += '<td></td>';
-			isi += '</tr>';
-			// Untuk daftar barang
-			for(var i=0; i<data.length; i++) {
-				isi += '<tr>';
-				isi += '<td><p hidden>'+data[i].id_barang+'</p><input type="text" class="form-control" name="id_barang" value="'+data[i].id_barang+'" onkeypress="ambilNilaiBaru(this)"></td>';
-				isi += '<td><p hidden>'+data[i].nama_barang+'</p><input type="text" class="form-control" name="nama_barang" value="'+data[i].nama_barang+'" onkeypress="ambilNilaiBaru(this)"></td>';
-				isi += '<td><p hidden>'+data[i].jumlah_dlm_koli+'</p><input type="text" class="form-control" name="jumlah_dlm_koli" value="'+data[i].jumlah_dlm_koli+'" onkeypress="ambilNilaiBaru(this)"></td>';
-				isi += '<td><p hidden>'+data[i].kategori+'</p><input type="text" class="form-control" name="kategori" value="'+data[i].kategori+'" onkeypress="ambilNilaiBaru(this)"></td>';
-				isi += '<td><p hidden>'+data[i].fungsi+'</p><input type="text" class="form-control" name="fungsi" value="'+data[i].fungsi+'" onkeypress="ambilNilaiBaru(this)"></td>';
-				isi += '<td><p hidden>'+data[i].harga_jual_1+'</p><input type="text" class="form-control" name="harga_jual_1" value="'+data[i].harga_jual_1+'" onkeypress="ambilNilaiBaru(this)"></td>';
-				isi += '<td><p hidden>'+data[i].harga_jual_2+'</p><input type="text" class="form-control" name="harga_jual_2" value="'+data[i].harga_jual_2+'" onkeypress="ambilNilaiBaru(this)"></td>';
-				isi += '<td><p hidden>'+data[i].harga_jual_3+'</p><input type="text" class="form-control" name="harga_jual_3" value="'+data[i].harga_jual_3+'" onkeypress="ambilNilaiBaru(this)"></td>';
-				isi += '<td><p hidden>'+data[i].harga_jual_4+'</p><input type="text" class="form-control" name="harga_jual_4" value="'+data[i].harga_jual_4+'" onkeypress="ambilNilaiBaru(this)"></td>';
-				isi += '<td><button id="btnHapus" class="btn btn-xs btn-danger"><i class="fa fa-times"></i></button></td>';
-				isi += '</tr>';
-			}
-			isi += '</tbody>';
+					// Tambahkan data baru ke dalam tabel
+					$('#tabelBarang').append(isi);
 
-			// Tambahkan data baru ke dalam tabel
-			$('#tabelBarang').append(isi);
+					// Reinitialize DataTable
+					tabel.clear().destroy();
+					tabel = $('#tabelBarang').DataTable({
+						'scrollX'		: true,
+						'bInfo'			: false, // Untuk menghilangkan tulisan keterangan di bawah tabel
+						'columnDefs'	: [
+							{ 'orderable' : false, 'targets' : 9 }
+						]
+					});
 
-			// Reinitialize DataTable
-			tabel.clear().destroy();
-			tabel = $('#tabelBarang').DataTable({
-				'scrollX'		: true,
-				'bInfo'			: false,
-				'columnDefs'	: [
-					{ 'orderable' : false, 'targets' : 9 }
-				]
-			});
-
-			// Fokuskan pada sel ID Barang pada baris input data barang baru
-			$('#barisInput input[name="id_barang"]').focus();
-		}
+					// Fokuskan pada sel ID Barang pada baris input data barang baru
+					$('#barisInput input[name="id_barang"]').focus();
+				}, // End success
+				error	: function() {
+					// Tampilkan pesan pemberitahuan
+					pesanPemberitahuan('warning', 'Terdapat kesalahan saat memuat data. Silakan mencoba kembali.');
+				} // End error
+			}); // End ajax		
+		} // End fungsi refreshTabel()
 
 		// Fungsi yang dijalankan ketika mengklik tombol Hapus (silang)
 		$('#tabelBarang').on('click', '#btnHapus', function() {
@@ -301,42 +288,47 @@
 			$.ajax({
 				type	: 'post',
 				url		: 'hapus-barang',
-				dataType: 'json',
 				data	: { id_barang : id_barang },
-				success	: function(data) {
-					console.log(data);
+				success	: function() {
 					// Perbarui isi tabel
-					refreshTabel(data);
+					refreshTabel();
 
 					// Tambahkan pesan pemberitahuan bahwa data telah dihapus
 					pesanPemberitahuan('danger', 'Data berhasil dihapus.');
 
 					// Hapus pesan loading
 					$('div.overlay').remove();
+				},
+				error	: function() {
+					// Tampilkan pesan pemberitahuan
+					pesanPemberitahuan('warning', 'Terdapat kesalahan saat memuat data. Silakan mencoba kembali.');
 				}
-			});
-		});
+			}); // End ajax
+		}); // End event tombol Hapus
 
-		//Event handler untuk data barang
+		// Event handler untuk edit data barang
 		$('#tabelBarang').on('keypress', 'td', function (event) {
+			// Cek apakah tombol yg ditekan adalah tombol Enter
 			if(event.keyCode === 13) {
+				// Cek apakah tombol ditekan pada barisan input data baru
 				if( tabel.row($(this).parents('tr')).id() != 'barisInput' ) {
 					// Tampilkan pesan loading
 					pesanLoading();
 
 					var dataBaris = tabel.row($(this).parents('tr')).data();
-					var dataSel = nilaibaru;
-					var kolom = tabel.cell(this).index().column;
+					var dataSel = nilaibaru; // nilaibaru dari fungsi ambilNilaiBaru di atas
+					var kolom = tabel.cell(this).index().column; // Dapatkan posisi kolom
 					// console.log(dataBaris);
 					// console.log(dataSel);
 					// console.log(kolom);
 
+					// Karena data yang diperoleh berupa string <input type="text"... , data harus dibersihkan dulu
 					var id_barang = dataBaris[0];
 					id_barang = id_barang.split('value="').pop();
 					id_barang = id_barang.replace('" onkeypress="ambilNilaiBaru(this)">', '');
 					// console.log(id_barang);
-					// console.log(dataSel);
 					
+					// Dapatkan nama kolom (field yang ingin diubah nilainya) dari variabel kolom
 					var namaKolom;
 					switch(kolom) {
 						case 0 : namaKolom = 'id_barang'; break;
@@ -349,33 +341,34 @@
 						case 7 : namaKolom = 'harga_jual_3'; break;
 						case 8 : namaKolom = 'harga_jual_4'; break;
 					}
-					console.log(namaKolom);
+					// console.log(namaKolom);
 					
 					$.ajax({
 						type	: 'post',
 						url		: 'edit-barang',
-						dataType: 'json',
 						data	: {
 							id_barang : id_barang,
 							nama_kolom: namaKolom,
 							nilai_baru: dataSel
 						},
-						success : function(data) {
-							refreshTabel(data);
-							// console.log(data);
+						success : function() {
+							// Perbarui isi tabel
+							refreshTabel();
 
+							// Tampilkan pesan pemberitahuan
 							pesanPemberitahuan('success', 'Data berhasil diperbarui');
 
 							// Hapus pesan loading
 							$('div.overlay').remove();
 						},
-						error : function() {
-							console.log('no');
+						error	: function() {
+							// Tampilkan pesan pemberitahuan
+							pesanPemberitahuan('warning', 'Terdapat kesalahan saat memuat data. Silakan mencoba kembali.');
 						}
-					});
-				}
-			}
-		} );
+					}); // End ajax
+				} // End if pengecekan baris input
+			} // End if pengecekan tombol Enter
+		} ); // End event handler untuk edit barang
 
 	});
 
@@ -463,7 +456,6 @@
 			}
 		});
 	});
-
 	*/
 		
 	</script>
