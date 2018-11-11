@@ -58,3 +58,4 @@ $route['lihat-barang']      = 'c_manajemen_barang/lihat_barang';
 $route['tambah-barang']     = 'c_manajemen_barang/tambah_barang';
 $route['edit-barang']       = 'c_manajemen_barang/edit_barang';
 $route['hapus-barang']      = 'c_manajemen_barang/hapus_barang';
+$route['upload-gambar-barang']  = 'c_manajemen_barang/upload_gambar_barang';

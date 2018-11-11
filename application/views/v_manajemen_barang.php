@@ -39,9 +39,14 @@
 
 						<!-- Kotak berisi tabel data -->
 						<div class="box">
+							<!-- Button untuk upload gambar -->
 							<div class="box-header">
-								<button id="btnUpload" class="btn btn-primary pull-right"><i class="fa fa-upload"></i> Upload Gambar</button>
+								<form class="pull-right" enctype="multipart/form-data">
+									<input id="inputGambar" type="file" name="fileGambar[]" multiple>
+								</form>
 							</div>
+
+							<!-- Tabel -->
 							<div class="box-body">
 								<table id="tabelBarang" class="table table-bordered table-striped">
 
@@ -80,10 +85,11 @@
 	<script src="<?php echo base_url('assets/AdminLTE-2.4.2/bower_components/datatables.net/js/jquery.dataTables.min.js');?>"></script>
 	<script src="<?php echo base_url('assets/AdminLTE-2.4.2/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js');?>"></script>
 	<script src="<?php echo base_url('assets/AdminLTE-2.4.2/dist/js/adminlte.js');?>"></script>
+	<script src="<?php echo base_url('assets/bootstrap-filestyle-1.2.3/src/bootstrap-filestyle.min.js');?>"></script>
 
 	<script>
 		var nilaibaru = 0; 
-		// Ambil nilai baru
+		// Ambil nilai baru dari input
 		function ambilNilaiBaru(input) {
 			nilaibaru = input.value;
 		}
@@ -91,6 +97,15 @@
 	$(document).ready(function() {
 		// Tandai menu Manajemen Barang sebagai menu aktif pada sidebar
 		$('#manajemenBarang').addClass('active');
+
+		// Gunakan Filestyle
+		$('#inputGambar').filestyle({
+			input		: false,
+			buttonText	: 'Upload Gambar',
+			buttonName	: 'btn-primary',
+			iconName	: 'fa fa-upload',
+			badge		: false
+		});
 
 		// Gunakan DataTable
 		var tabel = $('#tabelBarang').DataTable({
@@ -100,6 +115,7 @@
 				{ 'orderable' : false, 'targets' : 9 }
 			]
 		});
+
 		// Isi tabel
 		refreshTabel();
 
@@ -326,7 +342,7 @@
 					var id_barang = dataBaris[0];
 					id_barang = id_barang.split('value="').pop();
 					id_barang = id_barang.replace('" onkeypress="ambilNilaiBaru(this)">', '');
-					// console.log(id_barang);
+					console.log(id_barang);
 					
 					// Dapatkan nama kolom (field yang ingin diubah nilainya) dari variabel kolom
 					var namaKolom;
@@ -369,6 +385,29 @@
 				} // End if pengecekan baris input
 			} // End if pengecekan tombol Enter
 		} ); // End event handler untuk edit barang
+
+		// Fungsi yang dijalankan setelah selesai memilih gambar
+		$('#inputGambar').change(function() {
+			var fileGambar = $('#inputGambar')[0];
+			var dataGambar = new FormData();
+			$.each(fileGambar.files, function(k, file) {
+				dataGambar.append('fileGambar[]', file);
+			});
+			$.ajax({
+				type	: 'post',
+				url		: 'upload-gambar-barang',
+				data	: dataGambar,
+				dataType: 'json',
+				contentType	: false,
+				processData	: false,
+				success		: function(response) {
+					console.log(response);
+				},
+				error		: function(response) {
+					console.log('error');
+				}
+			})
+		});
 
 	});
 
