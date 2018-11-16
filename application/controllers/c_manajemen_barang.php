@@ -14,7 +14,9 @@ class c_manajemen_barang extends CI_Controller {
 	public function lihat_barang() {
 		$this->load->model('m_manajemen_barang');
 
-		echo json_encode($this->m_manajemen_barang->lihat_barang());
+		$data = $this->m_manajemen_barang->lihat_barang();
+		if($data == '') echo json_encode('no data');
+		else echo json_encode($data);
 	}
 
 	public function tambah_barang() {
@@ -42,7 +44,7 @@ class c_manajemen_barang extends CI_Controller {
 
 		$this->load->model('m_manajemen_barang');
 
-		$this->m_manajemen_barang->edit_data($id_barang, $nama_kolom, $nilai_baru);
+		$this->m_manajemen_barang->edit_barang($id_barang, $nama_kolom, $nilai_baru);
 	}
 
 	public function hapus_barang() {
@@ -54,25 +56,25 @@ class c_manajemen_barang extends CI_Controller {
 	}
 
 	public function upload_gambar_barang() {
+		$this->load->library('image_lib');
+
 		// Tentukan syarat gambar yang diupload
 		$config['upload_path']		= './assets/uploads/';
 		$config['allowed_types']	= 'jpg|png';
 		$config['file_ext_tolower']	= true; // Paksa ekstensi gambar menjadi lowercase
 		$config['overwrite']		= true; // Overwrite file jika ada file dengan nama yg sama
-		$config['max_size']			= '1024';
-		$config['max_width']		= '1920';
-		$config['max_height']		= '1080';
 		$config['remove_spaces']	= false; // Jika TRUE, spasi dlm nama gambar diubah menjadi _
 		$this->load->library('upload', $config);
 
-		$response = array();
-		$flag = array();
+		// Variabel untuk menyimpan pesan error
+		$pesan = array();
 
 		$jml_gambar = count($_FILES['fileGambar']['name']);
 
-		// Untuk menggunakan library upload CI, data file gambar harus disimpan dulu ke 'userfile'
 		$file = $_FILES;
 		for($i=0; $i<$jml_gambar; $i++) {
+
+			// Untuk menggunakan library upload CI, data file gambar harus disimpan dulu ke 'userfile'
 			$_FILES['userfile'] = [
 				'name'		=> $file['fileGambar']['name'][$i],
 				'type'		=> $file['fileGambar']['type'][$i],
@@ -81,17 +83,33 @@ class c_manajemen_barang extends CI_Controller {
 				'size'		=> $file['fileGambar']['size'][$i]
 			];
 
-			$response[] = $_FILES['userfile'];
-
-			if( !$this->upload->do_upload('userfile') ) {
+			// Simpan pesan error jika gambar tidak berhasil diupload
+			if( ! $this->upload->do_upload('userfile') ) {
+				// Fungsi display_errors() berikut menampilkan seluruh pesan error dari seluruh gambar
+				// Untuk membedakan kepemilikan pesan error, pisahkan pesan error tsb
+				// Pesan error berupa string dgn format <p>{pesan1}</p><p>{pesan2}</p><p>{pesan3}</p> dst
+				// Pesan error untuk gambar yang diupload pada iterasi saat ini berada di posisi akhir
+				// Karena itu, ambil pesan error paling akhir dengan cara berikut
 				$error = $this->upload->display_errors();
-				$arrayError = explode("<p>", $error);
-				$countError = count($arrayError);
-				$showError = substr($arrayError[$countError-1], 0, -4);
-				$flag[] = $file['fileGambar']['name'][$i] . " => " . $showError;
+				$array_error = explode("<p>", $error); // Pisahkan string menjadi array dgn indikator <p>
+				$count_error = count($array_error);
+				$show_error = substr($array_error[$count_error-1], 0, -4); // Hilangkan </p> di akhir string
+				$pesan[] = $file['fileGambar']['name'][$i] . " -> " . $show_error;
+			}
+			// Jika berhasil upload gambar, resize gambar tsb
+			else {
+				$info = $this->upload->data();
+
+				$config['image_library']	= 'gd2';
+				$config['source_image']		= './assets/uploads/' . $file['fileGambar']['name'][$i];
+				$config['maintain_ratio']	= true;
+				$config['width']			= 500;
+				$config['height']			= 500;
+				$this->image_lib->initialize($config);
+				$this->image_lib->resize();
 			}
 		}
 
-		echo json_encode($flag);
+		echo json_encode($pesan);
 	}
 }

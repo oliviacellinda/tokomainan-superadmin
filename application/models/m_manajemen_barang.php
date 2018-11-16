@@ -1,10 +1,9 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class m_manajemen_barang extends CI_Model
-{
+class m_manajemen_barang extends CI_Model {
 
-    public function __construct() {
+	public function __construct() {
 		$this->load->database();
 	}
 
@@ -20,7 +19,7 @@ class m_manajemen_barang extends CI_Model
 		$this->db->insert('barang', $input);
 	}
 
-	public function edit_data($id_barang, $nama_kolom, $nilai_baru) {
+	public function edit_barang($id_barang, $nama_kolom, $nilai_baru) {
 		$this->db->set($nama_kolom, $nilai_baru);
 		$this->db->where('id_barang', $id_barang);
 		$this->db->update('barang');

@@ -5,11 +5,11 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1, user-scalable=no">
 	<title>Manajemen Barang</title>
-	<link rel="stylesheet" href="<?php echo base_url('assets/AdminLTE-2.4.2/bower_components/bootstrap/dist/css/bootstrap.css');?>">
-	<link rel="stylesheet" href="<?php echo base_url('assets/AdminLTE-2.4.2/bower_components/font-awesome/css/font-awesome.css');?>">
+	<link rel="stylesheet" href="<?php echo base_url('assets/AdminLTE-2.4.2/bower_components/bootstrap/dist/css/bootstrap.min.css');?>">
+	<link rel="stylesheet" href="<?php echo base_url('assets/AdminLTE-2.4.2/bower_components/font-awesome/css/font-awesome.min.css');?>">
 	<link rel="stylesheet" href="<?php echo base_url('assets/AdminLTE-2.4.2/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css');?>">
-	<link rel="stylesheet" href="<?php echo base_url('assets/AdminLTE-2.4.2/dist/css/AdminLTE.css');?>">
-	<link rel="stylesheet" href="<?php echo base_url('assets/AdminLTE-2.4.2/dist/css/skins/skin-blue.css');?>">
+	<link rel="stylesheet" href="<?php echo base_url('assets/AdminLTE-2.4.2/dist/css/AdminLTE.min.css');?>">
+	<link rel="stylesheet" href="<?php echo base_url('assets/AdminLTE-2.4.2/dist/css/skins/skin-blue.min.css');?>">
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 </head>
 
@@ -62,7 +62,7 @@
 									<th width="162.6px">Harga Jual Level 2</th>
 									<th width="162.6px">Harga Jual Level 3</th>
 									<th width="162.6px">Harga Jual Level 4</th>
-									<th>Menu</th>
+									<th>Hapus</th>
 								</tr>
 								</thead>
 
@@ -80,19 +80,19 @@
 		</div> <!-- End content-wrapper -->
 	</div> <!-- End wrapper -->
 
-	<script src="<?php echo base_url('assets/AdminLTE-2.4.2/bower_components/jquery/dist/jquery.js');?>"></script>
-	<script src="<?php echo base_url('assets/AdminLTE-2.4.2/bower_components/bootstrap/dist/js/bootstrap.js');?>"></script>
+	<script src="<?php echo base_url('assets/AdminLTE-2.4.2/bower_components/jquery/dist/jquery.min.js');?>"></script>
+	<script src="<?php echo base_url('assets/AdminLTE-2.4.2/bower_components/bootstrap/dist/js/bootstrap.min.js');?>"></script>
 	<script src="<?php echo base_url('assets/AdminLTE-2.4.2/bower_components/datatables.net/js/jquery.dataTables.min.js');?>"></script>
 	<script src="<?php echo base_url('assets/AdminLTE-2.4.2/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js');?>"></script>
-	<script src="<?php echo base_url('assets/AdminLTE-2.4.2/dist/js/adminlte.js');?>"></script>
+	<script src="<?php echo base_url('assets/AdminLTE-2.4.2/dist/js/adminlte.min.js');?>"></script>
 	<script src="<?php echo base_url('assets/bootstrap-filestyle-1.2.3/src/bootstrap-filestyle.min.js');?>"></script>
 
 	<script>
-		var nilaibaru = 0; 
-		// Ambil nilai baru dari input
-		function ambilNilaiBaru(input) {
-			nilaibaru = input.value;
-		}
+	var nilaiBaru = 0; 
+	// Ambil nilai baru dari input
+	function ambilNilaiBaru(input) {
+		nilaiBaru = input.value;
+	}
 
 	$(document).ready(function() {
 		// Tandai menu Manajemen Barang sebagai menu aktif pada sidebar
@@ -112,43 +112,41 @@
 			'scrollX'		: true,
 			'bInfo'			: false, // Untuk menghilangkan tulisan keterangan di bawah tabel
 			'columnDefs'	: [
-				{ 'orderable' : false, 'targets' : 9 }
-			]
+				{ 'orderable' : false, 'targets' : 9 } // Pilih kolom yg tdk memiliki fitur pengurutan, dimulai dari indeks 0
+			],
+			'stateSave'		: true // Untuk menyimpan kondisi tabel (cth: pagination, ordering) agar dlm kondisi yg sama seperti sblm diupdate
 		});
 
 		// Isi tabel
 		refreshTabel();
 
-		// Fokuskan pada sel ID Barang pada baris input data barang baru
-		$('#barisInput input[name="id_barang"]').focus();
-
 		// Kumpulan event handler untuk baris input
-		$('#tabelBarang').on('keypress', '#barisInput input[name="id_barang"]', function (event) {
+		$('#tabelBarang').on('keypress', '#barisInput input[name="id_barang"]', function(event) {
 			if(event.keyCode === 13) $('#barisInput input[name="nama_barang"]').focus();
 		});
-		$('#tabelBarang').on('keypress', '#barisInput input[name="nama_barang"]', function (event) {
+		$('#tabelBarang').on('keypress', '#barisInput input[name="nama_barang"]', function(event) {
 			if(event.keyCode === 13) $('#barisInput input[name="jumlah_dlm_koli"]').focus();
 		});
-		$('#tabelBarang').on('keypress', '#barisInput input[name="jumlah_dlm_koli"]', function (event) {
+		$('#tabelBarang').on('keypress', '#barisInput input[name="jumlah_dlm_koli"]', function(event) {
 			if(event.keyCode === 13) $('#barisInput input[name="kategori"]').focus();
 		});
-		$('#tabelBarang').on('keypress', '#barisInput input[name="kategori"]', function (event) {
+		$('#tabelBarang').on('keypress', '#barisInput input[name="kategori"]', function(event) {
 			if(event.keyCode === 13) $('#barisInput input[name="fungsi"]').focus();
 		});
-		$('#tabelBarang').on('keypress', '#barisInput input[name="fungsi"]', function (event) {
+		$('#tabelBarang').on('keypress', '#barisInput input[name="fungsi"]', function(event) {
 			if(event.keyCode === 13) $('#barisInput input[name="harga_jual_1"]').focus();
 		});
-		$('#tabelBarang').on('keypress', '#barisInput input[name="harga_jual_1"]', function (event) {
+		$('#tabelBarang').on('keypress', '#barisInput input[name="harga_jual_1"]', function(event) {
 			if(event.keyCode === 13) $('#barisInput input[name="harga_jual_2"]').focus();
 		});
-		$('#tabelBarang').on('keypress', '#barisInput input[name="harga_jual_2"]', function (event) {
+		$('#tabelBarang').on('keypress', '#barisInput input[name="harga_jual_2"]', function(event) {
 			if(event.keyCode === 13) $('#barisInput input[name="harga_jual_3"]').focus();
 		});
-		$('#tabelBarang').on('keypress', '#barisInput input[name="harga_jual_3"]', function (event) {
+		$('#tabelBarang').on('keypress', '#barisInput input[name="harga_jual_3"]', function(event) {
 			if(event.keyCode === 13) $('#barisInput input[name="harga_jual_4"]').focus();
 		});
 		// Saat menekan tombol Enter di Harga Jual Level 4, ambil seluruh nilai data baru dan simpan ke database
-		$('#tabelBarang').on('keypress', '#barisInput input[name="harga_jual_4"]', function (event) {
+		$('#tabelBarang').on('keypress', '#barisInput input[name="harga_jual_4"]', function(event) {
 			if(event.keyCode === 13) {
 				// Tampilkan pesan loading
 				pesanLoading();
@@ -219,7 +217,7 @@
 		} // End fungsi pesanPemberitahuan
 
 		// Fungsi untuk memuat ulang data tabel
-		function refreshTabel(data) {
+		function refreshTabel() {
 			$.ajax({
 				type	: 'post',
 				url		: 'lihat-barang',
@@ -246,19 +244,21 @@
 					isi += '</tr>';
 					// Untuk daftar barang
 					// Tuliskan data dalam <p hidden></p> agar fungsi search DataTable dapat digunakan
-					for(var i=0; i<data.length; i++) {
-						isi += '<tr>';
-						isi += '<td><p hidden>'+data[i].id_barang+'</p><input type="text" class="form-control" name="id_barang" value="'+data[i].id_barang+'" onkeypress="ambilNilaiBaru(this)"></td>';
-						isi += '<td><p hidden>'+data[i].nama_barang+'</p><input type="text" class="form-control" name="nama_barang" value="'+data[i].nama_barang+'" onkeypress="ambilNilaiBaru(this)"></td>';
-						isi += '<td><p hidden>'+data[i].jumlah_dlm_koli+'</p><input type="text" class="form-control" name="jumlah_dlm_koli" value="'+data[i].jumlah_dlm_koli+'" onkeypress="ambilNilaiBaru(this)"></td>';
-						isi += '<td><p hidden>'+data[i].kategori+'</p><input type="text" class="form-control" name="kategori" value="'+data[i].kategori+'" onkeypress="ambilNilaiBaru(this)"></td>';
-						isi += '<td><p hidden>'+data[i].fungsi+'</p><input type="text" class="form-control" name="fungsi" value="'+data[i].fungsi+'" onkeypress="ambilNilaiBaru(this)"></td>';
-						isi += '<td><p hidden>'+data[i].harga_jual_1+'</p><input type="text" class="form-control" name="harga_jual_1" value="'+data[i].harga_jual_1+'" onkeypress="ambilNilaiBaru(this)"></td>';
-						isi += '<td><p hidden>'+data[i].harga_jual_2+'</p><input type="text" class="form-control" name="harga_jual_2" value="'+data[i].harga_jual_2+'" onkeypress="ambilNilaiBaru(this)"></td>';
-						isi += '<td><p hidden>'+data[i].harga_jual_3+'</p><input type="text" class="form-control" name="harga_jual_3" value="'+data[i].harga_jual_3+'" onkeypress="ambilNilaiBaru(this)"></td>';
-						isi += '<td><p hidden>'+data[i].harga_jual_4+'</p><input type="text" class="form-control" name="harga_jual_4" value="'+data[i].harga_jual_4+'" onkeypress="ambilNilaiBaru(this)"></td>';
-						isi += '<td><button id="btnHapus" class="btn btn-xs btn-danger"><i class="fa fa-times"></i></button></td>';
-						isi += '</tr>';
+					if(data != 'no data') {
+						for(var i=0; i<data.length; i++) {
+							isi += '<tr>';
+							isi += '<td><p hidden>'+data[i].id_barang+'</p><input type="text" class="form-control" name="id_barang" value="'+data[i].id_barang+'" onkeypress="ambilNilaiBaru(this)"></td>';
+							isi += '<td><p hidden>'+data[i].nama_barang+'</p><input type="text" class="form-control" name="nama_barang" value="'+data[i].nama_barang+'" onkeypress="ambilNilaiBaru(this)"></td>';
+							isi += '<td><p hidden>'+data[i].jumlah_dlm_koli+'</p><input type="text" class="form-control" name="jumlah_dlm_koli" value="'+data[i].jumlah_dlm_koli+'" onkeypress="ambilNilaiBaru(this)"></td>';
+							isi += '<td><p hidden>'+data[i].kategori+'</p><input type="text" class="form-control" name="kategori" value="'+data[i].kategori+'" onkeypress="ambilNilaiBaru(this)"></td>';
+							isi += '<td><p hidden>'+data[i].fungsi+'</p><input type="text" class="form-control" name="fungsi" value="'+data[i].fungsi+'" onkeypress="ambilNilaiBaru(this)"></td>';
+							isi += '<td><p hidden>'+data[i].harga_jual_1+'</p><input type="text" class="form-control" name="harga_jual_1" value="'+data[i].harga_jual_1+'" onkeypress="ambilNilaiBaru(this)"></td>';
+							isi += '<td><p hidden>'+data[i].harga_jual_2+'</p><input type="text" class="form-control" name="harga_jual_2" value="'+data[i].harga_jual_2+'" onkeypress="ambilNilaiBaru(this)"></td>';
+							isi += '<td><p hidden>'+data[i].harga_jual_3+'</p><input type="text" class="form-control" name="harga_jual_3" value="'+data[i].harga_jual_3+'" onkeypress="ambilNilaiBaru(this)"></td>';
+							isi += '<td><p hidden>'+data[i].harga_jual_4+'</p><input type="text" class="form-control" name="harga_jual_4" value="'+data[i].harga_jual_4+'" onkeypress="ambilNilaiBaru(this)"></td>';
+							isi += '<td><button id="btnHapus" class="btn btn-xs btn-danger"><i class="fa fa-times"></i></button></td>';
+							isi += '</tr>';
+						}
 					}
 					isi += '</tbody>';
 
@@ -272,7 +272,8 @@
 						'bInfo'			: false, // Untuk menghilangkan tulisan keterangan di bawah tabel
 						'columnDefs'	: [
 							{ 'orderable' : false, 'targets' : 9 }
-						]
+						],
+						'stateSave'		: true // Untuk menyimpan kondisi tabel (cth: pagination, ordering) agar dlm kondisi yg sama seperti sblm diupdate
 					});
 
 					// Fokuskan pada sel ID Barang pada baris input data barang baru
@@ -332,7 +333,7 @@
 					pesanLoading();
 
 					var dataBaris = tabel.row($(this).parents('tr')).data();
-					var dataSel = nilaibaru; // nilaibaru dari fungsi ambilNilaiBaru di atas
+					var dataSel = nilaiBaru; // nilaiBaru dari fungsi ambilNilaiBaru di atas
 					var kolom = tabel.cell(this).index().column; // Dapatkan posisi kolom
 					// console.log(dataBaris);
 					// console.log(dataSel);
@@ -342,7 +343,7 @@
 					var id_barang = dataBaris[0];
 					id_barang = id_barang.split('value="').pop();
 					id_barang = id_barang.replace('" onkeypress="ambilNilaiBaru(this)">', '');
-					console.log(id_barang);
+					// console.log(id_barang);
 					
 					// Dapatkan nama kolom (field yang ingin diubah nilainya) dari variabel kolom
 					var namaKolom;
@@ -388,26 +389,52 @@
 
 		// Fungsi yang dijalankan setelah selesai memilih gambar
 		$('#inputGambar').change(function() {
-			var fileGambar = $('#inputGambar')[0];
-			var dataGambar = new FormData();
-			$.each(fileGambar.files, function(k, file) {
-				dataGambar.append('fileGambar[]', file);
+			pesanLoading();
+
+			// Ambil data file gambar yang dipilih
+			var inputGambar = $('#inputGambar')[0];
+			var fileGambar = new FormData();
+			$.each(inputGambar.files, function(k, file) {
+				fileGambar.append('fileGambar[]', file);
 			});
+			
+
 			$.ajax({
 				type	: 'post',
 				url		: 'upload-gambar-barang',
-				data	: dataGambar,
+				data	: fileGambar,
 				dataType: 'json',
 				contentType	: false,
 				processData	: false,
 				success		: function(response) {
-					console.log(response);
+					// Tampilkan pesan error jika ada kesalahan dalam mengupload gambar
+					pesanErrorGambar(response);
+
+					// Hapus pesan loading
+					$('div.overlay').remove();
 				},
 				error		: function(response) {
-					console.log('error');
+					console.log(response.responseText);
 				}
-			})
-		});
+			}) // End ajax
+		}); // End fungsi upload gambar
+
+		// Fungsi yang digunakan untuk menampilkan pesan error saat upload gambar
+		function pesanErrorGambar(response) {
+			if(response != '') {
+				// Hapus terlebih dahulu jika sudah ada pesan pemberitahuan sebelumnya
+				$('.alert').remove();
+
+				var alert =  '<div class="alert alert-warning alert-dismissible" role="alert">';
+				alert += '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
+				alert += '<h4><i class="icon fa fa-ban"></i> Error!</h4>';
+				for(i=0; i<response.length; i++) {
+					alert += '<p>' + response[i] + '</p>';
+				}
+				alert += '</div>';
+				$('#pesanPemberitahuan').append(alert);
+			}
+		} // End fungsi pesanErrorGambar
 
 	});
 
@@ -442,59 +469,6 @@
 		}
 	});
 
-	// Fungsi yang dijalankan ketika mengklik tombol Tambah (+)
-	$('#tabelBarang').on('click', '#btnInputData', function() {
-		// Tampilkan pesan loading
-		var loading = '<div class="overlay">';
-		loading += '<i class="fa fa-refresh fa-spin"></i>';
-		loading += '</div>';
-		$('div[class="box"]').append(loading);
-
-		// Dapatkan seluruh nilai dari input data baru
-		var id_barang = $('input[name="id_barang"]').val();
-		var nama_barang = $('input[name="nama_barang"]').val();
-		var harga_beli = $('input[name="harga_beli"]').val();
-		var jumlah_dlm_koli = $('input[name="jumlah_dlm_koli"]').val();
-		var kategori = $('input[name="kategori"]').val();
-		var fungsi = $('input[name="fungsi"]').val();
-		var harga_jual_1 = $('input[name="harga_jual_1"]').val();
-		var harga_jual_2 = $('input[name="harga_jual_2"]').val();
-		var harga_jual_3 = $('input[name="harga_jual_3"]').val();
-		var harga_jual_4 = $('input[name="harga_jual_4"]').val();
-
-		$.ajax({
-			type	: 'post',
-			url		: 'tambah-barang',
-			cache	: false,
-			data	: {
-				id_barang 		: id_barang,
-				nama_barang		: nama_barang,
-				harga_beli		: harga_beli,
-				jumlah_dlm_koli	: jumlah_dlm_koli,
-				kategori		: kategori,
-				fungsi			: fungsi,
-				harga_jual_1 	: harga_jual_1,
-				harga_jual_2 	: harga_jual_2,
-				harga_jual_3 	: harga_jual_3,
-				harga_jual_4 	: harga_jual_4
-			},
-			success	: function(data) {
-				// Tambahkan pesan pemberitahuan bahwa data telah ditambahkan ke database
-				// var alert = '<div class="alert alert-info alert-dismissible" role="alert">';
-				// alert += '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
-				// alert += 'Data baru berhasil disimpan.';
-				// alert += '</div>';
-				// $('#pesanPemberitahuan').append(alert);
-
-				// Muat ulang data dalam tabel
-				// tabel.clear().draw();
-				alert(data);
-
-				// Hapus pesan loading
-				// $('div.overlay').remove();
-			}
-		});
-	});
 	*/
 		
 	</script>

@@ -53,9 +53,27 @@ $route['default_controller'] = 'welcome';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 
-$route['manajemen-barang']  = 'c_manajemen_barang/manajemen_barang';
-$route['lihat-barang']      = 'c_manajemen_barang/lihat_barang';
-$route['tambah-barang']     = 'c_manajemen_barang/tambah_barang';
-$route['edit-barang']       = 'c_manajemen_barang/edit_barang';
-$route['hapus-barang']      = 'c_manajemen_barang/hapus_barang';
+$route['manajemen-toko']        = 'c_manajemen_toko/manajemen_toko';
+$route['lihat-toko']            = 'c_manajemen_toko/lihat_toko';
+$route['tambah-toko']           = 'c_manajemen_toko/tambah_toko';
+$route['edit-toko']             = 'c_manajemen_toko/edit_toko';
+$route['hapus-toko']            = 'c_manajemen_toko/hapus_toko';
+
+$route['manajemen-pos']         = 'c_manajemen_pos/manajemen_pos';
+$route['lihat-pos']             = 'c_manajemen_pos/lihat_pos';
+$route['tambah-pos']            = 'c_manajemen_pos/tambah_pos';
+$route['edit-pos']              = 'c_manajemen_pos/edit_pos';
+$route['hapus-pos']             = 'c_manajemen_pos/hapus_pos';
+
+$route['manajemen-barang']      = 'c_manajemen_barang/manajemen_barang';
+$route['lihat-barang']          = 'c_manajemen_barang/lihat_barang';
+$route['tambah-barang']         = 'c_manajemen_barang/tambah_barang';
+$route['edit-barang']           = 'c_manajemen_barang/edit_barang';
+$route['hapus-barang']          = 'c_manajemen_barang/hapus_barang';
 $route['upload-gambar-barang']  = 'c_manajemen_barang/upload_gambar_barang';
+
+$route['manajemen-pelanggan']   = 'c_manajemen_pelanggan/manajemen_pelanggan';
+$route['lihat-pelanggan']       = 'c_manajemen_pelanggan/lihat_pelanggan';
+$route['tambah-pelanggan']      = 'c_manajemen_pelanggan/tambah_pelanggan';
+$route['edit-pelanggan']        = 'c_manajemen_pelanggan/edit_pelanggan';
+$route['hapus-pelanggan']       = 'c_manajemen_pelanggan/hapus_pelanggan';
