@@ -218,6 +218,7 @@
                     $('div.overlay').remove();
                 },
                 error   : function(response) {
+                    // console.log(response.responseText);
                     // Tampilkan pesan pemberitahuan
                     pesanPemberitahuan('warning', 'Terdapat kesalahan saat memuat data. Silakan mencoba kembali.');
                 }
@@ -297,6 +298,48 @@
 				} // End if pengecekan baris input
 			} // End if pengecekan tombol Enter
         }); // End event handler untuk edit toko
+
+        // Event handler untuk dropdown nama toko
+        $('#tabelKasir').on('change', 'select', function() {
+            if( tabel.row($(this).parents('tr')).id() != 'barisInput' ) {
+                // Tampilkan pesan loading
+                pesanLoading();
+
+                // Ambil seluruh data pada baris dropdown yang diubah
+                var data = tabel.row($(this).parents('td')).data();
+                // Ambil data id_kasir dari data yang diambil sebelumnya
+                var id_kasir = data[0];
+                // Karena data yang diperoleh berupa string <input type="text"... , data harus dibersihkan dulu
+                id_kasir = id_kasir.split('value="').pop();
+                id_kasir = id_kasir.replace('" onkeypress="ambilNilaiBaru(this)">', '');
+                // Ambil data id_toko yang baru
+                var id_toko = $(this).val();
+
+                $.ajax({
+                    type	: 'post',
+                    url		: 'edit-kasir',
+                    data	: {
+                        id_kasir    : id_kasir,
+                        nama_kolom  : 'id_toko',
+                        nilai_baru  : id_toko
+                    },
+                    success : function() {
+                        // Perbarui isi tabel
+                        refreshTabel();
+
+                        // Tampilkan pesan pemberitahuan
+                        pesanPemberitahuan('success', 'Data berhasil diperbarui');
+
+                        // Hapus pesan loading
+                        $('div.overlay').remove();
+                    },
+                    error	: function(response) {
+                        // Tampilkan pesan pemberitahuan
+                        pesanPemberitahuan('warning', 'Terdapat kesalahan saat memuat data. Silakan mencoba kembali.');
+                    }
+                })
+            }
+        });
 
         // Fungsi yang dijalankan ketika mengklik tombol Hapus (silang)
 		$('#tabelKasir').on('click', '#btnHapus', function() {
