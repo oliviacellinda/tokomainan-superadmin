@@ -4,7 +4,7 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1, user-scalable=no">
-	<title>Manajemen Toko</title>
+	<title>Manajemen POS</title>
 	<link rel="stylesheet" href="<?php echo base_url('assets/AdminLTE-2.4.2/bower_components/bootstrap/dist/css/bootstrap.min.css');?>">
 	<link rel="stylesheet" href="<?php echo base_url('assets/AdminLTE-2.4.2/bower_components/font-awesome/css/font-awesome.min.css');?>">
 	<link rel="stylesheet" href="<?php echo base_url('assets/AdminLTE-2.4.2/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css');?>">
@@ -26,7 +26,7 @@
 
             <!-- Header -->
 			<section class="content-header">
-				<h1>Manajemen Toko</h1>
+				<h1>Manajemen POS</h1>
             </section>
             
             <!-- Konten Utama -->
@@ -41,14 +41,14 @@
                         <div class="box">
                             <!-- Tabel -->
                             <div class="box-body">
-                                <table id="tabelToko" class="table table-bordered table-striped">
+                                <table id="tabelKasir" class="table table-bordered table-striped">
 
                                     <!-- Header Tabel -->
                                     <thead>
                                     <tr>
-                                        <th width="162.6px">ID Toko</th>
-                                        <th width="162.6px">Nama</th>
-                                        <th width="162.6px">Alamat</th>
+                                        <th width="162.6px">ID Kasir</th>
+                                        <th width="162.6px">Password Kasir</th>
+                                        <th width="162.6px">Nama Toko</th>
                                         <th>Menu</th>
                                     </tr>
                                     </thead>
@@ -81,11 +81,11 @@
 	}
 
     $(document).ready(function() {
-        // Tandai menu Manajemen Toko sebagai menu aktif pada sidebar
-		$('#manajemenToko').addClass('active');
+        // Tandai menu Manajemen Kasir sebagai menu aktif pada sidebar
+		$('#manajemenKasir').addClass('active');
 
         // Gunakan DataTable
-        var tabel = $('#tabelToko').DataTable({
+        var tabel = $('#tabelKasir').DataTable({
             'scrollX'       : true,
             'bInfo'         : false, // Untuk menghilangkan tulisan keterangan di bawah tabel
             'columnDefs'    : [
@@ -101,29 +101,59 @@
 		function refreshTabel() {
 			$.ajax({
 				type	: 'post',
-				url		: 'lihat-toko',
+				url		: 'lihat-kasir',
 				dataType: 'json',
 				success : function(data) {
 					// Hapus isi data tabel
-					$('#tabelToko tbody').remove();
+					$('#tabelKasir tbody').remove();
 					
 					// Buat variabel baru yang berisi HTML untuk isi data
 					var isi = '<tbody>';
-					// Untuk baris input data toko baru
+					// Untuk baris input data kasir baru
 					isi += '<tr id="barisInput">';
-					isi += '<td><input type="text" class="form-control" placeholder="ID Toko" name="id_toko"></td>';
-					isi += '<td><input type="text" class="form-control" placeholder="Nama" name="nama_toko"></td>';
-					isi += '<td><input type="text" class="form-control" placeholder="Alamat" name="alamat_toko"></td>';
+					isi += '<td><input type="text" class="form-control" placeholder="ID Kasir" name="id_kasir"></td>';
+					isi += '<td><input type="text" class="form-control" placeholder="Password" name="password_kasir"></td>';
+					// Untuk dropdown toko
+                    isi += '<td>';
+                    isi += '<div class="form-group">';
+                    isi += '<select style="width:100%" class="form-control" name="id_toko">';
+                    isi += '<option disabled selected>Pilih nama toko</option>';
+                    if(data.toko != 'no data') {
+                        for(var i=0; i<data.toko.length; i++) {
+                            isi += '<option value="'+data.toko[i].id_toko+'">'+data.toko[i].nama_toko+'</option>';
+                        }
+                    }
+                    isi += '</select>';
+                    isi += '</div>';
+                    isi += '</td>';
+                    // End dropdown toko
 					isi += '<td></td>';
 					isi += '</tr>';
 					// Untuk daftar toko
 					// Tuliskan data dalam <p hidden></p> agar fungsi search DataTable dapat digunakan
-                    if(data != 'no data') {
-                        for(var i=0; i<data.length; i++) {
+                    if(data.kasir != 'no data') {
+                        for(var i=0; i<data.kasir.length; i++) {
                             isi += '<tr>';
-                            isi += '<td><p hidden>'+data[i].id_toko+'</p><input type="text" class="form-control" name="id_toko" value="'+data[i].id_toko+'" onkeypress="ambilNilaiBaru(this)"></td>';
-                            isi += '<td><p hidden>'+data[i].nama_toko+'</p><input type="text" class="form-control" name="nama_toko" value="'+data[i].nama_toko+'" onkeypress="ambilNilaiBaru(this)"></td>';
-                            isi += '<td><p hidden>'+data[i].alamat_toko+'</p><input type="text" class="form-control" name="alamat_toko" value="'+data[i].alamat_toko+'" onkeypress="ambilNilaiBaru(this)"></td>';
+                            isi += '<td><p hidden>'+data.kasir[i].id_kasir+'</p><input type="text" class="form-control" name="id_kasir" value="'+data.kasir[i].id_kasir+'" onkeypress="ambilNilaiBaru(this)"></td>';
+                            isi += '<td><p hidden>'+data.kasir[i].password_kasir+'</p><input type="text" class="form-control" name="password_kasir" value="'+data.kasir[i].password_kasir+'" onkeypress="ambilNilaiBaru(this)"></td>';
+                            // Untuk dropdown toko
+                            isi += '<td>';
+                            isi += '<div class="form-group">';
+                            isi += '<select style="width:100%" class="form-control" name="id_toko">';
+                            isi += '<option disabled>Pilih nama toko</option>';
+                            if(data.toko != 'no data') {
+                                for(var j=0; j<data.toko.length; j++) {
+                                    // Cek apakah id_toko dari data kasir sama dengan id_toko dari daftar toko
+                                    if(data.kasir[i].id_toko == data.toko[j].id_toko)
+                                        isi += '<option selected value="'+data.toko[j].id_toko+'">'+data.toko[j].nama_toko+'</option>';
+                                    else
+                                        isi += '<option value="'+data.toko[j].id_toko+'">'+data.toko[j].nama_toko+'</option>';
+                                }
+                            }
+                            isi += '</select>';
+                            isi += '</div>';
+                            isi += '</td>';
+                            // End dropdown toko
                             isi += '<td><button id="btnHapus" class="btn btn-xs btn-danger"><i class="fa fa-times"></i></button></td>';
                             isi += '</tr>';
                         }
@@ -131,11 +161,11 @@
 					isi += '</tbody>';
 
 					// Tambahkan data baru ke dalam tabel
-					$('#tabelToko').append(isi);
+					$('#tabelKasir').append(isi);
 
 					// Reinitialize DataTable
 					tabel.clear().destroy();
-					tabel = $('#tabelToko').DataTable({
+					tabel = $('#tabelKasir').DataTable({
 						'scrollX'		: true,
 						'bInfo'			: false, // Untuk menghilangkan tulisan keterangan di bawah tabel
 						'columnDefs'	: [
@@ -144,59 +174,55 @@
                         'stateSave'     : true // Untuk menyimpan kondisi tabel (cth: pagination, ordering) agar dlm kondisi yg sama seperti sblm diupdate
 					});
 
-					// Fokuskan pada sel ID Toko pada baris input data toko baru
-					$('#barisInput input[name="id_toko"]').focus();
+					// Fokuskan pada sel ID Kasir pada baris input data toko baru
+					$('#barisInput input[name="id_kasir"]').focus();
 				}, // End success
-				error	: function() {
+				error	: function(response) {
 					// Tampilkan pesan pemberitahuan
 					pesanPemberitahuan('warning', 'Terdapat kesalahan saat memuat data. Silakan mencoba kembali.');
 				} // End error
 			}); // End ajax		
         } // End fungsi refreshTabel()
 
-        // Kumpulan event handler untuk baris input
-        $('#tabelToko').on('keypress', '#barisInput input[name="id_toko"]', function(event) {
-            if(event.keyCode === 13) $('#barisInput input[name="nama_toko"]').focus();
+        $('#tabelKasir').on('keypress', '#barisInput input[name="id_kasir"]', function(event) {
+            if(event.keyCode === 13) $('#barisInput input[name="password_kasir"]').focus();
         });
-        $('#tabelToko').on('keypress', '#barisInput input[name="nama_toko"]', function(event) {
-            if(event.keyCode === 13) $('#barisInput input[name="alamat_toko"]').focus();
+        $('#tabelKasir').on('keypress', '#barisInput input[name="password_kasir"]', function(event) {
+            if(event.keyCode === 13) $('#barisInput select[name="id_toko"]').focus();
         });
-        // Saat menekan tombol Enter di Level, ambil seluruh nilai data baru dan simpan ke dalam database
-        $('#tabelToko').on('keypress', '#barisInput input[name="alamat_toko"]', function(event) {
-            if(event.keyCode === 13) {
-                // Tampilkan pesan loading
-                pesanLoading();
+        $('#tabelKasir').on('change', '#barisInput select[name="id_toko"]', function() {
+            // Tampilkan pesan loading
+            pesanLoading();
 
-                // Kumpulkan data
-                var id_toko = $('#barisInput input[name="id_toko"]').val();
-                var nama_toko = $('#barisInput input[name="nama_toko"]').val();
-                var alamat_toko = $('#barisInput input[name="alamat_toko"]').val();
+            // Kumpulkan data
+            var id_kasir = $('#barisInput input[name="id_kasir"]').val();
+            var password_kasir = $('#barisInput input[name="password_kasir"]').val();
+            var id_toko = $('#barisInput select[name="id_toko"]').val();
 
-                $.ajax({
-                    type    : 'post',
-                    url     : 'tambah-toko',
-                    data    : {
-                        id_toko     : id_toko,
-                        nama_toko   : nama_toko,
-                        alamat_toko : alamat_toko
-                    },
-                    success : function() {
-                        // Perbarui isi tabel
-                        refreshTabel();
+            $.ajax({
+                type    : 'post',
+                url     : 'tambah-kasir',
+                data    : {
+                    id_kasir        : id_kasir,
+                    password_kasir  : password_kasir,
+                    id_toko         : id_toko
+                },
+                success : function() {
+                    // Perbarui isi tabel
+                    refreshTabel();
 
-                        // Tambahkan pesan pemberitahuan bahwa data berhasil ditambahkan
-                        pesanPemberitahuan('info', 'Data berhasil ditambahkan.');
+                    // Tambahkan pesan pemberitahuan bahwa data berhasil ditambahkan
+                    pesanPemberitahuan('info', 'Data berhasil ditambahkan.');
 
-                        // Hapus pesan loading
-                        $('div.overlay').remove();
-                    },
-                    error   : function() {
-                        // Tampilkan pesan pemberitahuan
-						pesanPemberitahuan('warning', 'Terdapat kesalahan saat memuat data. Silakan mencoba kembali.');
-                    }
-                });
-            }
-        }); // End event input data baru
+                    // Hapus pesan loading
+                    $('div.overlay').remove();
+                },
+                error   : function(response) {
+                    // Tampilkan pesan pemberitahuan
+                    pesanPemberitahuan('warning', 'Terdapat kesalahan saat memuat data. Silakan mencoba kembali.');
+                }
+            });
+        }); // End event input baru
 
         // Fungsi untuk menampilkan pesan loading selama proses berlangsung
 		function pesanLoading() {
@@ -220,8 +246,8 @@
 			$('#pesanPemberitahuan').append(alert);
 		} // End fungsi pesanPemberitahuan
 
-        // Event handler untuk edit toko
-        $('#tabelToko').on('keypress', 'td', function(event) {
+        // Event handler untuk edit kasir (id_kasir dan password_kasir)
+        $('#tabelKasir').on('keypress', 'td', function(event) {
             // Cek apakah tombol yg ditekan adalah tombol Enter
 			if(event.keyCode === 13) {
 				// Cek apakah tombol ditekan pada barisan input data baru
@@ -234,25 +260,24 @@
 					var kolom = tabel.cell(this).index().column; // Dapatkan posisi kolom
 
 					// Karena data yang diperoleh berupa string <input type="text"... , data harus dibersihkan dulu
-					var id_toko = dataBaris[0];
-					id_toko = id_toko.split('value="').pop();
-					id_toko = id_toko.replace('" onkeypress="ambilNilaiBaru(this)">', '');
+					var id_kasir = dataBaris[0];
+					id_kasir = id_kasir.split('value="').pop();
+					id_kasir = id_kasir.replace('" onkeypress="ambilNilaiBaru(this)">', '');
 					
 					// Dapatkan nama kolom (field yang ingin diubah nilainya) dari variabel kolom
 					var namaKolom;
 					switch(kolom) {
-						case 0 : namaKolom = 'id_toko'; break;
-						case 1 : namaKolom = 'nama_toko'; break;
-						case 2 : namaKolom = 'alamat_toko'; break;
+						case 0 : namaKolom = 'id_kasir'; break;
+						case 1 : namaKolom = 'password_kasir'; break;
 					}
 					
 					$.ajax({
 						type	: 'post',
-						url		: 'edit-toko',
+						url		: 'edit-kasir',
 						data	: {
-							id_toko : id_toko,
-							nama_kolom: namaKolom,
-							nilai_baru: dataSel
+							id_kasir    : id_kasir,
+							nama_kolom  : namaKolom,
+							nilai_baru  : dataSel
 						},
 						success : function() {
 							// Perbarui isi tabel
@@ -264,7 +289,7 @@
 							// Hapus pesan loading
 							$('div.overlay').remove();
 						},
-						error	: function() {
+						error	: function(response) {
 							// Tampilkan pesan pemberitahuan
 							pesanPemberitahuan('warning', 'Terdapat kesalahan saat memuat data. Silakan mencoba kembali.');
 						}
@@ -274,23 +299,23 @@
         }); // End event handler untuk edit toko
 
         // Fungsi yang dijalankan ketika mengklik tombol Hapus (silang)
-		$('#tabelToko').on('click', '#btnHapus', function() {
+		$('#tabelKasir').on('click', '#btnHapus', function() {
 			// Tampilkan pesan loading
 			pesanLoading();
 
 			// Ambil seluruh data pada baris di mana tombol Hapus diklik
 			var data = tabel.row($(this).parents('td')).data();
 
-			// Ambil data id_toko dari data yang diambil sebelumnya
-			var id_toko = data[0];
+			// Ambil data id_kasir dari data yang diambil sebelumnya
+			var id_kasir = data[0];
 			// Karena data yang diperoleh berupa string <input type="text"... , data harus dibersihkan dulu
-			id_toko = id_toko.split('value="').pop();
-			id_toko = id_toko.replace('" onkeypress="ambilNilaiBaru(this)">', '');
+			id_kasir = id_kasir.split('value="').pop();
+			id_kasir = id_kasir.replace('" onkeypress="ambilNilaiBaru(this)">', '');
 
 			$.ajax({
 				type	: 'post',
-				url		: 'hapus-toko',
-				data	: { id_toko : id_toko },
+				url		: 'hapus-kasir',
+				data	: { id_kasir : id_kasir },
 				success	: function() {
 					// Perbarui isi tabel
 					refreshTabel();
@@ -301,7 +326,8 @@
 					// Hapus pesan loading
 					$('div.overlay').remove();
 				},
-				error	: function() {
+				error	: function(response) {
+                    console.log(response.responseText);
 					// Tampilkan pesan pemberitahuan
 					pesanPemberitahuan('warning', 'Terdapat kesalahan saat memuat data. Silakan mencoba kembali.');
 				}

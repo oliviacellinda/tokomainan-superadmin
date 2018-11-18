@@ -59,11 +59,11 @@ $route['tambah-toko']           = 'c_manajemen_toko/tambah_toko';
 $route['edit-toko']             = 'c_manajemen_toko/edit_toko';
 $route['hapus-toko']            = 'c_manajemen_toko/hapus_toko';
 
-$route['manajemen-pos']         = 'c_manajemen_pos/manajemen_pos';
-$route['lihat-pos']             = 'c_manajemen_pos/lihat_pos';
-$route['tambah-pos']            = 'c_manajemen_pos/tambah_pos';
-$route['edit-pos']              = 'c_manajemen_pos/edit_pos';
-$route['hapus-pos']             = 'c_manajemen_pos/hapus_pos';
+$route['manajemen-kasir']       = 'c_manajemen_kasir/manajemen_kasir';
+$route['lihat-kasir']           = 'c_manajemen_kasir/lihat_kasir';
+$route['tambah-kasir']          = 'c_manajemen_kasir/tambah_kasir';
+$route['edit-kasir']            = 'c_manajemen_kasir/edit_kasir';
+$route['hapus-kasir']           = 'c_manajemen_kasir/hapus_kasir';
 
 $route['manajemen-barang']      = 'c_manajemen_barang/manajemen_barang';
 $route['lihat-barang']          = 'c_manajemen_barang/lihat_barang';
