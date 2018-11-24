@@ -53,6 +53,11 @@ $route['default_controller'] = 'welcome';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 
+$route['login']                 = 'c_admin/login';
+$route['proses-login']          = 'c_admin/proses_login';
+$route['logout']                = 'c_admin/proses_logout';
+$route['ganti-password']        = 'c_admin/ganti_password';
+
 $route['manajemen-toko']        = 'c_manajemen_toko/manajemen_toko';
 $route['lihat-toko']            = 'c_manajemen_toko/lihat_toko';
 $route['tambah-toko']           = 'c_manajemen_toko/tambah_toko';
@@ -72,8 +77,19 @@ $route['edit-barang']           = 'c_manajemen_barang/edit_barang';
 $route['hapus-barang']          = 'c_manajemen_barang/hapus_barang';
 $route['upload-gambar-barang']  = 'c_manajemen_barang/upload_gambar_barang';
 
+$route['data-barang-masuk']     = 'c_manajemen_stok_barang/data_barang_masuk';
+$route['daftar-stok-barang']    = 'c_manajemen_stok_barang/daftar_stok_barang';
+$route['input-barang-masuk']    = 'c_manajemen_stok_barang/input_barang_masuk';
+$route['data-barang-keluar']    = 'c_manajemen_stok_barang/data_barang_keluar';
+$route['laporan-barang-keluar'] = 'c_manajemen_stok_barang/laporan_barang_keluar';
+$route['input-barang-keluar']   = 'c_manajemen_stok_barang/input_barang_keluar';
+
 $route['manajemen-pelanggan']   = 'c_manajemen_pelanggan/manajemen_pelanggan';
 $route['lihat-pelanggan']       = 'c_manajemen_pelanggan/lihat_pelanggan';
 $route['tambah-pelanggan']      = 'c_manajemen_pelanggan/tambah_pelanggan';
 $route['edit-pelanggan']        = 'c_manajemen_pelanggan/edit_pelanggan';
 $route['hapus-pelanggan']       = 'c_manajemen_pelanggan/hapus_pelanggan';
+
+$route['laporan-penjualan']     = 'c_laporan_penjualan/laporan_penjualan';
+$route['daftar-penjualan']      = 'c_laporan_penjualan/daftar_penjualan';
+$route['detail-penjualan']      = 'c_laporan_penjualan/detail_penjualan';

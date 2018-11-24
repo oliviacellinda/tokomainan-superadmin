@@ -8,7 +8,11 @@ class c_manajemen_pelanggan extends CI_Controller {
     }
 
     public function manajemen_pelanggan() {
-        $this->load->view('v_manajemen_pelanggan');
+        if($this->session->username == '') {
+			header('Location: login');
+			die();
+		}
+		else $this->load->view('v_manajemen_pelanggan');
     }
 
     public function lihat_pelanggan() {

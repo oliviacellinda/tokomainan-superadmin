@@ -21,7 +21,7 @@
 					<!-- Menu toggle button -->
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown">
 						<img src="<?php echo base_url('assets/image/user.png');?>" class="user-image" alt="Foto Pengguna">
-						<span class="hidden-xs">Nama Admin</span>
+						<span class="hidden-xs"><?php echo $this->session->username;?></span>
 					</a>
 
 					<!-- Dropdown menu -->
@@ -29,15 +29,15 @@
 						<!-- Menu header -->
 						<li class="user-header">
 							<img src="<?php echo base_url('assets/image/user.png');?>" class="img-circle" alt="Foto Pengguna">
-							<p>Nama Admin</p>
+							<p><?php echo $this->session->username;?></p>
 						</li>
 						<!-- Menu footer -->
 						<li class="user-footer">
 							<div class="pull-left">
-								<a href="#" class="btn btn-default btn-flat">Ganti Password</a>
+								<a href="ganti-password" class="btn btn-default btn-flat">Ganti Password</a>
 							</div>
 							<div class="pull-right">
-								<a href="#" class="btn btn-default btn-flat">Keluar</a>
+								<a href="logout" class="btn btn-default btn-flat">Keluar</a>
 							</div>
 						</li>
 					</ul>

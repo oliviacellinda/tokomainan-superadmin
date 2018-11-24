@@ -8,7 +8,11 @@ class c_manajemen_toko extends CI_Controller {
     }
 
     public function manajemen_toko() {
-        $this->load->view('v_manajemen_toko');
+        if($this->session->username == '') {
+			header('Location: login');
+			die();
+		}
+		else $this->load->view('v_manajemen_toko');
     }
 
     public function lihat_toko() {

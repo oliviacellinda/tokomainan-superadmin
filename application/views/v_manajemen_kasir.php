@@ -13,7 +13,7 @@
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 </head>
 
-<body class="hold-transition skin-blue sidebar-mini">
+<body class="hold-transition skin-blue">
     <div class="wrapper">
         <!-- Main Header -->
 		<?php include('application/views/v_navbar_top.php');?>
@@ -129,7 +129,7 @@
                     // End dropdown toko
 					isi += '<td></td>';
 					isi += '</tr>';
-					// Untuk daftar toko
+					// Untuk daftar kasir
 					// Tuliskan data dalam <p hidden></p> agar fungsi search DataTable dapat digunakan
                     if(data.kasir != 'no data') {
                         for(var i=0; i<data.kasir.length; i++) {
@@ -174,7 +174,7 @@
                         'stateSave'     : true // Untuk menyimpan kondisi tabel (cth: pagination, ordering) agar dlm kondisi yg sama seperti sblm diupdate
 					});
 
-					// Fokuskan pada sel ID Kasir pada baris input data toko baru
+					// Fokuskan pada sel ID Kasir pada baris input data kasir baru
 					$('#barisInput input[name="id_kasir"]').focus();
 				}, // End success
 				error	: function(response) {
@@ -297,7 +297,7 @@
 					}); // End ajax
 				} // End if pengecekan baris input
 			} // End if pengecekan tombol Enter
-        }); // End event handler untuk edit toko
+        }); // End event handler untuk edit kasir
 
         // Event handler untuk dropdown nama toko
         $('#tabelKasir').on('change', 'select', function() {
@@ -370,7 +370,6 @@
 					$('div.overlay').remove();
 				},
 				error	: function(response) {
-                    console.log(response.responseText);
 					// Tampilkan pesan pemberitahuan
 					pesanPemberitahuan('warning', 'Terdapat kesalahan saat memuat data. Silakan mencoba kembali.');
 				}

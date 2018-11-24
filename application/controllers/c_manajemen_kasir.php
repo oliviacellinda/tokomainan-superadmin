@@ -8,7 +8,11 @@ class c_manajemen_kasir extends CI_Controller {
     }
 
     public function manajemen_kasir() {
-        $this->load->view('v_manajemen_kasir');
+        if($this->session->username == '') {
+            header('Location: login');
+            die();
+        }
+        else $this->load->view('v_manajemen_kasir');
     }
 
     public function lihat_kasir() {

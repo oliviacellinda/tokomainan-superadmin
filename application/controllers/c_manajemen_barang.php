@@ -8,7 +8,11 @@ class c_manajemen_barang extends CI_Controller {
 	}
 	
 	public function manajemen_barang() {
-		$this->load->view('v_manajemen_barang');
+		if($this->session->username == '') {
+			header('Location: login');
+			die();
+		}
+		else $this->load->view('v_manajemen_barang');
 	}
 
 	public function lihat_barang() {
