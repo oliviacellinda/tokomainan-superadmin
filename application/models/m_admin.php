@@ -13,8 +13,23 @@ class m_admin extends CI_Model {
         $query = $this->db->get('admin');
 
         if($query->num_rows() > 0) {
-            return $query->result_array();
+            return $query->row_array();
         }
+    }
+
+    public function periksa_password($passwordLama) {
+        $this->db->where('username_admin', $this->session->username);
+        $this->db->where('password_admin', $passwordLama);
+        $query = $this->db->get('admin');
+
+        if($query->num_rows() > 0) return true;
+        else return false;
+    }
+
+    public function ganti_password($passwordBaru) {
+        $this->db->set('password_admin', $passwordBaru);
+        $this->db->where('username_admin', $this->session->username);
+        $this->db->update('admin');
     }
 }
 ?>

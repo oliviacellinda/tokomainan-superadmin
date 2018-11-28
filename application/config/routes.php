@@ -57,6 +57,7 @@ $route['login']                 = 'c_admin/login';
 $route['proses-login']          = 'c_admin/proses_login';
 $route['logout']                = 'c_admin/proses_logout';
 $route['ganti-password']        = 'c_admin/ganti_password';
+$route['proses-ganti-password'] = 'c_admin/proses_ganti_password';
 
 $route['manajemen-toko']        = 'c_manajemen_toko/manajemen_toko';
 $route['lihat-toko']            = 'c_manajemen_toko/lihat_toko';
@@ -76,6 +77,8 @@ $route['tambah-barang']         = 'c_manajemen_barang/tambah_barang';
 $route['edit-barang']           = 'c_manajemen_barang/edit_barang';
 $route['hapus-barang']          = 'c_manajemen_barang/hapus_barang';
 $route['upload-gambar-barang']  = 'c_manajemen_barang/upload_gambar_barang';
+$route['daftar-kategori']       = 'c_manajemen_barang/daftar_kategori';
+$route['daftar-fungsi']         = 'c_manajemen_barang/daftar_fungsi';
 
 $route['data-barang-masuk']     = 'c_manajemen_stok_barang/data_barang_masuk';
 $route['daftar-stok-barang']    = 'c_manajemen_stok_barang/daftar_stok_barang';

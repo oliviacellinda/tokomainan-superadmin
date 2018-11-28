@@ -33,6 +33,20 @@ class c_manajemen_toko extends CI_Controller {
         $this->load->model('m_manajemen_toko');
 
         $this->m_manajemen_toko->tambah_toko($input);
+
+        // Auto insert toko baru ke tabel stok barang
+		$this->load->model('m_manajemen_barang');
+		$this->load->model('m_manajemen_stok_barang');
+
+		$id_toko = $this->input->post('id_toko');
+		$daftar_barang = $this->m_manajemen_barang->lihat_barang();
+
+		if($daftar_barang != '') {
+			$today = date('Y-m-d');
+			for($i=0; $i<count($daftar_barang); $i++) {
+				$this->m_manajemen_stok_barang->auto_insert_stok_barang_baru($daftar_barang[$i]['id_barang'], $id_toko, $today);
+			}
+		}
     }
 
     public function edit_toko() {

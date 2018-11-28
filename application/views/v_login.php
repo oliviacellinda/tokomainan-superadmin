@@ -25,14 +25,14 @@
 
             <form autocomplete="off">
                 <div class="form-group has-feedback" id="username">
-                    <input type="text" class="form-control" name="username_admin" placeholder="Username">
+                    <input type="text" class="form-control" name="username_admin" placeholder="Username" required>
                     <span class="fa fa-user form-control-feedback"></span>
                 </div>
                 <div class="form-group has-feedback" id="password">
-                    <input type="password" class="form-control" name="password_admin" placeholder="Password">
+                    <input type="password" class="form-control" name="password_admin" placeholder="Password" required>
                     <span class="fa fa-lock form-control-feedback"></span>
                 </div>
-                <button class="btn btn-primary btn-block btn-flat">Sign In</button>
+                <button id="btnLogin" class="btn btn-primary btn-block btn-flat">Sign In</button>
             </form>
         </div> <!-- End login-box-body -->
     </div> <!-- End login-box -->
@@ -60,20 +60,21 @@
 
         $('input[name="password_admin"]').keypress(function(event) {
             $('#password').removeClass('has-error');
-            
         });
         
         $('form').submit(function(event) {
             event.preventDefault();
+
+            // Ubah tombol Login untuk menampilkan pesan loading pada user
+            $('#btnLogin').html('<i class="fa fa-refresh fa-spin"></i>');
+            $('#btnLogin').addClass('disabled');
+
             prosesLogin();
         })
 
         function prosesLogin() {
             var username = $('input[name="username_admin"').val();
             var password = $('input[name="password_admin"').val();
-
-            if(username == '') $('#username').addClass('has-error');
-            if(password == '') $('#password').addClass('has-error');
 
             if(username != '' && password != '') {
                 $.ajax({
@@ -91,13 +92,12 @@
                             $('#username').addClass('has-error');
                             $('#password').addClass('has-error');
                             $('input[name="username_admin"]').focus();
+                            $('#btnLogin').html('Sign In');
+                            $('#btnLogin').removeClass('disabled');
                         }
                         else if(response == 'found a match') {
                             window.location = 'manajemen-toko';
                         }
-                    },
-                    error   : function(response) {
-                        console.log(response.responseText);
                     }
                 });
             }

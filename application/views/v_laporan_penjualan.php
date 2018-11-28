@@ -200,10 +200,12 @@
             startView   : 'months',
             minViewMode : 'months'
         });
-
+        
+        // Gunakan moment.js untuk menampilkan tanggal, parameter 1 format tgl, parameter 2 lokalisasi data
+        $.fn.dataTable.moment('D MMMM YYYY, HH.mm', 'id');
         var tabel = $('#tabelPenjualan').DataTable({
             'scrollX'       : true,
-            'bInfo'         : false, // Untuk menghilangkan tulisan keterangan di bawah tabel
+            'bInfo'         : false // Untuk menghilangkan tulisan keterangan di bawah tabel
         });
 
         daftarToko();
@@ -275,10 +277,10 @@
                     // Reinitialize DataTable
                     tabel.clear().destroy();
                     // Gunakan moment.js untuk menampilkan tanggal, parameter 1 format tgl, parameter 2 lokalisasi data
-                    $.fn.dataTable.moment('D MMMM YYYY, HH.mm', 'id');
+                    $.fn.dataTable.moment('D MMMM YYYY, HH:mm', 'id');
 					tabel = $('#tabelPenjualan').DataTable({
 						'scrollX'	: true,
-                        'bInfo'		: false, // Untuk menghilangkan tulisan keterangan di bawah tabel
+                        'bInfo'		: false // Untuk menghilangkan tulisan keterangan di bawah tabel
 					});
                 },
                 error   : function(response) {

@@ -39,6 +39,20 @@ class c_manajemen_barang extends CI_Controller {
 		$this->load->model('m_manajemen_barang');
 
 		$this->m_manajemen_barang->tambah_data($input);
+
+		// Auto insert barang baru ke tabel stok barang
+		$this->load->model('m_manajemen_toko');
+		$this->load->model('m_manajemen_stok_barang');
+
+		$id_barang = $this->input->post('id_barang');
+		$daftar_toko = $this->m_manajemen_toko->lihat_toko();
+
+		if($daftar_toko != '') {
+			$today = date('Y-m-d');
+			for($i=0; $i<count($daftar_toko); $i++) {
+				$this->m_manajemen_stok_barang->auto_insert_stok_barang_baru($id_barang, $daftar_toko[$i]['id_toko'], $today);
+			}
+		}
 	}
 
 	public function edit_barang() {
@@ -115,5 +129,39 @@ class c_manajemen_barang extends CI_Controller {
 		}
 
 		echo json_encode($pesan);
+	}
+
+	public function daftar_kategori() {
+		$keyword = $this->input->post('term');
+
+		$this->load->model('m_manajemen_barang');
+
+		$data = $this->m_manajemen_barang->daftar_kategori($keyword);
+
+		if($data != '') {
+			// Ubah data sesuai dengan format autocomplete jquery-ui
+			for($i=0; $i<count($data); $i++) {
+				$response[$i]['label'] = $data[$i]['kategori'];
+				$response[$i]['value'] = $data[$i]['kategori'];
+			}
+			echo json_encode($response);
+		}
+	}
+
+	public function daftar_fungsi() {
+		$keyword = $this->input->post('term');
+
+		$this->load->model('m_manajemen_barang');
+
+		$data = $this->m_manajemen_barang->daftar_fungsi($keyword);
+
+		if($data != '') {
+			// Ubah data sesuai dengan format autocomplete jquery-ui
+			for($i=0; $i<count($data); $i++) {
+				$response[$i]['label'] = $data[$i]['fungsi'];
+				$response[$i]['value'] = $data[$i]['fungsi'];
+			}
+			echo json_encode($response);
+		}
 	}
 }

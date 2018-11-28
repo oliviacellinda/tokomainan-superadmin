@@ -8,6 +8,7 @@
 	<link rel="stylesheet" href="<?php echo base_url('assets/AdminLTE-2.4.2/bower_components/bootstrap/dist/css/bootstrap.min.css');?>">
 	<link rel="stylesheet" href="<?php echo base_url('assets/AdminLTE-2.4.2/bower_components/font-awesome/css/font-awesome.min.css');?>">
 	<link rel="stylesheet" href="<?php echo base_url('assets/AdminLTE-2.4.2/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css');?>">
+	<link rel="stylesheet" href="<?php echo base_url('assets/jquery-ui-themes-1.12.1/themes/base/jquery-ui.min.css');?>">
 	<link rel="stylesheet" href="<?php echo base_url('assets/AdminLTE-2.4.2/dist/css/AdminLTE.min.css');?>">
 	<link rel="stylesheet" href="<?php echo base_url('assets/AdminLTE-2.4.2/dist/css/skins/skin-blue.min.css');?>">
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
@@ -84,6 +85,7 @@
 	<script src="<?php echo base_url('assets/AdminLTE-2.4.2/bower_components/bootstrap/dist/js/bootstrap.min.js');?>"></script>
 	<script src="<?php echo base_url('assets/AdminLTE-2.4.2/bower_components/datatables.net/js/jquery.dataTables.min.js');?>"></script>
 	<script src="<?php echo base_url('assets/AdminLTE-2.4.2/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js');?>"></script>
+	<script src="<?php echo base_url('assets/jquery-ui-1.12.1/jquery-ui.min.js');?>"></script>
 	<script src="<?php echo base_url('assets/AdminLTE-2.4.2/dist/js/adminlte.min.js');?>"></script>
 	<script src="<?php echo base_url('assets/bootstrap-filestyle-1.2.3/src/bootstrap-filestyle.min.js');?>"></script>
 
@@ -98,7 +100,7 @@
 		// Tandai menu Manajemen Barang sebagai menu aktif pada sidebar
 		$('#manajemenBarang').addClass('active');
 
-		// Gunakan Filestyle
+		// Gunakan Filestyle untuk button upload gambar
 		$('#inputGambar').filestyle({
 			input		: false,
 			buttonText	: 'Upload Gambar',
@@ -132,9 +134,41 @@
 		});
 		$('#tabelBarang').on('keypress', '#barisInput input[name="kategori"]', function(event) {
 			if(event.keyCode === 13) $('#barisInput input[name="fungsi"]').focus();
+			else {
+				$(this).autocomplete({
+					source		: function(request, response) {
+						$.ajax({
+							type	: 'post',
+							url		: 'daftar-kategori',
+							dataType: 'json',
+							data	: { term : request.term },
+							success : function(data) {
+								response(data);
+							}
+						});
+					},
+					minLength	: 2
+				}); // End konfigurasi autocomplete
+			}
 		});
 		$('#tabelBarang').on('keypress', '#barisInput input[name="fungsi"]', function(event) {
 			if(event.keyCode === 13) $('#barisInput input[name="harga_jual_1"]').focus();
+			else {
+				$(this).autocomplete({
+					source		: function(request, response) {
+						$.ajax({
+							type	: 'post',
+							url		: 'daftar-fungsi',
+							dataType: 'json',
+							data	: { term : request.term },
+							success : function(data) {
+								response(data);
+							}
+						});
+					},
+					minLength	: 2
+				}); // End konfigurasi autocomplete
+			}
 		});
 		$('#tabelBarang').on('keypress', '#barisInput input[name="harga_jual_1"]', function(event) {
 			if(event.keyCode === 13) $('#barisInput input[name="harga_jual_2"]').focus();
@@ -398,7 +432,6 @@
 				fileGambar.append('fileGambar[]', file);
 			});
 			
-
 			$.ajax({
 				type	: 'post',
 				url		: 'upload-gambar-barang',
@@ -436,40 +469,73 @@
 			}
 		} // End fungsi pesanErrorGambar
 
+		$('#tes').autocomplete({
+			source		: function(request, response) {
+				$.ajax({
+					type	: 'post',
+					url		: 'daftar-kategori',
+					dataType: 'json',
+					data	: { term : request.term },
+					success : function(data) {
+						response(data);
+					},
+					error	: function(response) {
+						// console.log(response.responseText);
+					}
+				});
+			},
+			minLength	: 2
+		});
+
+		// Event handler untuk autocomplete kolom kategori
+		$('#tabelBarang').on('keypress', 'input[name="kategori"]', function(event) {
+			// Autocomplete berlaku jika tombol yang ditekan selain Enter
+			if(event.keyCode != 13) {
+				// Cek apakah tombol ditekan pada barisan input data baru
+				if( tabel.row($(this).parents('tr')).id() != 'barisInput' ) {
+					$(this).autocomplete({
+						source		: function(request, response) {
+							$.ajax({
+								type	: 'post',
+								url		: 'daftar-kategori',
+								dataType: 'json',
+								data	: { term : request.term },
+								success : function(data) {
+									response(data);
+								}
+							});
+						},
+						minLength	: 2
+					}); // End konfigurasi autocomplete
+				}
+			}
+		}); // End event handler untuk autocomplete kolom kategori
+
+		// Event handler untuk autocomplete kolom fungsi
+		$('#tabelBarang').on('keypress', 'input[name="fungsi"]', function(event) {
+			// Autocomplete berlaku jika tombol yang ditekan selain Enter
+			if(event.keyCode != 13) {
+				// Cek apakah tombol ditekan pada barisan input data baru
+				if( tabel.row($(this).parents('tr')).id() != 'barisInput' ) {
+					$(this).autocomplete({
+						source		: function(request, response) {
+							$.ajax({
+								type	: 'post',
+								url		: 'daftar-fungsi',
+								dataType: 'json',
+								data	: { term : request.term },
+								success : function(data) {
+									response(data);
+								}
+							});
+						},
+						minLength	: 2
+					}); // End konfigurasi autocomplete
+				}
+			}
+		}); // End event handler untuk autocomplete kolom fungsi
+
 	});
-
-	/* Kumpulan kode tidak terpakai
-	var table = $('#tabelBarang').DataTable();
-	$('#tabelBarang tbody').on('click', 'tr', function () {
-		var data = table.row( this ).data();
-		alert( 'You clicked on '+data[0]+'\'s row' );
-	} );
-
-	// Fungsi yang dijalankan ketika mengklik tombol Tambah Data
-	// Jika diklik, baris baru untuk memasukkan data baru akan muncul di bagian bawah tabel
-	$('#btnTambah').click(function() {
-		// Cek terlebih dahulu apakah baris input sudah ada
-		// Jika tidak ada, tambah baris baru
-		// Jika ada, tidak ada aksi yang dilakukan
-		if($('#barisBaru').length == 0) {
-			tabel.row.add( [
-			'<input type="text" class="form-control" placeholder="ID barang" name="id_barang">',
-			'<input type="text" class="form-control" placeholder="Nama barang" name="nama_barang">',
-			'<input type="text" class="form-control" placeholder="Harga beli" name="harga_beli">',
-			'<input type="text" class="form-control" placeholder="Jumlah dalam koli" name="jumlah_dlm_koli">',
-			'<input type="text" class="form-control" placeholder="Kategori" name="kategori">',
-			'<input type="text" class="form-control" placeholder="Fungsi" name="fungsi">',
-			'<input type="text" class="form-control" placeholder="Harga Jual 1" name="harga_jual_1">',
-			'<input type="text" class="form-control" placeholder="Harga Jual 2" name="harga_jual_2">',
-			'<input type="text" class="form-control" placeholder="Harga Jual 3" name="harga_jual_3">',
-			'<input type="text" class="form-control" placeholder="Harga Jual 4" name="harga_jual_4">',
-			'<button id="btnInputData" class="btn btn-xs btn-primary"><i class="fa fa-plus"></i></button>'
-			] ).node().id = 'barisBaru';
-			tabel.draw();
-		}
-	});
-
-	*/
 		
 	</script>
 </body>

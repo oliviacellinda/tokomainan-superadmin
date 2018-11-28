@@ -42,5 +42,20 @@ class c_admin extends CI_Controller {
 		}
 		else $this->load->view('v_ganti_password');
     }
+
+    public function proses_ganti_password() {
+        $passwordLama = $this->input->post('passwordLama');
+        $passwordBaru = $this->input->post('passwordBaru');
+
+        $this->load->model('m_admin');
+
+        $statusPassLama = $this->m_admin->periksa_password($passwordLama);
+
+        if($statusPassLama) {
+            $this->m_admin->ganti_password($passwordBaru);
+            echo json_encode('success');
+        }
+        else echo json_encode('fail');
+    }
 }
 ?>

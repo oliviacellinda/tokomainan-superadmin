@@ -235,7 +235,7 @@
                     // Reinitialize DataTable
                     tabel.clear().destroy();
                     // Gunakan moment.js untuk menampilkan tanggal, parameter 1 format tgl, parameter 2 lokalisasi data
-                    $.fn.dataTable.moment('D MMMM YYYY, HH.mm', 'id');
+                    $.fn.dataTable.moment('D MMMM YYYY, HH:mm', 'id');
 					tabel = $('#tabelBarangKeluar').DataTable({
 						'scrollX'	: true,
                         'bInfo'		: false, // Untuk menghilangkan tulisan keterangan di bawah tabel

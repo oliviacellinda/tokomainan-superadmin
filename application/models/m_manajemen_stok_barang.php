@@ -70,5 +70,15 @@ class m_manajemen_stok_barang extends CI_Model {
         );
         $this->db->insert('laporan_barang_keluar', $input);
     }
+
+    public function auto_insert_stok_barang_baru($id_barang, $id_toko, $today) {
+        $input = array(
+            'id_barang'             => $id_barang,
+            'id_toko'               => $id_toko,
+            'stok_barang'           => 0,
+            'tgl_modifikasi_data'   => $today
+        );
+        $this->db->insert('stok_barang', $input);
+    }
 }
 ?>
