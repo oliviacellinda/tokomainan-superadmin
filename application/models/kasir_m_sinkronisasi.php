@@ -150,6 +150,14 @@ class kasir_m_sinkronisasi extends CI_Model {
         $this->db->insert('detail_penjualan', $data);
     }
 
+    public function perbarui_stok_barang($id_barang, $id_toko, $jumlah) {
+        $this->load->database();
+
+        $query = 'UPDATE stok_barang SET stok_barang = stok_barang - ' . $jumlah;
+        $query .= ' WHERE id_barang = "' . $id_barang . '" AND id_toko = "' . $id_toko . '"';
+        $this->db->query($query); 
+    }
+
     public function perbarui_data_penjualan_lokal($id_invoice) {
         $dbkasir = $this->load->database('dbkasir', TRUE);
 

@@ -98,6 +98,10 @@ class kasir_c_sinkronisasi extends CI_Controller {
 
     public function sinkronisasi_penjualan() {
         $this->load->model('kasir_m_sinkronisasi');
+        $this->load->model('kasir_m_stok');
+
+        $id_toko = $this->kasir_m_stok->cek_toko($this->session->id_kasir);
+        $id_toko = $id_toko['id_toko'];
 
         $data_penjualan_blm_upload = $this->kasir_m_sinkronisasi->data_penjualan_blm_upload();
         
@@ -109,6 +113,7 @@ class kasir_c_sinkronisasi extends CI_Controller {
 
                 for($j=0; $j<count($detail_penjualan_blm_upload[$i]); $j++) {
                     $this->kasir_m_sinkronisasi->tambah_detail_penjualan_pusat($detail_penjualan_blm_upload[$i][$j]);
+                    $this->kasir_m_sinkronisasi->perbarui_stok_barang($detail_penjualan_blm_upload[$i][$j]['id_barang'], $id_toko, $detail_penjualan_blm_upload[$i][$j]['jumlah_barang']);
                 }
 
                 $this->kasir_m_sinkronisasi->perbarui_data_penjualan_lokal($data_penjualan_blm_upload[$i]['id_invoice']);
