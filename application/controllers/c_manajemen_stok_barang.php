@@ -8,7 +8,7 @@ class c_manajemen_stok_barang extends CI_Controller {
     }
 
     public function data_barang_masuk() {
-        if($this->session->username == '') {
+        if($this->session->id_toko == '') {
             header('Location: login');
             die();
         }
@@ -18,9 +18,9 @@ class c_manajemen_stok_barang extends CI_Controller {
     public function daftar_stok_barang() {
         $this->load->model('m_manajemen_stok_barang');
 
-        $data = $this->m_manajemen_stok_barang->daftar_stok_barang();
+        $data = $this->m_manajemen_stok_barang->daftar_stok_barang($this->session->id_toko);
 
-        if(count($data) > 0) {
+        if($data != '') {
             for($i=0; $i<count($data); $i++) {
                 $today = new DateTime(date('Y-m-d'));
                 $date = new DateTime($data[$i]['tgl_modifikasi_data']);
@@ -30,12 +30,12 @@ class c_manajemen_stok_barang extends CI_Controller {
             }
             echo json_encode($data);
         }
-        else echo json_encode('no_data');
+        else echo json_encode('no data');
     }
 
     public function input_barang_masuk() {
         $id_barang = $this->input->post('id_barang');
-        $id_toko = $this->input->post('id_toko');
+        $id_toko = $this->session->id_toko;
         $jml_barang_masuk = $this->input->post('jml_barang_masuk');
 
         $this->load->model('m_manajemen_stok_barang');
@@ -48,7 +48,7 @@ class c_manajemen_stok_barang extends CI_Controller {
     }
 
     public function data_barang_keluar() {
-        if($this->session->username == '') {
+        if($this->session->id_toko == '') {
             header('Location: login');
             die();
         }
@@ -58,9 +58,9 @@ class c_manajemen_stok_barang extends CI_Controller {
     public function laporan_barang_keluar() {
         $this->load->model('m_manajemen_stok_barang');
 
-        $data = $this->m_manajemen_stok_barang->laporan_barang_keluar();
+        $data = $this->m_manajemen_stok_barang->laporan_barang_keluar($this->session->id_toko);
 
-        if(count($data) > 0) {
+        if($data != '') {
             for($j=0; $j<count($data); $j++) {
                 $date = $data[$j]['waktu_keluar'];
                 $y = substr($date,0,4); //tahun
@@ -87,12 +87,12 @@ class c_manajemen_stok_barang extends CI_Controller {
             }
             echo json_encode($data);
         }
-        else echo json_encode('no_data');
+        else echo json_encode('no data');
     }
 
     public function input_barang_keluar() {
         $id_barang = $this->input->post('id_barang');
-        $id_toko = $this->input->post('id_toko');
+        $id_toko = $this->session->id_toko;
         $jml_barang_keluar = $this->input->post('jml_barang_keluar');
         $keterangan_barang_keluar = $this->input->post('keterangan_barang_keluar');
 

@@ -64,11 +64,8 @@ class m_laporan_penjualan extends CI_Model {
     }
 
     public function laporan_penjualan_per_id($id_invoice) {
-        $this->db->select('laporan_penjualan.*, pelanggan.nama_pelanggan');
-        $this->db->from('laporan_penjualan');
-        $this->db->join('pelanggan', 'laporan_penjualan.id_pelanggan = pelanggan.id_pelanggan');
-        $this->db->where('laporan_penjualan.id_invoice', $id_invoice);
-        $query = $this->db->get();
+        $this->db->where('id_invoice', $id_invoice);
+        $query = $this->db->get('laporan_penjualan');
 
         if($query->num_rows() > 0) {
             return $query->row_array();
@@ -76,11 +73,8 @@ class m_laporan_penjualan extends CI_Model {
     }
 
     public function detail_penjualan($id_invoice) {
-        $this->db->select('detail_penjualan.*, barang.nama_barang');
-        $this->db->from('detail_penjualan');
-        $this->db->join('barang', 'detail_penjualan.id_barang = barang.id_barang');
         $this->db->where('detail_penjualan.id_invoice', $id_invoice);
-        $query = $this->db->get();
+        $query = $this->db->get('detail_penjualan');
 
         if($query->num_rows() > 0) {
             return $query->result_array();

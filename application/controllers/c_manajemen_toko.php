@@ -26,6 +26,7 @@ class c_manajemen_toko extends CI_Controller {
     public function tambah_toko() {
         $input = array(
             'id_toko'      => $this->input->post('id_toko'),
+            'password_toko'=> $this->input->post('password_toko'),
             'nama_toko'    => $this->input->post('nama_toko'),
             'alamat_toko'  => $this->input->post('alamat_toko')
         );

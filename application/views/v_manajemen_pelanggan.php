@@ -11,6 +11,11 @@
 	<link rel="stylesheet" href="<?php echo base_url('assets/AdminLTE-2.4.2/dist/css/AdminLTE.min.css');?>">
 	<link rel="stylesheet" href="<?php echo base_url('assets/AdminLTE-2.4.2/dist/css/skins/skin-blue.min.css');?>">
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+	<style>
+		.table > tbody > tr > td {
+			vertical-align: middle;
+		}
+	</style>
 </head>
 
 <body class="hold-transition skin-blue">
@@ -114,12 +119,12 @@
 					var isi = '<tbody>';
 					// Untuk baris input data pelanggan baru
 					isi += '<tr id="barisInput">';
-					isi += '<td><input type="text" class="form-control" placeholder="ID pelanggan" name="id_pelanggan"></td>';
-					isi += '<td><input type="text" class="form-control" placeholder="Nama" name="nama_pelanggan"></td>';
-					isi += '<td><input type="text" class="form-control" placeholder="Alamat" name="alamat_pelanggan"></td>';
-					isi += '<td><input type="text" class="form-control" placeholder="Telepon" name="telepon_pelanggan"></td>';
-					isi += '<td><input type="text" class="form-control" placeholder="Maksimal Utang" name="maks_utang"></td>';
-					isi += '<td><input type="text" class="form-control" placeholder="Level" name="level"></td>';
+					isi += '<td></td>';
+					isi += '<td><input type="text" class="form-control" placeholder="Nama" name="nama_pelanggan" autocomplete="off"></td>';
+					isi += '<td><input type="text" class="form-control" placeholder="Alamat" name="alamat_pelanggan" autocomplete="off"></td>';
+					isi += '<td><input type="text" class="form-control" placeholder="Telepon" name="telepon_pelanggan" autocomplete="off"></td>';
+					isi += '<td><input type="text" class="form-control" placeholder="Maksimal Utang" name="maks_utang" autocomplete="off"></td>';
+					isi += '<td><input type="text" class="form-control" placeholder="Level" name="level" autocomplete="off"></td>';
 					isi += '<td></td>';
 					isi += '</tr>';
 					// Untuk daftar pelanggan
@@ -127,12 +132,12 @@
                     if(data != 'no data') {
                         for(var i=0; i<data.length; i++) {
                             isi += '<tr>';
-                            isi += '<td><p hidden>'+data[i].id_pelanggan+'</p><input type="text" class="form-control" name="id_pelanggan" value="'+data[i].id_pelanggan+'" onkeypress="ambilNilaiBaru(this)"></td>';
-                            isi += '<td><p hidden>'+data[i].nama_pelanggan+'</p><input type="text" class="form-control" name="nama_pelanggan" value="'+data[i].nama_pelanggan+'" onkeypress="ambilNilaiBaru(this)"></td>';
-                            isi += '<td><p hidden>'+data[i].alamat_pelanggan+'</p><input type="text" class="form-control" name="alamat_pelanggan" value="'+data[i].alamat_pelanggan+'" onkeypress="ambilNilaiBaru(this)"></td>';
-                            isi += '<td><p hidden>'+data[i].telepon_pelanggan+'</p><input type="text" class="form-control" name="telepon_pelanggan" value="'+data[i].telepon_pelanggan+'" onkeypress="ambilNilaiBaru(this)"></td>';
-                            isi += '<td><p hidden>'+data[i].maks_utang+'</p><input type="text" class="form-control" name="maks_utang" value="'+data[i].maks_utang+'" onkeypress="ambilNilaiBaru(this)"></td>';
-                            isi += '<td><p hidden>'+data[i].level+'</p><input type="text" class="form-control" name="level" value="'+data[i].level+'" onkeypress="ambilNilaiBaru(this)"></td>';
+                            isi += '<td>'+data[i].id_pelanggan+'</td>';
+                            isi += '<td><p hidden>'+data[i].nama_pelanggan+'</p><input type="text" class="form-control" name="nama_pelanggan" value="'+data[i].nama_pelanggan+'" onkeypress="ambilNilaiBaru(this)" autocomplete="off"></td>';
+                            isi += '<td><p hidden>'+data[i].alamat_pelanggan+'</p><input type="text" class="form-control" name="alamat_pelanggan" value="'+data[i].alamat_pelanggan+'" onkeypress="ambilNilaiBaru(this)" autocomplete="off"></td>';
+                            isi += '<td><p hidden>'+data[i].telepon_pelanggan+'</p><input type="text" class="form-control" name="telepon_pelanggan" value="'+data[i].telepon_pelanggan+'" onkeypress="ambilNilaiBaru(this)" autocomplete="off"></td>';
+                            isi += '<td><p hidden>'+data[i].maks_utang+'</p><input type="text" class="form-control" name="maks_utang" value="'+data[i].maks_utang+'" onkeypress="ambilNilaiBaru(this)" autocomplete="off"></td>';
+                            isi += '<td><p hidden>'+data[i].level+'</p><input type="text" class="form-control" name="level" value="'+data[i].level+'" onkeypress="ambilNilaiBaru(this)" autocomplete="off"></td>';
                             isi += '<td><button id="btnHapus" class="btn btn-xs btn-danger"><i class="fa fa-times"></i></button></td>';
                             isi += '</tr>';
                         }
@@ -154,19 +159,16 @@
 					});
 
 					// Fokuskan pada sel ID Pelanggan pada baris input data pelanggan baru
-					$('#barisInput input[name="id_pelanggan"]').focus();
+					$('#barisInput input[name="nama_pelanggan"]').focus();
 				}, // End success
 				error	: function() {
 					// Tampilkan pesan pemberitahuan
 					pesanPemberitahuan('warning', 'Terdapat kesalahan saat memuat data. Silakan mencoba kembali.');
 				} // End error
 			}); // End ajax		
-        } // End fungsi refreshTabel()
+        } // End fungsi refreshTabel
         
         // Kumpulan event handler untuk baris input
-        $('#tabelPelanggan').on('keypress', '#barisInput input[name="id_pelanggan"]', function(event) {
-            if(event.keyCode === 13) $('#barisInput input[name="nama_pelanggan"]').focus();
-        });
         $('#tabelPelanggan').on('keypress', '#barisInput input[name="nama_pelanggan"]', function(event) {
             if(event.keyCode === 13) $('#barisInput input[name="alamat_pelanggan"]').focus();
         });
@@ -186,7 +188,6 @@
                 pesanLoading();
 
                 // Kumpulkan data
-                var id_pelanggan = $('#barisInput input[name="id_pelanggan"]').val();
                 var nama_pelanggan = $('#barisInput input[name="nama_pelanggan"]').val();
                 var alamat_pelanggan = $('#barisInput input[name="alamat_pelanggan"]').val();
                 var telepon_pelanggan = $('#barisInput input[name="telepon_pelanggan"]').val();
@@ -197,7 +198,6 @@
                     type    : 'post',
                     url     : 'tambah-pelanggan',
                     data    : {
-                        id_pelanggan        : id_pelanggan,
                         nama_pelanggan      : nama_pelanggan,
                         alamat_pelanggan    : alamat_pelanggan,
                         telepon_pelanggan   : telepon_pelanggan,
@@ -228,7 +228,7 @@
 			loading += '<i class="fa fa-refresh fa-spin"></i>';
 			loading += '</div>';
 			$('div[class="box"]').append(loading);
-		} // End fungsi pesanLoading()
+		} // End fungsi pesanLoading
 
 		// Fungsi untuk menambahkan pesan pemberitahuan di atas tabel
 		// Variabel jenis menampung nilai yang berisi informasi jenis alert yang diinginkan
@@ -256,16 +256,11 @@
 					var dataBaris = tabel.row($(this).parents('tr')).data();
 					var dataSel = nilaiBaru; // nilaiBaru dari fungsi ambilNilaiBaru di atas
 					var kolom = tabel.cell(this).index().column; // Dapatkan posisi kolom
-
-					// Karena data yang diperoleh berupa string <input type="text"... , data harus dibersihkan dulu
 					var id_pelanggan = dataBaris[0];
-					id_pelanggan = id_pelanggan.split('value="').pop();
-					id_pelanggan = id_pelanggan.replace('" onkeypress="ambilNilaiBaru(this)">', '');
 					
 					// Dapatkan nama kolom (field yang ingin diubah nilainya) dari variabel kolom
 					var namaKolom;
 					switch(kolom) {
-						case 0 : namaKolom = 'id_pelanggan'; break;
 						case 1 : namaKolom = 'nama_pelanggan'; break;
 						case 2 : namaKolom = 'alamat_pelanggan'; break;
 						case 3 : namaKolom = 'telepon_pelanggan'; break;
@@ -307,12 +302,8 @@
 
 			// Ambil seluruh data pada baris di mana tombol Hapus diklik
 			var data = tabel.row($(this).parents('td')).data();
-
 			// Ambil data id_pelanggan dari data yang diambil sebelumnya
 			var id_pelanggan = data[0];
-			// Karena data yang diperoleh berupa string <input type="text"... , data harus dibersihkan dulu
-			id_pelanggan = id_pelanggan.split('value="').pop();
-			id_pelanggan = id_pelanggan.replace('" onkeypress="ambilNilaiBaru(this)">', '');
 
 			$.ajax({
 				type	: 'post',
@@ -328,7 +319,8 @@
 					// Hapus pesan loading
 					$('div.overlay').remove();
 				},
-				error	: function() {
+				error	: function(response) {
+					console.log(response.responseText);
 					// Tampilkan pesan pemberitahuan
 					pesanPemberitahuan('warning', 'Terdapat kesalahan saat memuat data. Silakan mencoba kembali.');
 				}

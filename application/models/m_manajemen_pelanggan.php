@@ -19,8 +19,9 @@ class m_manajemen_pelanggan extends CI_Model {
         $this->db->insert('pelanggan', $input);
     }
 
-    public function edit_pelanggan($id_pelanggan, $nama_kolom, $nilai_baru) {
+    public function edit_pelanggan($id_pelanggan, $nama_kolom, $nilai_baru, $today) {
         $this->db->set($nama_kolom, $nilai_baru);
+        $this->db->set('tgl_modifikasi_data', $today);
         $this->db->where('id_pelanggan', $id_pelanggan);
         $this->db->update('pelanggan');
     }
@@ -28,6 +29,10 @@ class m_manajemen_pelanggan extends CI_Model {
     public function hapus_pelanggan($id_pelanggan) {
         $this->db->where('id_pelanggan', $id_pelanggan);
         $this->db->delete('pelanggan');
+    }
+
+    public function daftar_pelanggan_dihapus($id_pelanggan) {
+        $this->db->insert('daftar_pelanggan_dihapus', $id_pelanggan);
     }
 }
 ?>

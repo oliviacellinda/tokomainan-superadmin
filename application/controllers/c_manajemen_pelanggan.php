@@ -24,13 +24,16 @@ class c_manajemen_pelanggan extends CI_Controller {
     }
 
     public function tambah_pelanggan() {
+        $id_pelanggan = 'admin' . strtolower( substr($this->input->post('nama_pelanggan'),0,3) ) . date('dmyHi');
+
         $input = array(
-            'id_pelanggan'      => $this->input->post('id_pelanggan'),
-            'nama_pelanggan'    => $this->input->post('nama_pelanggan'),
-            'alamat_pelanggan'  => $this->input->post('alamat_pelanggan'),
-            'telepon_pelanggan' => $this->input->post('telepon_pelanggan'),
-            'maks_utang'        => $this->input->post('maks_utang'),
-            'level'             => $this->input->post('level')
+            'id_pelanggan'          => $id_pelanggan,
+            'nama_pelanggan'        => $this->input->post('nama_pelanggan'),
+            'alamat_pelanggan'      => $this->input->post('alamat_pelanggan'),
+            'telepon_pelanggan'     => $this->input->post('telepon_pelanggan'),
+            'maks_utang'            => $this->input->post('maks_utang'),
+            'level'                 => $this->input->post('level'),
+            'tgl_modifikasi_data'   => date('Y-m-d H:i:s')
         );
 
         $this->load->model('m_manajemen_pelanggan');
@@ -42,10 +45,11 @@ class c_manajemen_pelanggan extends CI_Controller {
         $id_pelanggan = $this->input->post('id_pelanggan');
         $nama_kolom = $this->input->post('nama_kolom');
         $nilai_baru = $this->input->post('nilai_baru');
+        $today = date('Y-m-d H:i:s');
 
         $this->load->model('m_manajemen_pelanggan');
 
-        $this->m_manajemen_pelanggan->edit_pelanggan($id_pelanggan, $nama_kolom, $nilai_baru);
+        $this->m_manajemen_pelanggan->edit_pelanggan($id_pelanggan, $nama_kolom, $nilai_baru, $today);
     }
 
     public function hapus_pelanggan() {
@@ -54,6 +58,7 @@ class c_manajemen_pelanggan extends CI_Controller {
         $this->load->model('m_manajemen_pelanggan');
 
         $this->m_manajemen_pelanggan->hapus_pelanggan($id_pelanggan);
+        $this->m_manajemen_pelanggan->daftar_pelanggan_dihapus(array('id_pelanggan' => $id_pelanggan));
     }
 }
 ?>

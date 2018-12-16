@@ -25,15 +25,16 @@ class c_manajemen_barang extends CI_Controller {
 
 	public function tambah_barang() {
 		$input = array(
-			'id_barang' => $this->input->post('id_barang'),
-			'nama_barang' => $this->input->post('nama_barang'),
-			'jumlah_dlm_koli' => $this->input->post('jumlah_dlm_koli'),
-			'kategori' => $this->input->post('kategori'),
-			'fungsi' => $this->input->post('fungsi'),
-			'harga_jual_1' => $this->input->post('harga_jual_1'),
-			'harga_jual_2' => $this->input->post('harga_jual_2'),
-			'harga_jual_3' => $this->input->post('harga_jual_3'),
-			'harga_jual_4' => $this->input->post('harga_jual_4'),
+			'id_barang' 			=> $this->input->post('id_barang'),
+			'nama_barang' 			=> $this->input->post('nama_barang'),
+			'jumlah_dlm_koli' 		=> $this->input->post('jumlah_dlm_koli'),
+			'kategori' 				=> $this->input->post('kategori'),
+			'fungsi' 				=> $this->input->post('fungsi'),
+			'harga_jual_1' 			=> $this->input->post('harga_jual_1'),
+			'harga_jual_2'	 		=> $this->input->post('harga_jual_2'),
+			'harga_jual_3' 			=> $this->input->post('harga_jual_3'),
+			'harga_jual_4' 			=> $this->input->post('harga_jual_4'),
+			'tgl_modifikasi_data'	=> date('Y-m-d H:i:s')
 		);
 		
 		$this->load->model('m_manajemen_barang');
@@ -59,10 +60,11 @@ class c_manajemen_barang extends CI_Controller {
 		$id_barang = $this->input->post('id_barang');
 		$nama_kolom = $this->input->post('nama_kolom');
 		$nilai_baru = $this->input->post('nilai_baru');
+		$today = date('Y-m-d H:i:s');
 
 		$this->load->model('m_manajemen_barang');
 
-		$this->m_manajemen_barang->edit_barang($id_barang, $nama_kolom, $nilai_baru);
+		$this->m_manajemen_barang->edit_barang($id_barang, $nama_kolom, $nilai_baru, $today);
 	}
 
 	public function hapus_barang() {
@@ -71,6 +73,7 @@ class c_manajemen_barang extends CI_Controller {
 		$this->load->model('m_manajemen_barang');
 
 		$this->m_manajemen_barang->hapus_barang($id_barang);
+        $this->m_manajemen_barang->daftar_barang_dihapus(array('id_barang' => $id_barang));
 	}
 
 	public function upload_gambar_barang() {

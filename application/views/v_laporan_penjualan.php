@@ -8,6 +8,8 @@
 	<link rel="stylesheet" href="<?php echo base_url('assets/AdminLTE-2.4.2/bower_components/bootstrap/dist/css/bootstrap.min.css');?>">
 	<link rel="stylesheet" href="<?php echo base_url('assets/AdminLTE-2.4.2/bower_components/font-awesome/css/font-awesome.min.css');?>">
     <link rel="stylesheet" href="<?php echo base_url('assets/AdminLTE-2.4.2/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css');?>">
+    <link rel="stylesheet" href="<?php echo base_url('assets/Buttons-1.5.4/css/buttons.bootstrap.min.css');?>">
+    <link rel="stylesheet" href="<?php echo base_url('assets/Buttons-1.5.4/css/buttons.dataTables.min.css');?>">
     <link rel="stylesheet" href="<?php echo base_url('assets/AdminLTE-2.4.2/bower_components/select2/dist/css/select2.min.css');?>">
     <link rel="stylesheet" href="<?php echo base_url('assets/AdminLTE-2.4.2/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css');?>">
 	<link rel="stylesheet" href="<?php echo base_url('assets/AdminLTE-2.4.2/dist/css/AdminLTE.min.css');?>">
@@ -134,7 +136,7 @@
                             <p>Nomor Invoice : <span id="labelNota"></span></p>
                             <p>Tanggal Invoice : <span id="labelTanggal"></span></p>
                             <p>Nama Pelanggan : <span id="labelPelanggan"></span></p>
-                        </div>
+                        </div> <!-- End col-xs-12 -->
                         <div class="col-xs-12">
                             <table id="tabelDetail" class="table table-bordered table-striped">
                                 <thead>
@@ -150,7 +152,7 @@
                                 </thead>
                                 <tbody><!-- Isi tabel melalui ajax di bawah --></tbody>
                             </table>
-                        </div>
+                        </div> <!-- End col-xs-12 -->
                         <div class="col-xs-4 col-xs-offset-8">
                             <div class="col-xs-5">
                                 <p>Sub-Total :</p>
@@ -162,7 +164,7 @@
                                 <p><span id="labelDiskon"></span></p>
                                 <p>Rp. <span id="labelTotal"></span></p>
                             </div>
-                        </div>
+                        </div> <!-- End col-xs-4 col-xs-offset-8 -->
                     </div> <!-- End row -->
                 </div> <!-- End modal-body -->
 
@@ -178,6 +180,13 @@
 	<script src="<?php echo base_url('assets/AdminLTE-2.4.2/bower_components/bootstrap/dist/js/bootstrap.min.js');?>"></script>
 	<script src="<?php echo base_url('assets/AdminLTE-2.4.2/bower_components/datatables.net/js/jquery.dataTables.min.js');?>"></script>
 	<script src="<?php echo base_url('assets/AdminLTE-2.4.2/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js');?>"></script>
+    <script src="<?php echo base_url('assets/Buttons-1.5.4/js/dataTables.buttons.min.js');?>"></script>
+    <script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.flash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.print.min.js"></script>
     <script src="<?php echo base_url('assets/AdminLTE-2.4.2/bower_components/select2/dist/js/select2.full.min.js');?>"></script>
     <script src="<?php echo base_url('assets/AdminLTE-2.4.2/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js');?>"></script>
     <script src="<?php echo base_url('assets/AdminLTE-2.4.2/bower_components/moment/min/moment-with-locales.min.js');?>"></script>
@@ -279,12 +288,19 @@
                     // Gunakan moment.js untuk menampilkan tanggal, parameter 1 format tgl, parameter 2 lokalisasi data
                     $.fn.dataTable.moment('D MMMM YYYY, HH:mm', 'id');
 					tabel = $('#tabelPenjualan').DataTable({
-						'scrollX'	: true,
-                        'bInfo'		: false // Untuk menghilangkan tulisan keterangan di bawah tabel
+                        'scrollX'       : true,
+                        'bInfo'         : false,
+                        'dom'           : 'lBfrtips',
+                        'buttons'       : [
+                            {
+                                'extend'    : 'excel',
+                                'text'      : 'Simpan dalam Excel',
+                                'className' : 'btn btn-primary'
+                            }
+                        ],
 					});
                 },
-                error   : function(response) {
-                    console.log(response.responseText);
+                error   : function() {
                     // Tampilkan pesan pemberitahuan
 					pesanPemberitahuan('warning', 'Terdapat kesalahan saat memuat data. Silakan mencoba kembali.');
                 }
@@ -337,7 +353,7 @@
             
             // Ambil nilai id_invoice dari atribut data-id pada button Detail
             var id_invoice = $(this).data('id');
-
+            
             $.ajax({
                 type    : 'post',
                 url     : 'detail-penjualan',
@@ -378,6 +394,7 @@
                 },
                 error   : function(response) {
                     // Do something
+                    console.log(response.responseText);
                 }
             });
         });

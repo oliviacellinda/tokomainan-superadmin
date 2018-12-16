@@ -17,10 +17,10 @@
 <body class="hold-transition skin-blue">
     <div class="wrapper">
         <!-- Main Header -->
-		<?php include('application/views/v_navbar_top.php');?>
+		<?php include('application/views/toko_v_navbar_top.php');?>
 
         <!-- Sidebar -->
-        <?php include('application/views/v_navbar_left.php');?>
+        <?php include('application/views/toko_v_navbar_left.php');?>
 
         <!-- Konten Halaman -->
         <div class="content-wrapper">
@@ -56,15 +56,6 @@
                                             </div>
                                         </div>
                                         
-                                        <!-- Dropdown daftar toko -->
-                                        <div class="col-xs-3">
-                                            <div class="form-group">
-                                                <select class="form-control select2" name="id_toko" id="selectToko">
-                                                    <!-- Isi option melalui ajax di bawah -->
-                                                </select>
-                                            </div>
-                                        </div>
-                                        
                                         <!-- Input text jumlah barang keluar -->
                                         <div class="col-xs-3">
                                             <div class="form-group">
@@ -84,7 +75,7 @@
                                         <!-- Button submit -->
                                         <div class="col-xs-3">
                                             <div class="form-group">
-                                                <button type="submit" class="btn btn-primary">Submit</button>
+                                                <button type="submit" class="btn btn-primary">Simpan</button>
                                             </div>
                                         </div>
                                     </div> <!-- End row 2 form -->
@@ -155,14 +146,13 @@
         });
 
         daftarBarang();
-        daftarToko();
         refreshTabel();
 
         // Fungsi untuk memuat daftar barang di dropdown daftar barang
         function daftarBarang() {
             $.ajax({
                 type    : 'post',
-                url     : 'lihat-barang',
+                url     : '<?php echo base_url("lihat-barang");?>',
                 dataType: 'json',
                 success : function(data) {
                     // Hapus seluruh child (isi) select
@@ -180,29 +170,6 @@
                 },
             });
         } // End fungsi daftarBarang
-
-        // Fungsi untuk memuat daftar toko di dropdown daftar toko
-        function daftarToko() {
-            $.ajax({
-                type    : 'post',
-                url     : 'lihat-toko',
-                dataType: 'json',
-                success : function(data) {
-                    // Hapus seluruh child select
-                    $('#selectToko').empty();
-
-                    var option = '<option></option>';
-                    if(data != 'no data') {
-                        for(var i=0; i<data.length; i++) {
-                            option += '<option value="'+data[i].id_toko+'">'+data[i].nama_toko+'</option>'
-                        }
-                    }
-                    
-                    // Tambahkan data ke select
-                    $('#selectToko').append(option);
-                },
-            });
-        } // End fungsi daftarToko
 
         // Fungsi untuk memuat ulang data tabel
         function refreshTabel() {
@@ -243,7 +210,6 @@
 					});
                 },
                 error   : function(response) {
-                    console.log(response.responseText);
                     // Tampilkan pesan pemberitahuan
 					pesanPemberitahuan('warning', 'Terdapat kesalahan saat memuat data. Silakan mencoba kembali.');
                 }
@@ -312,7 +278,6 @@
                     }
                 },
                 error   : function(response) {
-                    console.log(response.responseText);
                     // Tampilkan pesan pemberitahuan
                     pesanPemberitahuan('warning', 'Terdapat kesalahan saat memuat data. Silakan mencoba kembali.');
                 }

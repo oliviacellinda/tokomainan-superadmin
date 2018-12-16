@@ -8,6 +8,7 @@
 	<link rel="stylesheet" href="<?php echo base_url('assets/AdminLTE-2.4.2/bower_components/bootstrap/dist/css/bootstrap.min.css');?>">
 	<link rel="stylesheet" href="<?php echo base_url('assets/AdminLTE-2.4.2/bower_components/font-awesome/css/font-awesome.min.css');?>">
 	<link rel="stylesheet" href="<?php echo base_url('assets/AdminLTE-2.4.2/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css');?>">
+    <link rel="stylesheet" href="<?php echo base_url('assets/AdminLTE-2.4.2/bower_components/select2/dist/css/select2.min.css');?>">
 	<link rel="stylesheet" href="<?php echo base_url('assets/AdminLTE-2.4.2/dist/css/AdminLTE.min.css');?>">
 	<link rel="stylesheet" href="<?php echo base_url('assets/AdminLTE-2.4.2/dist/css/skins/skin-blue.min.css');?>">
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
@@ -71,6 +72,7 @@
 	<script src="<?php echo base_url('assets/AdminLTE-2.4.2/bower_components/bootstrap/dist/js/bootstrap.min.js');?>"></script>
 	<script src="<?php echo base_url('assets/AdminLTE-2.4.2/bower_components/datatables.net/js/jquery.dataTables.min.js');?>"></script>
 	<script src="<?php echo base_url('assets/AdminLTE-2.4.2/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js');?>"></script>
+    <script src="<?php echo base_url('assets/AdminLTE-2.4.2/bower_components/select2/dist/js/select2.full.min.js');?>"></script>
     <script src="<?php echo base_url('assets/AdminLTE-2.4.2/dist/js/adminlte.min.js');?>"></script>
     
     <script>
@@ -116,8 +118,8 @@
 					// Untuk dropdown toko
                     isi += '<td>';
                     isi += '<div class="form-group">';
-                    isi += '<select style="width:100%" class="form-control" name="id_toko">';
-                    isi += '<option disabled selected>Pilih nama toko</option>';
+                    isi += '<select class="form-control select2" name="id_toko">';
+                    isi += '<option></option>';
                     if(data.toko != 'no data') {
                         for(var i=0; i<data.toko.length; i++) {
                             isi += '<option value="'+data.toko[i].id_toko+'">'+data.toko[i].nama_toko+'</option>';
@@ -139,8 +141,8 @@
                             // Untuk dropdown toko
                             isi += '<td>';
                             isi += '<div class="form-group">';
-                            isi += '<select style="width:100%" class="form-control" name="id_toko">';
-                            isi += '<option disabled>Pilih nama toko</option>';
+                            isi += '<select class="form-control select2" name="id_toko">';
+                            isi += '<option></option>';
                             if(data.toko != 'no data') {
                                 for(var j=0; j<data.toko.length; j++) {
                                     // Cek apakah id_toko dari data kasir sama dengan id_toko dari daftar toko
@@ -154,7 +156,7 @@
                             isi += '</div>';
                             isi += '</td>';
                             // End dropdown toko
-                            isi += '<td><button id="btnHapus" class="btn btn-xs btn-danger"><i class="fa fa-times"></i></button></td>';
+                            isi += '<td><p hidden>'+data.kasir[i].nama_toko+'</p><button id="btnHapus" class="btn btn-xs btn-danger"><i class="fa fa-times"></i></button></td>';
                             isi += '</tr>';
                         }
                     }
@@ -169,10 +171,13 @@
 						'scrollX'		: true,
 						'bInfo'			: false, // Untuk menghilangkan tulisan keterangan di bawah tabel
 						'columnDefs'	: [
-							{ 'orderable' : false, 'targets' : 3 }
+							{ 'orderable'  : false, 'targets' : 3 },
+                            { 'searchable' : false, 'targets' : 2 }
                         ],
                         'stateSave'     : true // Untuk menyimpan kondisi tabel (cth: pagination, ordering) agar dlm kondisi yg sama seperti sblm diupdate
 					});
+
+                    $('select').select2({placeholder : 'Pilih nama toko'});
 
 					// Fokuskan pada sel ID Kasir pada baris input data kasir baru
 					$('#barisInput input[name="id_kasir"]').focus();

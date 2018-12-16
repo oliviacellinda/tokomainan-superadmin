@@ -15,7 +15,7 @@
     <div class="login-box">
         <!-- Judul -->
         <div class="login-logo">
-            <p>Toko Mainan</p>
+            <p>Toko Mainan <small>Admin</small></p>
         </div>
 
         <!-- Kotak Login -->

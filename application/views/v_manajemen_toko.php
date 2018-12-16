@@ -47,6 +47,7 @@
                                     <thead>
                                     <tr>
                                         <th width="162.6px">ID Toko</th>
+										<th width="162.6px">Password</th>
                                         <th width="162.6px">Nama</th>
                                         <th width="162.6px">Alamat</th>
                                         <th>Menu</th>
@@ -112,6 +113,7 @@
 					// Untuk baris input data toko baru
 					isi += '<tr id="barisInput">';
 					isi += '<td><input type="text" class="form-control" placeholder="ID Toko" name="id_toko"></td>';
+					isi += '<td><input type="text" class="form-control" placeholder="Password" name="password_toko"></td>';
 					isi += '<td><input type="text" class="form-control" placeholder="Nama" name="nama_toko"></td>';
 					isi += '<td><input type="text" class="form-control" placeholder="Alamat" name="alamat_toko"></td>';
 					isi += '<td></td>';
@@ -122,6 +124,7 @@
                         for(var i=0; i<data.length; i++) {
                             isi += '<tr>';
                             isi += '<td><p hidden>'+data[i].id_toko+'</p><input type="text" class="form-control" name="id_toko" value="'+data[i].id_toko+'" onkeypress="ambilNilaiBaru(this)"></td>';
+                            isi += '<td><p hidden>'+data[i].password_toko+'</p><input type="text" class="form-control" name="password_toko" value="'+data[i].password_toko+'" onkeypress="ambilNilaiBaru(this)"></td>';
                             isi += '<td><p hidden>'+data[i].nama_toko+'</p><input type="text" class="form-control" name="nama_toko" value="'+data[i].nama_toko+'" onkeypress="ambilNilaiBaru(this)"></td>';
                             isi += '<td><p hidden>'+data[i].alamat_toko+'</p><input type="text" class="form-control" name="alamat_toko" value="'+data[i].alamat_toko+'" onkeypress="ambilNilaiBaru(this)"></td>';
                             isi += '<td><button id="btnHapus" class="btn btn-xs btn-danger"><i class="fa fa-times"></i></button></td>';
@@ -139,7 +142,7 @@
 						'scrollX'		: true,
 						'bInfo'			: false, // Untuk menghilangkan tulisan keterangan di bawah tabel
 						'columnDefs'	: [
-							{ 'orderable' : false, 'targets' : 3 }
+							{ 'orderable' : false, 'targets' : 4 }
                         ],
                         'stateSave'     : true // Untuk menyimpan kondisi tabel (cth: pagination, ordering) agar dlm kondisi yg sama seperti sblm diupdate
 					});
@@ -156,6 +159,9 @@
 
         // Kumpulan event handler untuk baris input
         $('#tabelToko').on('keypress', '#barisInput input[name="id_toko"]', function(event) {
+            if(event.keyCode === 13) $('#barisInput input[name="password_toko"]').focus();
+        });
+        $('#tabelToko').on('keypress', '#barisInput input[name="password_toko"]', function(event) {
             if(event.keyCode === 13) $('#barisInput input[name="nama_toko"]').focus();
         });
         $('#tabelToko').on('keypress', '#barisInput input[name="nama_toko"]', function(event) {
@@ -169,6 +175,7 @@
 
                 // Kumpulkan data
                 var id_toko = $('#barisInput input[name="id_toko"]').val();
+                var password_toko = $('#barisInput input[name="password_toko"]').val();
                 var nama_toko = $('#barisInput input[name="nama_toko"]').val();
                 var alamat_toko = $('#barisInput input[name="alamat_toko"]').val();
 
@@ -176,9 +183,10 @@
                     type    : 'post',
                     url     : 'tambah-toko',
                     data    : {
-                        id_toko     : id_toko,
-                        nama_toko   : nama_toko,
-                        alamat_toko : alamat_toko
+                        id_toko       : id_toko,
+						password_toko : password_toko,
+                        nama_toko     : nama_toko,
+                        alamat_toko   : alamat_toko
                     },
                     success : function() {
                         // Perbarui isi tabel
@@ -191,7 +199,6 @@
                         $('div.overlay').remove();
                     },
                     error   : function(response) {
-						console.log(response.responseText);
                         // Tampilkan pesan pemberitahuan
 						pesanPemberitahuan('warning', 'Terdapat kesalahan saat memuat data. Silakan mencoba kembali.');
                     }
@@ -243,8 +250,9 @@
 					var namaKolom;
 					switch(kolom) {
 						case 0 : namaKolom = 'id_toko'; break;
-						case 1 : namaKolom = 'nama_toko'; break;
-						case 2 : namaKolom = 'alamat_toko'; break;
+						case 1 : namaKolom = 'password_toko'; break;
+						case 2 : namaKolom = 'nama_toko'; break;
+						case 3 : namaKolom = 'alamat_toko'; break;
 					}
 					
 					$.ajax({

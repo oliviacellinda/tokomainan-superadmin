@@ -53,6 +53,11 @@ $route['default_controller'] = 'welcome';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 
+/*
+| -------------------------------------------------------------------------
+| ROUTE UNTUK SUPERADMIN
+| -------------------------------------------------------------------------
+*/
 $route['login']                 = 'c_admin/login';
 $route['proses-login']          = 'c_admin/proses_login';
 $route['logout']                = 'c_admin/proses_logout';
@@ -80,13 +85,6 @@ $route['upload-gambar-barang']  = 'c_manajemen_barang/upload_gambar_barang';
 $route['daftar-kategori']       = 'c_manajemen_barang/daftar_kategori';
 $route['daftar-fungsi']         = 'c_manajemen_barang/daftar_fungsi';
 
-$route['data-barang-masuk']     = 'c_manajemen_stok_barang/data_barang_masuk';
-$route['daftar-stok-barang']    = 'c_manajemen_stok_barang/daftar_stok_barang';
-$route['input-barang-masuk']    = 'c_manajemen_stok_barang/input_barang_masuk';
-$route['data-barang-keluar']    = 'c_manajemen_stok_barang/data_barang_keluar';
-$route['laporan-barang-keluar'] = 'c_manajemen_stok_barang/laporan_barang_keluar';
-$route['input-barang-keluar']   = 'c_manajemen_stok_barang/input_barang_keluar';
-
 $route['manajemen-pelanggan']   = 'c_manajemen_pelanggan/manajemen_pelanggan';
 $route['lihat-pelanggan']       = 'c_manajemen_pelanggan/lihat_pelanggan';
 $route['tambah-pelanggan']      = 'c_manajemen_pelanggan/tambah_pelanggan';
@@ -96,3 +94,48 @@ $route['hapus-pelanggan']       = 'c_manajemen_pelanggan/hapus_pelanggan';
 $route['laporan-penjualan']     = 'c_laporan_penjualan/laporan_penjualan';
 $route['daftar-penjualan']      = 'c_laporan_penjualan/daftar_penjualan';
 $route['detail-penjualan']      = 'c_laporan_penjualan/detail_penjualan';
+
+/*
+| -------------------------------------------------------------------------
+| ROUTE UNTUK ADMIN TOKO
+| -------------------------------------------------------------------------
+*/
+$route['toko/login']                 = 'toko_c_login/login';
+$route['toko/proses-login']          = 'toko_c_login/proses_login';
+$route['toko/logout']                = 'toko_c_login/proses_logout'; 
+
+$route['toko/data-barang-masuk']     = 'c_manajemen_stok_barang/data_barang_masuk';
+$route['toko/daftar-stok-barang']    = 'c_manajemen_stok_barang/daftar_stok_barang';
+$route['toko/input-barang-masuk']    = 'c_manajemen_stok_barang/input_barang_masuk';
+$route['toko/data-barang-keluar']    = 'c_manajemen_stok_barang/data_barang_keluar';
+$route['toko/laporan-barang-keluar'] = 'c_manajemen_stok_barang/laporan_barang_keluar';
+$route['toko/input-barang-keluar']   = 'c_manajemen_stok_barang/input_barang_keluar';
+
+/*
+| -------------------------------------------------------------------------
+| ROUTE UNTUK KASIR
+| -------------------------------------------------------------------------
+*/
+$route['kasir/login']                       = 'kasir_c_login/login';
+$route['kasir/proses-login']                = 'kasir_c_login/proses_login';
+$route['kasir/logout']                      = 'kasir_c_login/proses_logout';
+
+$route['kasir/penjualan']                   = 'kasir_c_penjualan/penjualan';
+$route['kasir/nomor-invoice']               = 'kasir_c_penjualan/nomor_invoice';
+$route['kasir/cari-pelanggan']              = 'kasir_c_penjualan/cari_pelanggan';
+$route['kasir/penjualan-tambah-pelanggan']  = 'kasir_c_penjualan/penjualan_tambah_pelanggan';
+$route['kasir/simpan-nota-lokal']           = 'kasir_c_penjualan/simpan_nota_lokal';
+$route['kasir/simpan-nota-pusat']           = 'kasir_c_penjualan/simpan_nota_pusat';
+
+$route['kasir/stok']                        = 'kasir_c_stok/stok';
+$route['kasir/lihat-stok']                  = 'kasir_c_stok/lihat_stok';
+
+$route['kasir/pelanggan']                   = 'kasir_c_pelanggan/pelanggan';
+$route['kasir/lihat-pelanggan']             = 'kasir_c_pelanggan/lihat_pelanggan';
+$route['kasir/tambah-pelanggan']            = 'kasir_c_pelanggan/tambah_pelanggan';
+$route['kasir/edit-pelanggan']              = 'kasir_c_pelanggan/edit_pelanggan';
+
+$route['kasir/sinkronisasi-data']           = 'kasir_c_sinkronisasi/sinkronisasi_data';
+$route['kasir/sinkronisasi-pelanggan']      = 'kasir_c_sinkronisasi/sinkronisasi_pelanggan';
+$route['kasir/sinkronisasi-barang']         = 'kasir_c_sinkronisasi/sinkronisasi_barang';
+$route['kasir/sinkronisasi-penjualan']      = 'kasir_c_sinkronisasi/sinkronisasi_penjualan';

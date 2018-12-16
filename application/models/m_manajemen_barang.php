@@ -19,8 +19,9 @@ class m_manajemen_barang extends CI_Model {
 		$this->db->insert('barang', $input);
 	}
 
-	public function edit_barang($id_barang, $nama_kolom, $nilai_baru) {
+	public function edit_barang($id_barang, $nama_kolom, $nilai_baru, $today) {
 		$this->db->set($nama_kolom, $nilai_baru);
+		$this->db->set('tgl_modifikasi_data', $today);
 		$this->db->where('id_barang', $id_barang);
 		$this->db->update('barang');
 	}
@@ -28,6 +29,10 @@ class m_manajemen_barang extends CI_Model {
 	public function hapus_barang($id_barang) {
 		$this->db->where('id_barang', $id_barang);
 		$this->db->delete('barang');
+	}
+
+	public function daftar_barang_dihapus($id_barang) {
+		$this->db->insert('daftar_barang_dihapus', $id_barang);
 	}
 	
 	public function daftar_kategori($keyword) {

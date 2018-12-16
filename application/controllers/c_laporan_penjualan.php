@@ -199,7 +199,7 @@ class c_laporan_penjualan extends CI_Controller {
             $data['laporan_penjualan']['tgl_invoice'] = $d.' '.$m.' '.$y.', '.$h.':'.$i; 
             echo json_encode($data);
         }
-        else echo json_encode('no data');
+        else echo json_encode($data);
     }
 }
 ?>

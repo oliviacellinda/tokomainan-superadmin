@@ -350,7 +350,8 @@
 					// Hapus pesan loading
 					$('div.overlay').remove();
 				},
-				error	: function() {
+				error	: function(response) {
+					console.log(response.responseText);
 					// Tampilkan pesan pemberitahuan
 					pesanPemberitahuan('warning', 'Terdapat kesalahan saat memuat data. Silakan mencoba kembali.');
 				}
