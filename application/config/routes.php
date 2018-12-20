@@ -95,6 +95,26 @@ $route['laporan-penjualan']     = 'c_laporan_penjualan/laporan_penjualan';
 $route['daftar-penjualan']      = 'c_laporan_penjualan/daftar_penjualan';
 $route['detail-penjualan']      = 'c_laporan_penjualan/detail_penjualan';
 
+// Route untuk aliran data pelanggan dengan kasir
+$route['ambil-pelanggan-baru']      = 'c_sinkronisasi/ambil_pelanggan_baru';
+$route['daftar-pelanggan-dihapus']  = 'c_sinkronisasi/daftar_pelanggan_dihapus';
+$route['kasir-tambah-pelanggan']    = 'c_sinkronisasi/tambah_pelanggan';
+
+// Route untuk aliran data barang dengan kasir/toko
+$route['ambil-barang-baru']         = 'c_sinkronisasi/ambil_barang_baru';
+$route['daftar-barang-dihapus']     = 'c_sinkronisasi/daftar_barang_dihapus';
+
+// Route untuk aliran data laporan penjualan dan detail penjualan dengan kasir
+$route['tambah-laporan-penjualan']  = 'c_sinkronisasi/tambah_laporan_penjualan';
+
+// Route untuk aliran data stok barang dengan kasir/toko
+$route['lihat-stok-barang']         = 'c_sinkronisasi/lihat_stok_barang';
+
+// Route untuk aliran data kasir dengan kasir
+$route['ambil-kasir-baru']          = 'c_sinkronisasi/ambil_kasir_baru';
+$route['daftar-kasir-dihapus']      = 'c_sinkronisasi/daftar_kasir_dihapus';
+
+
 /*
 | -------------------------------------------------------------------------
 | ROUTE UNTUK ADMIN TOKO
@@ -110,32 +130,3 @@ $route['toko/input-barang-masuk']    = 'c_manajemen_stok_barang/input_barang_mas
 $route['toko/data-barang-keluar']    = 'c_manajemen_stok_barang/data_barang_keluar';
 $route['toko/laporan-barang-keluar'] = 'c_manajemen_stok_barang/laporan_barang_keluar';
 $route['toko/input-barang-keluar']   = 'c_manajemen_stok_barang/input_barang_keluar';
-
-/*
-| -------------------------------------------------------------------------
-| ROUTE UNTUK KASIR
-| -------------------------------------------------------------------------
-*/
-$route['kasir/login']                       = 'kasir_c_login/login';
-$route['kasir/proses-login']                = 'kasir_c_login/proses_login';
-$route['kasir/logout']                      = 'kasir_c_login/proses_logout';
-
-$route['kasir/penjualan']                   = 'kasir_c_penjualan/penjualan';
-$route['kasir/nomor-invoice']               = 'kasir_c_penjualan/nomor_invoice';
-$route['kasir/cari-pelanggan']              = 'kasir_c_penjualan/cari_pelanggan';
-$route['kasir/penjualan-tambah-pelanggan']  = 'kasir_c_penjualan/penjualan_tambah_pelanggan';
-$route['kasir/simpan-nota-lokal']           = 'kasir_c_penjualan/simpan_nota_lokal';
-$route['kasir/simpan-nota-pusat']           = 'kasir_c_penjualan/simpan_nota_pusat';
-
-$route['kasir/stok']                        = 'kasir_c_stok/stok';
-$route['kasir/lihat-stok']                  = 'kasir_c_stok/lihat_stok';
-
-$route['kasir/pelanggan']                   = 'kasir_c_pelanggan/pelanggan';
-$route['kasir/lihat-pelanggan']             = 'kasir_c_pelanggan/lihat_pelanggan';
-$route['kasir/tambah-pelanggan']            = 'kasir_c_pelanggan/tambah_pelanggan';
-$route['kasir/edit-pelanggan']              = 'kasir_c_pelanggan/edit_pelanggan';
-
-$route['kasir/sinkronisasi-data']           = 'kasir_c_sinkronisasi/sinkronisasi_data';
-$route['kasir/sinkronisasi-pelanggan']      = 'kasir_c_sinkronisasi/sinkronisasi_pelanggan';
-$route['kasir/sinkronisasi-barang']         = 'kasir_c_sinkronisasi/sinkronisasi_barang';
-$route['kasir/sinkronisasi-penjualan']      = 'kasir_c_sinkronisasi/sinkronisasi_penjualan';

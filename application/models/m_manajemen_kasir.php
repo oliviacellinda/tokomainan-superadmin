@@ -32,5 +32,9 @@ class m_manajemen_kasir extends CI_Model {
         $this->db->where('id_kasir', $id_kasir);
         $this->db->delete('kasir');
     }
+
+    public function daftar_kasir_dihapus($id_kasir) {
+        $this->db->insert('daftar_kasir_dihapus', $id_kasir);
+    }
 }
 ?>

@@ -30,7 +30,8 @@ class c_manajemen_kasir extends CI_Controller {
         $input = array(
             'id_kasir'       => $this->input->post('id_kasir'),
             'password_kasir' => $this->input->post('password_kasir'),
-            'id_toko'        => $this->input->post('id_toko')
+            'id_toko'        => $this->input->post('id_toko'),
+            'tgl_modifikasi_data' => date('Y-m-d H:i:s')
         );
 
         $this->load->model('m_manajemen_kasir');
@@ -54,6 +55,7 @@ class c_manajemen_kasir extends CI_Controller {
         $this->load->model('m_manajemen_kasir');
 
         $this->m_manajemen_kasir->hapus_kasir($id_kasir);
+        $this->m_manajemen_kasir->daftar_kasir_dihapus(array('id_kasir' => $id_kasir));
     }
 }
 ?>
