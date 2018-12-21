@@ -114,9 +114,11 @@ class m_sinkronisasi extends CI_Model {
     }
 
     public function ambil_kasir_baru($tgl_modifikasi_lokal) {
-        $this->db->select('id_kasir, password_kasir, id_toko');
-        $this->db->where('tgl_modifikasi_data >', $tgl_modifikasi_lokal);
-        $query = $this->db->get('kasir');
+        $this->db->select('kasir.id_kasir, kasir.password_kasir, kasir.id_toko, toko.nama_toko');
+        $this->db->from('kasir');
+        $this->db->join('toko', 'kasir.id_toko = toko.id_toko');
+        $this->db->where('kasir.tgl_modifikasi_data >', $tgl_modifikasi_lokal);
+        $query = $this->db->get();
 
         if($query->num_rows() > 0) {
             return $query->result_array();
