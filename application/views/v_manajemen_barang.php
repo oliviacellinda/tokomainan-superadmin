@@ -124,13 +124,43 @@
 
 		// Kumpulan event handler untuk baris input
 		$('#tabelBarang').on('keypress', '#barisInput input[name="id_barang"]', function(event) {
-			if(event.keyCode === 13) $('#barisInput input[name="nama_barang"]').focus();
+			if(event.keyCode === 13) {
+				if( $(this).val() == '' ) {
+					$('#id').addClass('has-error');
+				}
+				else {
+					$('#barisInput input[name="nama_barang"]').focus();
+				}
+			}
+			else {
+				$('#id').removeClass('has-error');
+			}
 		});
 		$('#tabelBarang').on('keypress', '#barisInput input[name="nama_barang"]', function(event) {
-			if(event.keyCode === 13) $('#barisInput input[name="jumlah_dlm_koli"]').focus();
+			if(event.keyCode === 13) {
+				if( $(this).val() == '' ) {
+					$('#nama').addClass('has-error');
+				}
+				else {
+					$('#barisInput input[name="jumlah_dlm_koli"]').focus();
+				}
+			}
+			else {
+				$('#nama').removeClass('has-error');
+			}
 		});
 		$('#tabelBarang').on('keypress', '#barisInput input[name="jumlah_dlm_koli"]', function(event) {
-			if(event.keyCode === 13) $('#barisInput input[name="kategori"]').focus();
+			if(event.keyCode === 13) {
+				if( $(this).val() == '' ) {
+					$('#jmlKoli').addClass('has-error');
+				}
+				else {
+					$('#barisInput input[name="kategori"]').focus();
+				}
+			}
+			else {
+				$('#jmlKoli').removeClass('has-error');
+			}
 		});
 		$('#tabelBarang').on('keypress', '#barisInput input[name="kategori"]', function(event) {
 			if(event.keyCode === 13) $('#barisInput input[name="fungsi"]').focus();
@@ -171,20 +201,47 @@
 			}
 		});
 		$('#tabelBarang').on('keypress', '#barisInput input[name="harga_jual_1"]', function(event) {
-			if(event.keyCode === 13) $('#barisInput input[name="harga_jual_2"]').focus();
+			if(event.keyCode === 13) {
+				if( $(this).val() == '' ) {
+					$('#harga1').addClass('has-error');
+				}
+				else {
+					$('#barisInput input[name="harga_jual_2"]').focus();
+				}
+			}
+			else {
+				$('#harga1').removeClass('has-error');
+			}
 		});
 		$('#tabelBarang').on('keypress', '#barisInput input[name="harga_jual_2"]', function(event) {
-			if(event.keyCode === 13) $('#barisInput input[name="harga_jual_3"]').focus();
+			if(event.keyCode === 13) {
+				if( $(this).val() == '' ) {
+					$('#harga2').addClass('has-error');
+				}
+				else {
+					$('#barisInput input[name="harga_jual_3"]').focus();
+				}
+			}
+			else {
+				$('#harga2').removeClass('has-error');
+			}
 		});
 		$('#tabelBarang').on('keypress', '#barisInput input[name="harga_jual_3"]', function(event) {
-			if(event.keyCode === 13) $('#barisInput input[name="harga_jual_4"]').focus();
+			if(event.keyCode === 13) {
+				if( $(this).val() == '' ) {
+					$('#harga3').addClass('has-error');
+				}
+				else {
+					$('#barisInput input[name="harga_jual_4"]').focus();
+				}
+			}
+			else {
+				$('#harga3').removeClass('has-error');
+			}
 		});
 		// Saat menekan tombol Enter di Harga Jual Level 4, ambil seluruh nilai data baru dan simpan ke database
 		$('#tabelBarang').on('keypress', '#barisInput input[name="harga_jual_4"]', function(event) {
 			if(event.keyCode === 13) {
-				// Tampilkan pesan loading
-				pesanLoading();
-
 				// Kumpulkan data
 				var id_barang = $('#barisInput input[name="id_barang"]').val();
 				var nama_barang = $('#barisInput input[name="nama_barang"]').val();
@@ -196,36 +253,50 @@
 				var harga_jual_3 = $('#barisInput input[name="harga_jual_3"]').val();
 				var harga_jual_4 = $('#barisInput input[name="harga_jual_4"]').val();
 
-				$.ajax({
-					type	: 'post',
-					url		: 'tambah-barang',
-					data	: {
-						id_barang		: id_barang,
-						nama_barang		: nama_barang,
-						jumlah_dlm_koli	: jumlah_dlm_koli,
-						kategori		: kategori,
-						fungsi			: fungsi,
-						harga_jual_1 	: harga_jual_1,
-						harga_jual_2 	: harga_jual_2,
-						harga_jual_3 	: harga_jual_3,
-						harga_jual_4 	: harga_jual_4
-					},
-					success : function() {
-						// Perbarui isi tabel
-						refreshTabel();
+				if(id_barang == '' || nama_barang == '' || jumlah_dlm_koli == '' || harga_jual_1 == '' || harga_jual_2 == '' || harga_jual_3 == '' || harga_jual_4 == '') {
+					if(id_barang == '') $('#id').addClass('has-error');
+					if(nama_barang == '') $('#nama').addClass('has-error');
+					if(jumlah_dlm_koli == '') $('#jmlKoli').addClass('has-error');
+					if(harga_jual_1 == '') $('#harga1').addClass('has-error');
+					if(harga_jual_2 == '') $('#harga2').addClass('has-error');
+					if(harga_jual_3 == '') $('#harga3').addClass('has-error');
+					if(harga_jual_4 == '') $('#harga4').addClass('has-error');
+				}
+				else if(id_barang != '' && nama_barang != '' && jumlah_dlm_koli != '' && harga_jual_1 != '' && harga_jual_2 != '' && harga_jual_3 != '' && harga_jual_4 != '') {
+					// Tampilkan pesan loading
+					pesanLoading();
+					
+					$.ajax({
+						type	: 'post',
+						url		: 'tambah-barang',
+						data	: {
+							id_barang		: id_barang,
+							nama_barang		: nama_barang,
+							jumlah_dlm_koli	: jumlah_dlm_koli,
+							kategori		: kategori,
+							fungsi			: fungsi,
+							harga_jual_1 	: harga_jual_1,
+							harga_jual_2 	: harga_jual_2,
+							harga_jual_3 	: harga_jual_3,
+							harga_jual_4 	: harga_jual_4
+						},
+						success : function() {
+							// Perbarui isi tabel
+							refreshTabel();
 
-						// Tambahkan pesan pemberitahuan bahwa data berhasil ditambahkan
-						pesanPemberitahuan('info', 'Data berhasil ditambahkan.');
+							// Tambahkan pesan pemberitahuan bahwa data berhasil ditambahkan
+							pesanPemberitahuan('info', 'Data berhasil ditambahkan.');
 
-						// Hapus pesan loading
-						$('div.overlay').remove();
-					},
-					error	: function() {
-						// Tampilkan pesan pemberitahuan
-						pesanPemberitahuan('warning', 'Terdapat kesalahan saat memuat data. Silakan mencoba kembali.');
-					}
-				});
-			}
+							// Hapus pesan loading
+							$('div.overlay').remove();
+						},
+						error	: function() {
+							// Tampilkan pesan pemberitahuan
+							pesanPemberitahuan('warning', 'Terdapat kesalahan saat memuat data. Silakan mencoba kembali.');
+						}
+					});
+				}
+			} // End if tombol yang ditekan adalah Enter
 		}); // End event input data baru
 		
 		// Fungsi untuk menampilkan pesan loading selama proses berlangsung
@@ -265,15 +336,15 @@
 					var isi = '<tbody>';
 					// Untuk baris input data barang baru
 					isi += '<tr id="barisInput">';
-					isi += '<td><input type="text" class="form-control" placeholder="ID barang" name="id_barang"></td>';
-					isi += '<td><input type="text" class="form-control" placeholder="Nama barang" name="nama_barang"></td>';
-					isi += '<td><input type="text" class="form-control" placeholder="Jumlah dalam Koli" name="jumlah_dlm_koli"></td>';
-					isi += '<td><input type="text" class="form-control" placeholder="Kategori" name="kategori"></td>';
-					isi += '<td><input type="text" class="form-control" placeholder="Fungsi" name="fungsi"></td>';
-					isi += '<td><input type="text" class="form-control" placeholder="Harga Jual Level 1" name="harga_jual_1"></td>';
-					isi += '<td><input type="text" class="form-control" placeholder="Harga Jual Level 2" name="harga_jual_2"></td>';
-					isi += '<td><input type="text" class="form-control" placeholder="Harga Jual Level 3" name="harga_jual_3"></td>';
-					isi += '<td><input type="text" class="form-control" placeholder="Harga Jual Level 4" name="harga_jual_4"></td>';
+					isi += '<td><div class="form-group" id="id"><input type="text" class="form-control" placeholder="ID barang" name="id_barang" autocomplete="off"></div></td>';
+					isi += '<td><div class="form-group" id="nama"><input type="text" class="form-control" placeholder="Nama barang" name="nama_barang" autocomplete="off"></div></td>';
+					isi += '<td><div class="form-group" id="jmlKoli"><input type="text" class="form-control" placeholder="Jumlah dalam Koli" name="jumlah_dlm_koli" autocomplete="off"></div></td>';
+					isi += '<td><div class="form-group" id="kategori"><input type="text" class="form-control" placeholder="Kategori" name="kategori" autocomplete="off"></div></td>';
+					isi += '<td><div class="form-group" id="fungsi"><input type="text" class="form-control" placeholder="Fungsi" name="fungsi" autocomplete="off"></div></td>';
+					isi += '<td><div class="form-group" id="harga1"><input type="text" class="form-control" placeholder="Harga Jual Level 1" name="harga_jual_1" autocomplete="off"></div></td>';
+					isi += '<td><div class="form-group" id="harga2"><input type="text" class="form-control" placeholder="Harga Jual Level 2" name="harga_jual_2" autocomplete="off"></div></td>';
+					isi += '<td><div class="form-group" id="harga3"><input type="text" class="form-control" placeholder="Harga Jual Level 3" name="harga_jual_3" autocomplete="off"></div></td>';
+					isi += '<td><div class="form-group" id="harga4"><input type="text" class="form-control" placeholder="Harga Jual Level 4" name="harga_jual_4" autocomplete="off"></div></td>';
 					isi += '<td></td>';
 					isi += '</tr>';
 					// Untuk daftar barang
@@ -281,15 +352,15 @@
 					if(data != 'no data') {
 						for(var i=0; i<data.length; i++) {
 							isi += '<tr>';
-							isi += '<td><p hidden>'+data[i].id_barang+'</p><input type="text" class="form-control" name="id_barang" value="'+data[i].id_barang+'" onkeypress="ambilNilaiBaru(this)"></td>';
-							isi += '<td><p hidden>'+data[i].nama_barang+'</p><input type="text" class="form-control" name="nama_barang" value="'+data[i].nama_barang+'" onkeypress="ambilNilaiBaru(this)"></td>';
-							isi += '<td><p hidden>'+data[i].jumlah_dlm_koli+'</p><input type="text" class="form-control" name="jumlah_dlm_koli" value="'+data[i].jumlah_dlm_koli+'" onkeypress="ambilNilaiBaru(this)"></td>';
-							isi += '<td><p hidden>'+data[i].kategori+'</p><input type="text" class="form-control" name="kategori" value="'+data[i].kategori+'" onkeypress="ambilNilaiBaru(this)"></td>';
-							isi += '<td><p hidden>'+data[i].fungsi+'</p><input type="text" class="form-control" name="fungsi" value="'+data[i].fungsi+'" onkeypress="ambilNilaiBaru(this)"></td>';
-							isi += '<td><p hidden>'+data[i].harga_jual_1+'</p><input type="text" class="form-control" name="harga_jual_1" value="'+data[i].harga_jual_1+'" onkeypress="ambilNilaiBaru(this)"></td>';
-							isi += '<td><p hidden>'+data[i].harga_jual_2+'</p><input type="text" class="form-control" name="harga_jual_2" value="'+data[i].harga_jual_2+'" onkeypress="ambilNilaiBaru(this)"></td>';
-							isi += '<td><p hidden>'+data[i].harga_jual_3+'</p><input type="text" class="form-control" name="harga_jual_3" value="'+data[i].harga_jual_3+'" onkeypress="ambilNilaiBaru(this)"></td>';
-							isi += '<td><p hidden>'+data[i].harga_jual_4+'</p><input type="text" class="form-control" name="harga_jual_4" value="'+data[i].harga_jual_4+'" onkeypress="ambilNilaiBaru(this)"></td>';
+							isi += '<td><p hidden>'+data[i].id_barang+'</p><div class="form-group"><input type="text" class="form-control" name="id_barang" value="'+data[i].id_barang+'" onkeypress="ambilNilaiBaru(this)" autocomplete="off"></div></td>';
+							isi += '<td><p hidden>'+data[i].nama_barang+'</p><div class="form-group"><input type="text" class="form-control" name="nama_barang" value="'+data[i].nama_barang+'" onkeypress="ambilNilaiBaru(this)" autocomplete="off"></div></td>';
+							isi += '<td><p hidden>'+data[i].jumlah_dlm_koli+'</p><div class="form-group"><input type="text" class="form-control" name="jumlah_dlm_koli" value="'+data[i].jumlah_dlm_koli+'" onkeypress="ambilNilaiBaru(this)" autocomplete="off"></div></td>';
+							isi += '<td><p hidden>'+data[i].kategori+'</p><div class="form-group"><input type="text" class="form-control" name="kategori" value="'+data[i].kategori+'" onkeypress="ambilNilaiBaru(this)" autocomplete="off"></div></td>';
+							isi += '<td><p hidden>'+data[i].fungsi+'</p><div class="form-group"><input type="text" class="form-control" name="fungsi" value="'+data[i].fungsi+'" onkeypress="ambilNilaiBaru(this)" autocomplete="off"></div></td>';
+							isi += '<td><p hidden>'+data[i].harga_jual_1+'</p><div class="form-group"><input type="text" class="form-control" name="harga_jual_1" value="'+data[i].harga_jual_1+'" onkeypress="ambilNilaiBaru(this)" autocomplete="off"></div></td>';
+							isi += '<td><p hidden>'+data[i].harga_jual_2+'</p><div class="form-group"><input type="text" class="form-control" name="harga_jual_2" value="'+data[i].harga_jual_2+'" onkeypress="ambilNilaiBaru(this)" autocomplete="off"></div></td>';
+							isi += '<td><p hidden>'+data[i].harga_jual_3+'</p><div class="form-group"><input type="text" class="form-control" name="harga_jual_3" value="'+data[i].harga_jual_3+'" onkeypress="ambilNilaiBaru(this)" autocomplete="off"></div></td>';
+							isi += '<td><p hidden>'+data[i].harga_jual_4+'</p><div class="form-group"><input type="text" class="form-control" name="harga_jual_4" value="'+data[i].harga_jual_4+'" onkeypress="ambilNilaiBaru(this)" autocomplete="off"></div></td>';
 							isi += '<td><button id="btnHapus" class="btn btn-xs btn-danger"><i class="fa fa-times"></i></button></td>';
 							isi += '</tr>';
 						}
@@ -351,7 +422,6 @@
 					$('div.overlay').remove();
 				},
 				error	: function(response) {
-					console.log(response.responseText);
 					// Tampilkan pesan pemberitahuan
 					pesanPemberitahuan('warning', 'Terdapat kesalahan saat memuat data. Silakan mencoba kembali.');
 				}
@@ -364,21 +434,15 @@
 			if(event.keyCode === 13) {
 				// Cek apakah tombol ditekan pada barisan input data baru
 				if( tabel.row($(this).parents('tr')).id() != 'barisInput' ) {
-					// Tampilkan pesan loading
-					pesanLoading();
 
 					var dataBaris = tabel.row($(this).parents('tr')).data();
 					var dataSel = nilaiBaru; // nilaiBaru dari fungsi ambilNilaiBaru di atas
 					var kolom = tabel.cell(this).index().column; // Dapatkan posisi kolom
-					// console.log(dataBaris);
-					// console.log(dataSel);
-					// console.log(kolom);
 
 					// Karena data yang diperoleh berupa string <input type="text"... , data harus dibersihkan dulu
 					var id_barang = dataBaris[0];
 					id_barang = id_barang.split('value="').pop();
-					id_barang = id_barang.replace('" onkeypress="ambilNilaiBaru(this)">', '');
-					// console.log(id_barang);
+					id_barang = id_barang.replace('" onkeypress="ambilNilaiBaru(this)" autocomplete="off"></div>', '');
 					
 					// Dapatkan nama kolom (field yang ingin diubah nilainya) dari variabel kolom
 					var namaKolom;
@@ -393,33 +457,76 @@
 						case 7 : namaKolom = 'harga_jual_3'; break;
 						case 8 : namaKolom = 'harga_jual_4'; break;
 					}
-					// console.log(namaKolom);
-					
-					$.ajax({
-						type	: 'post',
-						url		: 'edit-barang',
-						data	: {
-							id_barang : id_barang,
-							nama_kolom: namaKolom,
-							nilai_baru: dataSel
-						},
-						success : function() {
-							// Perbarui isi tabel
-							refreshTabel();
 
-							// Tampilkan pesan pemberitahuan
-							pesanPemberitahuan('success', 'Data berhasil diperbarui');
+					// Status untuk mengecek apakah data yang diinputkan kosong
+					var status = 1;
 
-							// Hapus pesan loading
-							$('div.overlay').remove();
-						},
-						error	: function() {
-							// Tampilkan pesan pemberitahuan
-							pesanPemberitahuan('warning', 'Terdapat kesalahan saat memuat data. Silakan mencoba kembali.');
+					// Cek apakah id / nama / jumlah dlm koli / harga kosong
+					if(namaKolom == 'id_barang' || namaKolom == 'nama_barang' || namaKolom == 'jumlah_dlm_koli' || namaKolom == 'harga_jual_1' || namaKolom == 'harga_jual_2' || namaKolom == 'harga_jual_3' || namaKolom == 'harga_jual_4') {
+						if(namaKolom == 'id_barang' && $(this).find('input').val() == '') {
+							$(this).find('div.form-group').addClass('has-error');
+							status = 0;
 						}
-					}); // End ajax
+						if(namaKolom == 'nama_barang' && $(this).find('input').val() == '') {
+							$(this).find('div.form-group').addClass('has-error');
+							status = 0;
+						}
+						if(namaKolom == 'jumlah_dlm_koli' && $(this).find('input').val() == '') {
+							$(this).find('div.form-group').addClass('has-error');
+							status = 0;
+						}
+						if(namaKolom == 'harga_jual_1' && $(this).find('input').val() == '') {
+							$(this).find('div.form-group').addClass('has-error');
+							status = 0;
+						}
+						if(namaKolom == 'harga_jual_2' && $(this).find('input').val() == '') {
+							$(this).find('div.form-group').addClass('has-error');
+							status = 0;
+						}
+						if(namaKolom == 'harga_jual_3' && $(this).find('input').val() == '') {
+							$(this).find('div.form-group').addClass('has-error');
+							status = 0;
+						}
+						if(namaKolom == 'harga_jual_4' && $(this).find('input').val() == '') {
+							$(this).find('div.form-group').addClass('has-error');
+							status = 0;
+						}
+					}
+					
+					if(status != 0) {
+						// Tampilkan pesan loading
+						pesanLoading();
+
+						$.ajax({
+							type	: 'post',
+							url		: 'edit-barang',
+							data	: {
+								id_barang : id_barang,
+								nama_kolom: namaKolom,
+								nilai_baru: dataSel
+							},
+							success : function() {
+								// Perbarui isi tabel
+								refreshTabel();
+
+								// Tampilkan pesan pemberitahuan
+								pesanPemberitahuan('success', 'Data berhasil diperbarui');
+
+								// Hapus pesan loading
+								$('div.overlay').remove();
+							},
+							error	: function() {
+								// Tampilkan pesan pemberitahuan
+								pesanPemberitahuan('warning', 'Terdapat kesalahan saat memuat data. Silakan mencoba kembali.');
+							}
+						}); // End ajax
+					} // End status != 0
+					
 				} // End if pengecekan baris input
 			} // End if pengecekan tombol Enter
+			else {
+				$(this).find('div.form-group').removeClass('has-error');
+			}
 		} ); // End event handler untuk edit barang
 
 		// Fungsi yang dijalankan setelah selesai memilih gambar

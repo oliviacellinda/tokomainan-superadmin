@@ -58,7 +58,7 @@
                                     <!-- Input text jumlah barang masuk -->
                                     <div class="col-xs-3">
                                         <div class="form-group">
-                                            <input type="text" class="form-control" name="jml_barang_masuk" placeholder="Jumlah Barang Masuk">
+                                            <input type="text" class="form-control" name="jml_barang_masuk" placeholder="Jumlah Barang Masuk (pcs)">
                                         </div>
                                     </div>
                                     
@@ -91,6 +91,7 @@
                                         <th width="162.6px">Nama Toko</th>
                                         <th width="162.6px">Stok</th>
                                         <th width="162.6px">Umur Barang</th>
+                                        <th width="162.6px">Jumlah dlm Koli</th>
                                     </tr>
                                     </thead>
                                     <!-- Isi tabel -->
@@ -170,8 +171,9 @@
                             isi += '<tr>';
                             isi += '<td>'+data[i].nama_barang+'</td>';
                             isi += '<td>'+data[i].nama_toko+'</td>';
-                            isi += '<td>'+data[i].stok_barang+'</td>';
+                            isi += '<td data-order="'+data[i].stok_barang+'">'+data[i].stok_barang+' pcs</td>';
                             isi += '<td data-order="'+data[i].umur_barang+'" id="umurBarang">'+data[i].umur_barang+' hari</td>';
+                            isi += '<td data-order="'+data[i].jumlah_dlm_koli+'">'+data[i].jumlah_dlm_koli+' pcs</td>';  
                             isi += '</tr>';
                         }
                     }

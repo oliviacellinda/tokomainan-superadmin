@@ -8,6 +8,7 @@
 	<link rel="stylesheet" href="<?php echo base_url('assets/AdminLTE-2.4.2/bower_components/bootstrap/dist/css/bootstrap.min.css');?>">
 	<link rel="stylesheet" href="<?php echo base_url('assets/AdminLTE-2.4.2/bower_components/font-awesome/css/font-awesome.min.css');?>">
 	<link rel="stylesheet" href="<?php echo base_url('assets/AdminLTE-2.4.2/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css');?>">
+	<link rel="stylesheet" href="<?php echo base_url('assets/AdminLTE-2.4.2/bower_components/select2/dist/css/select2.min.css');?>">
 	<link rel="stylesheet" href="<?php echo base_url('assets/AdminLTE-2.4.2/dist/css/AdminLTE.min.css');?>">
 	<link rel="stylesheet" href="<?php echo base_url('assets/AdminLTE-2.4.2/dist/css/skins/skin-blue.min.css');?>">
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
@@ -54,6 +55,7 @@
                                         <th width="162.6px">ID Pelanggan</th>
                                         <th width="162.6px">Nama</th>
                                         <th width="162.6px">Alamat</th>
+                                        <th width="162.6px">Ekspedisi</th>
                                         <th width="162.6px">Telepon</th>
                                         <th width="162.6px">Maksimal Utang</th>
                                         <th width="162.6px">Level</th>
@@ -79,6 +81,7 @@
 	<script src="<?php echo base_url('assets/AdminLTE-2.4.2/bower_components/bootstrap/dist/js/bootstrap.min.js');?>"></script>
 	<script src="<?php echo base_url('assets/AdminLTE-2.4.2/bower_components/datatables.net/js/jquery.dataTables.min.js');?>"></script>
 	<script src="<?php echo base_url('assets/AdminLTE-2.4.2/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js');?>"></script>
+    <script src="<?php echo base_url('assets/AdminLTE-2.4.2/bower_components/select2/dist/js/select2.full.min.js');?>"></script>
 	<script src="<?php echo base_url('assets/AdminLTE-2.4.2/dist/js/adminlte.min.js');?>"></script>
     
     <script>
@@ -117,16 +120,31 @@
 					
 					// Buat variabel baru yang berisi HTML untuk isi data
 					var isi = '<tbody>';
+
 					// Untuk baris input data pelanggan baru
 					isi += '<tr id="barisInput">';
 					isi += '<td></td>';
 					isi += '<td><input type="text" class="form-control" placeholder="Nama" name="nama_pelanggan" autocomplete="off"></td>';
 					isi += '<td><input type="text" class="form-control" placeholder="Alamat" name="alamat_pelanggan" autocomplete="off"></td>';
+					isi += '<td><input type="text" class="form-control" placeholder="Ekspedisi" name="ekspedisi" autocomplete="off"></td>';
 					isi += '<td><input type="text" class="form-control" placeholder="Telepon" name="telepon_pelanggan" autocomplete="off"></td>';
 					isi += '<td><input type="text" class="form-control" placeholder="Maksimal Utang" name="maks_utang" autocomplete="off"></td>';
-					isi += '<td><input type="text" class="form-control" placeholder="Level" name="level" autocomplete="off"></td>';
+					// Dropdown level
+					isi += '<td>';
+					isi += '<div class="form-group">';
+					isi += '<select class="form-control select2" style="width:184.4px" name="level">';
+					isi += '<option></option>';
+					isi += '<option>1</option>';
+					isi += '<option>2</option>';
+					isi += '<option>3</option>';
+					isi += '<option>4</option>';
+					isi += '</select>';
+					isi += '</div>';
+					isi += '</td>';
+					// End dropdown level
 					isi += '<td></td>';
 					isi += '</tr>';
+
 					// Untuk daftar pelanggan
 					// Tuliskan data dalam <p hidden></p> agar fungsi search DataTable dapat digunakan
                     if(data != 'no data') {
@@ -135,10 +153,23 @@
                             isi += '<td>'+data[i].id_pelanggan+'</td>';
                             isi += '<td><p hidden>'+data[i].nama_pelanggan+'</p><input type="text" class="form-control" name="nama_pelanggan" value="'+data[i].nama_pelanggan+'" onkeypress="ambilNilaiBaru(this)" autocomplete="off"></td>';
                             isi += '<td><p hidden>'+data[i].alamat_pelanggan+'</p><input type="text" class="form-control" name="alamat_pelanggan" value="'+data[i].alamat_pelanggan+'" onkeypress="ambilNilaiBaru(this)" autocomplete="off"></td>';
+                            isi += '<td><p hidden>'+data[i].ekspedisi+'</p><input type="text" class="form-control" name="ekspedisi" value="'+data[i].ekspedisi+'" onkeypress="ambilNilaiBaru(this)" autocomplete="off"></td>';
                             isi += '<td><p hidden>'+data[i].telepon_pelanggan+'</p><input type="text" class="form-control" name="telepon_pelanggan" value="'+data[i].telepon_pelanggan+'" onkeypress="ambilNilaiBaru(this)" autocomplete="off"></td>';
                             isi += '<td><p hidden>'+data[i].maks_utang+'</p><input type="text" class="form-control" name="maks_utang" value="'+data[i].maks_utang+'" onkeypress="ambilNilaiBaru(this)" autocomplete="off"></td>';
-                            isi += '<td><p hidden>'+data[i].level+'</p><input type="text" class="form-control" name="level" value="'+data[i].level+'" onkeypress="ambilNilaiBaru(this)" autocomplete="off"></td>';
-                            isi += '<td><button id="btnHapus" class="btn btn-xs btn-danger"><i class="fa fa-times"></i></button></td>';
+                            // Dropdown level
+							isi += '<td>';
+							isi += '<div class="form-group">';
+							isi += '<select class="form-control select2" style="width:184.4px" name="level">';
+							isi += '<option></option>';
+							isi += (data[i].level == '1') ? '<option selected value="1">1</option>' : '<option value="1">1</option>';
+							isi += (data[i].level == '2') ? '<option selected value="2">2</option>' : '<option value="2">2</option>';
+							isi += (data[i].level == '3') ? '<option selected value="3">3</option>' : '<option value="3">3</option>';
+							isi += (data[i].level == '4') ? '<option selected value="4">4</option>' : '<option value="4">4</option>';
+							isi += '</select>';
+							isi += '</div>';
+							isi += '</td>';
+							// End dropdown level
+							isi += '<td><button id="btnHapus" class="btn btn-xs btn-danger"><i class="fa fa-times"></i></button></td>';
                             isi += '</tr>';
                         }
                     }
@@ -158,6 +189,11 @@
                         'stateSave'     : true // Untuk menyimpan kondisi tabel (cth: pagination, ordering) agar dlm kondisi yg sama seperti sblm diupdate
 					});
 
+					$('select').select2({
+						placeholder 			: 'Pilih level pelanggan',
+						minimumResultsForSearch : Infinity
+					});
+
 					// Fokuskan pada sel ID Pelanggan pada baris input data pelanggan baru
 					$('#barisInput input[name="nama_pelanggan"]').focus();
 				}, // End success
@@ -173,53 +209,56 @@
             if(event.keyCode === 13) $('#barisInput input[name="alamat_pelanggan"]').focus();
         });
         $('#tabelPelanggan').on('keypress', '#barisInput input[name="alamat_pelanggan"]', function(event) {
+            if(event.keyCode === 13) $('#barisInput input[name="ekspedisi"]').focus();
+        });
+        $('#tabelPelanggan').on('keypress', '#barisInput input[name="ekspedisi"]', function(event) {
             if(event.keyCode === 13) $('#barisInput input[name="telepon_pelanggan"]').focus();
         });
         $('#tabelPelanggan').on('keypress', '#barisInput input[name="telepon_pelanggan"]', function(event) {
             if(event.keyCode === 13) $('#barisInput input[name="maks_utang"]').focus();
         });
         $('#tabelPelanggan').on('keypress', '#barisInput input[name="maks_utang"]', function(event) {
-            if(event.keyCode === 13) $('#barisInput input[name="level"]').focus();
+            if(event.keyCode === 13) $('#barisInput select').focus();
         });
-        // Saat menekan tombol Enter di Level, ambil seluruh nilai data baru dan simpan ke dalam database
-        $('#tabelPelanggan').on('keypress', '#barisInput input[name="level"]', function(event) {
-            if(event.keyCode === 13) {
-                // Tampilkan pesan loading
-                pesanLoading();
+        $('#tabelPelanggan').on('change', '#barisInput select', function() {
+			// Tampilkan pesan loading
+			pesanLoading();
 
-                // Kumpulkan data
-                var nama_pelanggan = $('#barisInput input[name="nama_pelanggan"]').val();
-                var alamat_pelanggan = $('#barisInput input[name="alamat_pelanggan"]').val();
-                var telepon_pelanggan = $('#barisInput input[name="telepon_pelanggan"]').val();
-                var maks_utang = $('#barisInput input[name="maks_utang"]').val();
-                var level = $('#barisInput input[name="level"]').val();
+			// Kumpulkan data
+			var nama_pelanggan = $('#barisInput input[name="nama_pelanggan"]').val();
+			var alamat_pelanggan = $('#barisInput input[name="alamat_pelanggan"]').val();
+			var ekspedisi = $('#barisInput input[name="ekspedisi"]').val();
+			var telepon_pelanggan = $('#barisInput input[name="telepon_pelanggan"]').val();
+			var maks_utang = $('#barisInput input[name="maks_utang"]').val();
+			var level = $('#barisInput select[name="level"]').val();
 
-                $.ajax({
-                    type    : 'post',
-                    url     : 'tambah-pelanggan',
-                    data    : {
-                        nama_pelanggan      : nama_pelanggan,
-                        alamat_pelanggan    : alamat_pelanggan,
-                        telepon_pelanggan   : telepon_pelanggan,
-                        maks_utang          : maks_utang,
-                        level               : level
-                    },
-                    success : function() {
-                        // Perbarui isi tabel
-                        refreshTabel();
+			$.ajax({
+				type    : 'post',
+				url     : 'tambah-pelanggan',
+				data    : {
+					nama_pelanggan      : nama_pelanggan,
+					alamat_pelanggan    : alamat_pelanggan,
+					ekspedisi			: ekspedisi,
+					telepon_pelanggan   : telepon_pelanggan,
+					maks_utang          : maks_utang,
+					level               : level
+				},
+				success : function() {
+					// Perbarui isi tabel
+					refreshTabel();
 
-                        // Tambahkan pesan pemberitahuan bahwa data berhasil ditambahkan
-                        pesanPemberitahuan('info', 'Data berhasil ditambahkan.');
+					// Tambahkan pesan pemberitahuan bahwa data berhasil ditambahkan
+					pesanPemberitahuan('info', 'Data berhasil ditambahkan.');
 
-                        // Hapus pesan loading
-                        $('div.overlay').remove();
-                    },
-                    error   : function() {
-                        // Tampilkan pesan pemberitahuan
-						pesanPemberitahuan('warning', 'Terdapat kesalahan saat memuat data. Silakan mencoba kembali.');
-                    }
-                });
-            }
+					// Hapus pesan loading
+					$('div.overlay').remove();
+				},
+				error   : function(response) {
+					// console.log(response.responseText);
+					// Tampilkan pesan pemberitahuan
+					pesanPemberitahuan('warning', 'Terdapat kesalahan saat memuat data. Silakan mencoba kembali.');
+				}
+			});
         }); // End event input data baru
 
         // Fungsi untuk menampilkan pesan loading selama proses berlangsung
@@ -263,9 +302,9 @@
 					switch(kolom) {
 						case 1 : namaKolom = 'nama_pelanggan'; break;
 						case 2 : namaKolom = 'alamat_pelanggan'; break;
-						case 3 : namaKolom = 'telepon_pelanggan'; break;
-						case 4 : namaKolom = 'maks_utang' ; break;
-						case 5 : namaKolom = 'level'; break;
+						case 3 : namaKolom = 'ekspedisi'; break;
+						case 4 : namaKolom = 'telepon_pelanggan'; break;
+						case 5 : namaKolom = 'maks_utang' ; break;
 					}
 					
 					$.ajax({
@@ -273,8 +312,8 @@
 						url		: 'edit-pelanggan',
 						data	: {
 							id_pelanggan : id_pelanggan,
-							nama_kolom: namaKolom,
-							nilai_baru: dataSel
+							nama_kolom	 : namaKolom,
+							nilai_baru   : dataSel
 						},
 						success : function() {
 							// Perbarui isi tabel
@@ -294,6 +333,43 @@
 				} // End if pengecekan baris input
 			} // End if pengecekan tombol Enter
         }); // End event handler untuk edit pelanggan
+
+		// Event handler untuk dropdown level
+		$('#tabelPelanggan').on('change', 'select', function() {
+			// Cek apakah select yang digunakan adalah select pada baris input data baru
+			if( tabel.row($(this).parents('tr')).id() != 'barisInput' ) {
+				// Tampilkan pesan loading
+				pesanLoading();
+
+				var level = $(this).val();
+				var id_pelanggan = $(this).closest('tr').find('td:first').text();
+				// Cari terlebih dahulu parent tr terdekat, dari tr cari td pertama yg berisi ID Pelanggan, ambil nilainya
+
+				$.ajax({
+					type	: 'post',
+					url		: 'edit-pelanggan',
+					data	: {
+						id_pelanggan : id_pelanggan,
+						nama_kolom	 : 'level',
+						nilai_baru	 : level
+					},
+					success : function() {
+						// Perbarui isi tabel
+						refreshTabel();
+
+						// Tampilkan pesan pemberitahuan
+						pesanPemberitahuan('success', 'Data berhasil diperbarui');
+
+						// Hapus pesan loading
+						$('div.overlay').remove();
+					},
+					error	: function() {
+						// Tampilkan pesan pemberitahuan
+						pesanPemberitahuan('warning', 'Terdapat kesalahan saat memuat data. Silakan mencoba kembali.');
+					}
+				});
+			} // End if pengecekan baris input
+		}); // End event handler untuk dropdown level
 
         // Fungsi yang dijalankan ketika mengklik tombol Hapus (silang)
 		$('#tabelPelanggan').on('click', '#btnHapus', function() {

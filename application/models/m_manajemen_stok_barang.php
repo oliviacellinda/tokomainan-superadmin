@@ -8,7 +8,7 @@ class m_manajemen_stok_barang extends CI_Model {
     }
 
     public function daftar_stok_barang($id_toko) {
-        $this->db->select('stok_barang.id_barang, barang.nama_barang, stok_barang.id_toko, toko.nama_toko, stok_barang.stok_barang, stok_barang.tgl_modifikasi_data');
+        $this->db->select('stok_barang.id_barang, barang.nama_barang, barang.jumlah_dlm_koli, stok_barang.id_toko, toko.nama_toko, stok_barang.stok_barang, stok_barang.tgl_modifikasi_data');
         $this->db->from('stok_barang');
         $this->db->join('barang', 'stok_barang.id_barang = barang.id_barang');
         $this->db->join('toko', 'stok_barang.id_toko = toko.id_toko');

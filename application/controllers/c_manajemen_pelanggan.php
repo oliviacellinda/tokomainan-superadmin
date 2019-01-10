@@ -30,6 +30,7 @@ class c_manajemen_pelanggan extends CI_Controller {
             'id_pelanggan'          => $id_pelanggan,
             'nama_pelanggan'        => $this->input->post('nama_pelanggan'),
             'alamat_pelanggan'      => $this->input->post('alamat_pelanggan'),
+            'ekspedisi'             => $this->input->post('ekspedisi'),
             'telepon_pelanggan'     => $this->input->post('telepon_pelanggan'),
             'maks_utang'            => $this->input->post('maks_utang'),
             'level'                 => $this->input->post('level'),

@@ -4,7 +4,7 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1, user-scalable=no">
-	<title>Laporan Penjualan</title>
+	<title>Laporan Penjualan Dibatalkan</title>
 	<link rel="stylesheet" href="<?php echo base_url('assets/AdminLTE-2.4.2/bower_components/bootstrap/dist/css/bootstrap.min.css');?>">
 	<link rel="stylesheet" href="<?php echo base_url('assets/AdminLTE-2.4.2/bower_components/font-awesome/css/font-awesome.min.css');?>">
     <link rel="stylesheet" href="<?php echo base_url('assets/AdminLTE-2.4.2/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css');?>">
@@ -30,7 +30,7 @@
 
             <!-- Header -->
 			<section class="content-header">
-				<h1>Laporan Penjualan</h1>
+				<h1>Laporan Penjualan Dibatalkan</h1>
             </section>
             
             <!-- Konten Utama -->
@@ -192,8 +192,6 @@
     <script src="<?php echo base_url('assets/AdminLTE-2.4.2/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js');?>"></script>
     <script src="<?php echo base_url('assets/AdminLTE-2.4.2/bower_components/moment/min/moment-with-locales.min.js');?>"></script>
     <script src="<?php echo base_url('assets/datetime-moment.js');?>"></script>
-	<script src="<?php echo base_url('assets/jsPDF-master/dist/jspdf.debug.js');?>"></script>
-	<script src="<?php echo base_url('assets/jsPDF-AutoTable-master/dist/jspdf.plugin.autotable.js');?>"></script>
     <script src="<?php echo base_url('assets/AdminLTE-2.4.2/dist/js/adminlte.min.js');?>"></script>
 
     <script>
@@ -204,7 +202,7 @@
     $(document).ready(function() {
         // Tandai Laporan Penjualan pada sidebar
         $('#laporan').addClass('active');
-        $('#laporanPenjualan').addClass('active');
+        $('#laporanPenjualanDibatalkan').addClass('active');
 
         $('#selectToko').select2({placeholder:'Pilih nama toko'});
 
@@ -258,7 +256,7 @@
         function refreshTabel() {
             $.ajax({
                 type    : 'post',
-                url     : 'daftar-penjualan',
+                url     : 'daftar-penjualan-dibatalkan',
                 dataType: 'json',
                 data    : {
                     id_toko   : nilaiToko,
@@ -279,12 +277,7 @@
                             isi += '<td>'+data[i].id_kasir+'</td>';
                             isi += '<td>'+data[i].total_penjualan+'</td>';
                             isi += '<td>'+data[i].nama_pelanggan+'</td>';
-                            // Button menu
-                            isi += '<td>';
-                            isi += '<button id="btnDetail" class="btn btn-xs btn-info" data-id="'+data[i].id_invoice+'" data-toggle="modal" data-target="#modalDetail">Detail</button> ';
-                            isi += '<button id="btnBatal" class="btn btn-xs btn-danger" data-id="'+data[i].id_invoice+'">Batalkan</button> ';
-                            isi += '<button id="btnPrint" class="btn btn-xs btn-primary" data-id="'+data[i].id_invoice+'">Cetak</button></td>';
-                            isi += '</td>';
+                            isi += '<td><button id="btnDetail" class="btn btn-xs btn-info" data-id="'+data[i].id_invoice+'" data-toggle="modal" data-target="#modalDetail">Detail</button></td>';
                             isi += '</tr>';
                         }
                     }
@@ -356,7 +349,7 @@
             $('div.overlay').remove();
         });
 
-        // Event handler untuk mengisi detail penjualan
+        // Fungsi untuk mengisi detail penjualan
         $('#tabelPenjualan').on('click', '#btnDetail', function() {
             pesanLoading();
             // Jangan munculkan modal sebelum data selesai diambil
@@ -369,7 +362,7 @@
             
             $.ajax({
                 type    : 'post',
-                url     : 'detail-penjualan',
+                url     : 'detail-penjualan-dibatalkan',
                 dataType: 'json',
                 data    : { id_invoice : id_invoice },
                 success : function(data) {
@@ -406,229 +399,12 @@
                     }
                 },
                 error   : function(response) {
+                    // Do something
                     // console.log(response.responseText);
-                    pesanPemberitahuan('warning', 'Gagal memperoleh data. Silakan mencoba kembali setelah beberapa saat.');
-
-                    // Hapus pesan loading
-                    $('div.overlay').remove();
                 }
             });
-        }); // End event handler untuk mengisi detail penjualan
-
-        // Event handler untuk membatalkan nota
-        $('#tabelPenjualan').on('click', '#btnBatal', function() {
-            var id_invoice = $(this).data('id');
-
-            // Munculkan peringatan sebelum batalkan nota
-            var status = confirm('Anda akan membatalkan nota ' + id_invoice + '! Apakah Anda yakin?');
-            if(status == true) {
-                pesanLoading();
-
-                $.ajax({
-                    type    : 'POST',
-                    url     : 'batalkan-nota',
-                    dataType: 'json',
-                    data    : { id_invoice : id_invoice },
-                    success : function(data) {
-                        if(data == 'fail') pesanPemberitahuan('warning', 'Gagal melakukan pembatalan nota.');
-                        else if(data == 'success') pesanPemberitahuan('danger', 'Berhasil melakukan pembatalan nota.');
-                    },
-                    error   : function(response) {
-                        // console.log(response.responseText);
-                        pesanPemberitahuan('warning', 'Gagal melakukan pembatalan nota.');
-                    },
-                    complete: function() {
-                        // Perbarui isi tabel
-                        refreshTabel();
-
-                        // Hapus pesan loading
-                        $('div.overlay').remove();
-                    }
-                });
-            } // End if batalkan nota
-        }); // End event handler untuk membatalkan nota
-
-        // Event handler untuk mencetak nota
-        $('#tabelPenjualan').on('click', '#btnPrint', function() {
-            pesanLoading();
-            
-            // Ambil nilai id_invoice dari atribut data-id pada button Detail
-            var id_invoice = $(this).data('id');
-            var dataNota = new Array();
-            
-            $.ajax({
-                type    : 'post',
-                url     : 'detail-penjualan',
-                dataType: 'json',
-                data    : { id_invoice : id_invoice },
-                success : function(data) {
-                    if(data != 'no data') {
-                        dataNota = data;
-
-                        // Cetak nota
-                        cetakNota(dataNota);
-
-                        // Hapus pesan loading
-                        $('div.overlay').remove();
-                    }
-                },
-                error   : function(response) {
-                    // console.log(response.responseText);
-                    pesanPemberitahuan('warning', 'Gagal memperoleh data. Silakan mencoba kembali setelah beberapa saat.');
-
-                    // Hapus pesan loading
-                    $('div.overlay').remove();
-                }
-            });
-        }); // End event handler untuk mencetak nota
-
-        // Fungsi untuk mengambil dan menyusun data yang akan ditampilkan dalam nota, kemudian dicetak
-		function cetakNota(dataNota) {
-			var jumlahHlm = Math.ceil(dataNota.detail_penjualan.length / 10);
-			var kolom = ['No', 'Jumlah', 'Nama Barang', 'Kode Barang', 'Kategori', 'Harga Satuan', 'Diskon', 'Total', 'Dus ke-'];
-			var data = new Array();
-			var namaPelanggan = dataNota.laporan_penjualan.nama_pelanggan;
-			var alamatPelanggan = '';
-			var teleponPelanggan = '';
-            var namaToko = dataNota.nama_toko;
-			var pdf = new jsPDF('landscape', 'mm', 'a5');
-
-            // Format ulang tanggal nota
-            var tglNota = dataNota.laporan_penjualan.tgl_invoice_database;
-            var d = tglNota.substring(8, 10);
-            var m = tglNota.substring(5, 7);
-            var y = tglNota.substring(0, 4);
-            tglNota = d + '-' + m + '-' + y;
-
-			for(var i=0; i<dataNota.detail_penjualan.length; i++) {
-                var jumlah = dataNota.detail_penjualan[i].jumlah_barang + ' pcs';
-                var nama = dataNota.detail_penjualan[i].nama_barang + ' (' + dataNota.detail_penjualan[i].jumlah_dlm_koli + ' pcs)';
-                var kode = dataNota.detail_penjualan[i].id_barang;
-                var kategori = dataNota.detail_penjualan[i].kategori;
-                var harga = 'Rp. ' + dataNota.detail_penjualan[i].harga_barang;
-                var diskon = '';
-                var total = 'Rp. ' + dataNota.detail_penjualan[i].total_harga_barang;
-
-                if(dataNota.detail_penjualan[i].status_diskon_barang == 'p') diskon = dataNota.detail_penjualan[i].diskon_barang + '%';
-                else diskon = 'Rp. ' + dataNota.detail_penjualan[i].diskon_barang;
-
-				var baris = [ i+1, jumlah, nama, kode, kategori, harga, diskon, total, '' ];
-				data.push(baris);
-			}
-			// console.log(data);
-
-			for(var i=0; i<jumlahHlm; i++) {
-				var dataPerHlm = new Array();
-				
-				if(i+1 == jumlahHlm) {
-					var batas = data.length % 10;
-					for(j=i*10; j<(i*10)+batas; j++) {
-						dataPerHlm.push(data[j]);
-					}
-				}
-				else {
-					for(j=i*10; j<(i+1)*10; j++) {
-						dataPerHlm.push(data[j]);
-					}
-				}
-				// console.log(dataPerHlm);
-
-				// Nama toko
-				pdf.setFontSize(18);
-				pdf.text(namaToko, 10, 10, 'left');
-
-				// Tanggal nota
-				pdf.setFontSize(8);
-				pdf.text('Tanggal', 140, 10, 'left');
-				pdf.setFontSize(8);
-				pdf.text(tglNota, 155, 10, 'left');
-
-				// Nama pembeli
-				pdf.setFontSize(8);
-				pdf.text('Nama', 140, 15, 'left');
-				pdf.setFontSize(8);
-				pdf.text(namaPelanggan, 155, 15, 'left');
-
-				// Alamat pembeli
-				pdf.setFontSize(8);
-				pdf.text('Alamat', 140, 20, 'left');
-				pdf.setFontSize(8);
-				pdf.text(alamatPelanggan, 155, 20, 'left');
-
-				// Telepon pembeli
-				pdf.setFontSize(8);
-				pdf.text('Telepon', 140, 25, 'left');
-				pdf.setFontSize(8);
-				pdf.text(teleponPelanggan, 155, 25, 'left');
-
-				pdf.autoTable(kolom, dataPerHlm, {
-					startX	: 10,
-					startY	: 30,
-					theme	: 'grid',
-					styles	: {
-						overflow:'linebreak',
-						fontSize: 8
-					}
-				});
-
-				pdf.setFontSize(8);
-				pdf.text((i+1).toString(), 105, 140, 'left');
-
-				if(i+1 != jumlahHlm) {
-					var subTotal = 0;
-					for(var a=0; a<dataPerHlm.length; a++) {
-						harga = dataPerHlm[a][7];
-						harga = harga.substring(4);
-						harga = parseInt(harga);
-						subTotal = subTotal + harga;
-					}
-					subTotal = subTotal.toString();
-
-					pdf.setFontSize(10);
-					pdf.setFontStyle('bold');
-					pdf.text('Subtotal', 150, 135, 'left');
-					pdf.setFontSize(10);
-					pdf.setFontStyle('normal');
-					pdf.text('Rp. '+subTotal, 190, 135, 'right');
-
-					pdf.addPage('landscape', 'a5');
-				}
-				else {
-					var subTotalPenjualan = dataNota.laporan_penjualan.sub_total_penjualan;
-					var diskonTotal = '';
-					if( dataNota.laporan_penjualan.status_diskon_penjualan == 'p' ) diskonTotal = dataNota.laporan_penjualan.diskon_penjualan + '%';
-					else diskonTotal = 'Rp. ' + dataNota.laporan_penjualan.diskon_penjualan;
-					var totalPenjualan = dataNota.laporan_penjualan.total_penjualan;
-					
-					// Sub total penjualan
-					pdf.setFontSize(10);
-					pdf.setFontStyle('bold');
-					pdf.text('Subtotal', 150, 125, 'left');
-					pdf.setFontSize(10);
-					pdf.setFontStyle('normal');
-					pdf.text('Rp. '+subTotalPenjualan, 190, 125, 'right');
-
-					// Diskon total
-					pdf.setFontSize(10);
-					pdf.setFontStyle('bold');
-					pdf.text('Diskon', 150, 130, 'left');
-					pdf.setFontSize(10);
-					pdf.setFontStyle('normal');
-					pdf.text(diskonTotal, 190, 130, 'right');
-
-					// Total penjualan
-					pdf.setFontSize(10);
-					pdf.setFontStyle('bold');
-					pdf.text('Total', 150, 135, 'left');
-					pdf.setFontSize(10);
-					pdf.setFontStyle('normal');
-					pdf.text('Rp. '+totalPenjualan, 190, 135, 'right');
-				}
-			}
-
-			pdf.autoPrint();
-			window.open(pdf.output('bloburl'), '_blank');
-		} // End fungsi cetakNota
+        }); // End fungsi untuk mengisi detail penjualan
+        
     });
     </script>
 </body>

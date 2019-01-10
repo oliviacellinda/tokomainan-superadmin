@@ -118,7 +118,7 @@
 					// Untuk dropdown toko
                     isi += '<td>';
                     isi += '<div class="form-group">';
-                    isi += '<select class="form-control select2" name="id_toko">';
+                    isi += '<select class="form-control select2" style="width:184.4px" name="id_toko">';
                     isi += '<option></option>';
                     if(data.toko != 'no data') {
                         for(var i=0; i<data.toko.length; i++) {
@@ -141,7 +141,7 @@
                             // Untuk dropdown toko
                             isi += '<td>';
                             isi += '<div class="form-group">';
-                            isi += '<select class="form-control select2" name="id_toko">';
+                            isi += '<select class="form-control select2" style="width:184.4px" name="id_toko">';
                             isi += '<option></option>';
                             if(data.toko != 'no data') {
                                 for(var j=0; j<data.toko.length; j++) {

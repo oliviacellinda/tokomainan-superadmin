@@ -94,6 +94,11 @@ $route['hapus-pelanggan']       = 'c_manajemen_pelanggan/hapus_pelanggan';
 $route['laporan-penjualan']     = 'c_laporan_penjualan/laporan_penjualan';
 $route['daftar-penjualan']      = 'c_laporan_penjualan/daftar_penjualan';
 $route['detail-penjualan']      = 'c_laporan_penjualan/detail_penjualan';
+$route['batalkan-nota']         = 'c_laporan_penjualan/batalkan_nota';
+
+$route['laporan-penjualan-dibatalkan']  = 'c_laporan_penjualan_dibatalkan/laporan_penjualan_dibatalkan';
+$route['daftar-penjualan-dibatalkan']   = 'c_laporan_penjualan_dibatalkan/daftar_penjualan_dibatalkan';
+$route['detail-penjualan-dibatalkan']   = 'c_laporan_penjualan_dibatalkan/detail_penjualan_dibatalkan';
 
 // Route untuk aliran data pelanggan dengan kasir
 $route['ambil-pelanggan-baru']      = 'c_sinkronisasi/ambil_pelanggan_baru';
