@@ -96,7 +96,7 @@ class c_sinkronisasi extends CI_Controller {
         $status[0] = $status_laporan;
         $status[1] = $status_detail;
         $status[2] = $status_stok;
-
+        
         echo json_encode($status);
     }
 

@@ -256,6 +256,8 @@
 
         // Fungsi untuk memuat ulang data tabel
         function refreshTabel() {
+            pesanLoading();
+
             $.ajax({
                 type    : 'post',
                 url     : 'daftar-penjualan',
@@ -316,6 +318,9 @@
                 error   : function() {
                     // Tampilkan pesan pemberitahuan
 					pesanPemberitahuan('warning', 'Terdapat kesalahan saat memuat data. Silakan mencoba kembali.');
+                },
+                complete: function() {
+                    $('div.overlay').remove();
                 }
             });
         } // End fungsi refreshTabel
@@ -351,9 +356,8 @@
         $('#formFilter').submit(function(event) {
             event.preventDefault();
             nilaiBulanTahun = $('input[name="bulan_tahun"]').val();
-            pesanLoading();
+            
             refreshTabel();
-            $('div.overlay').remove();
         });
 
         // Event handler untuk mengisi detail penjualan
@@ -488,8 +492,8 @@
 			var kolom = ['No', 'Jumlah', 'Nama Barang', 'Kode Barang', 'Kategori', 'Harga Satuan', 'Diskon', 'Total', 'Dus ke-'];
 			var data = new Array();
 			var namaPelanggan = dataNota.laporan_penjualan.nama_pelanggan;
-			var alamatPelanggan = '';
-			var teleponPelanggan = '';
+			var alamatPelanggan = dataNota.laporan_penjualan.alamat_pelanggan;
+			var teleponPelanggan = dataNota.laporan_penjualan.telepon_pelanggan;
             var namaToko = dataNota.nama_toko;
 			var pdf = new jsPDF('landscape', 'mm', 'a5');
 
