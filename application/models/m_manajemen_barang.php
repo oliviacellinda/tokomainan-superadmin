@@ -15,6 +15,29 @@ class m_manajemen_barang extends CI_Model {
 		}
 	}
 
+	public function cek_id_barang($id_barang) {
+		$this->db->select('id_barang');
+		$this->db->where('id_barang', $id_barang);
+		$query = $this->db->get('barang');
+
+		if($query->num_rows() > 0) return 0;
+		else return 1;
+	}
+
+	public function cek_id_barang_dihapus($id_barang) {
+		$this->db->select('id_barang');
+		$this->db->where('id_barang', $id_barang);
+		$query = $this->db->get('daftar_barang_dihapus');
+
+		if($query->num_rows() > 0) return 1;
+		else return 0;
+	}
+
+	public function hapus_dari_daftar_barang_dihapus($id_barang) {
+		$this->db->where('id_barang', $id_barang);
+		$this->db->delete('daftar_barang_dihapus');
+	}
+
 	public function tambah_data($input) {
 		$this->db->insert('barang', $input);
 	}

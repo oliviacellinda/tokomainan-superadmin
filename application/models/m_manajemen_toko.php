@@ -15,6 +15,15 @@ class m_manajemen_toko extends CI_Model {
         }
     }
 
+    public function cek_id_toko($id_toko) {
+        $this->db->select('id_toko');
+        $this->db->where('id_toko', $id_toko);
+        $query = $this->db->get('toko');
+
+        if($query->num_rows() > 0) return 0;
+        else return 1;
+    }
+
     public function tambah_toko($input) {
         $this->db->insert('toko', $input);
     }

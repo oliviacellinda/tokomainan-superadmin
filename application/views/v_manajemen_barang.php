@@ -269,6 +269,7 @@
 					$.ajax({
 						type	: 'post',
 						url		: 'tambah-barang',
+						dataType: 'json',
 						data	: {
 							id_barang		: id_barang,
 							nama_barang		: nama_barang,
@@ -280,19 +281,26 @@
 							harga_jual_3 	: harga_jual_3,
 							harga_jual_4 	: harga_jual_4
 						},
-						success : function() {
-							// Perbarui isi tabel
-							refreshTabel();
+						success : function(data) {
+							if(data == 'success') {
+								// Perbarui isi tabel
+								refreshTabel();
 
-							// Tambahkan pesan pemberitahuan bahwa data berhasil ditambahkan
-							pesanPemberitahuan('info', 'Data berhasil ditambahkan.');
-
-							// Hapus pesan loading
-							$('div.overlay').remove();
+								// Tambahkan pesan pemberitahuan bahwa data berhasil ditambahkan
+								pesanPemberitahuan('info', 'Data berhasil ditambahkan.');
+							}
+							else if(data == 'ID used') {
+								// Tambahkan pesan pemberitahuan bahwa data gagal ditambahkan karena ID telah digunakan sebelumnya
+								pesanPemberitahuan('warning', 'ID barang telah digunakan sebelumnya. Silakan memasukkan kembali data yang sesuai.');
+							}
 						},
 						error	: function() {
 							// Tampilkan pesan pemberitahuan
-							pesanPemberitahuan('warning', 'Terdapat kesalahan saat memuat data. Silakan mencoba kembali.');
+							pesanPemberitahuan('warning', 'Gagal menambahkan data. Silakan mencoba kembali.');
+						},
+						complete: function() {
+							// Hapus pesan loading
+							$('div.overlay').remove();
 						}
 					});
 				}
@@ -361,7 +369,7 @@
 							isi += '<td><p hidden>'+data[i].harga_jual_2+'</p><div class="form-group"><input type="text" class="form-control" name="harga_jual_2" value="'+data[i].harga_jual_2+'" onkeypress="ambilNilaiBaru(this)" autocomplete="off"></div></td>';
 							isi += '<td><p hidden>'+data[i].harga_jual_3+'</p><div class="form-group"><input type="text" class="form-control" name="harga_jual_3" value="'+data[i].harga_jual_3+'" onkeypress="ambilNilaiBaru(this)" autocomplete="off"></div></td>';
 							isi += '<td><p hidden>'+data[i].harga_jual_4+'</p><div class="form-group"><input type="text" class="form-control" name="harga_jual_4" value="'+data[i].harga_jual_4+'" onkeypress="ambilNilaiBaru(this)" autocomplete="off"></div></td>';
-							isi += '<td><button id="btnHapus" class="btn btn-xs btn-danger"><i class="fa fa-times"></i></button></td>';
+							isi += '<td><button id="btnHapus" class="btn btn-xs btn-danger" data-id="'+data[i].id_barang+'"><i class="fa fa-times"></i></button></td>';
 							isi += '</tr>';
 						}
 					}
@@ -393,39 +401,35 @@
 
 		// Fungsi yang dijalankan ketika mengklik tombol Hapus (silang)
 		$('#tabelBarang').on('click', '#btnHapus', function() {
-			// Tampilkan pesan loading
-			pesanLoading();
+			// Ambil ID Barang dari baris data yang akan dihapus
+			var id_barang = $(this).data('id');
 
-			// Ambil seluruh data pada baris di mana tombol Hapus diklik
-			var data = tabel.row($(this).parents('td')).data();
-			//console.log(data);
+			var konfirmasi = confirm('Apakah Anda yakin untuk menghapus data dengan ID : ' + id_barang + ' ?');
+			if(konfirmasi == true) {
+				// Tampilkan pesan loading
+				pesanLoading();
 
-			// Ambil data id_barang dari data yang diambil sebelumnya
-			var id_barang = data[0];
-			// Karena data yang diperoleh berupa string <input type="text"... , data harus dibersihkan dulu
-			id_barang = id_barang.split('value="').pop();
-			id_barang = id_barang.replace('" onkeypress="ambilNilaiBaru(this)">', '');
-			//console.log(id_barang);
+				$.ajax({
+					type	: 'post',
+					url		: 'hapus-barang',
+					data	: { id_barang : id_barang },
+					success	: function() {
+						// Perbarui isi tabel
+						refreshTabel();
 
-			$.ajax({
-				type	: 'post',
-				url		: 'hapus-barang',
-				data	: { id_barang : id_barang },
-				success	: function() {
-					// Perbarui isi tabel
-					refreshTabel();
-
-					// Tambahkan pesan pemberitahuan bahwa data telah dihapus
-					pesanPemberitahuan('danger', 'Data berhasil dihapus.');
-
-					// Hapus pesan loading
-					$('div.overlay').remove();
-				},
-				error	: function(response) {
-					// Tampilkan pesan pemberitahuan
-					pesanPemberitahuan('warning', 'Terdapat kesalahan saat memuat data. Silakan mencoba kembali.');
-				}
-			}); // End ajax
+						// Tambahkan pesan pemberitahuan bahwa data telah dihapus
+						pesanPemberitahuan('danger', 'Data berhasil dihapus.');
+					},
+					error	: function(response) {
+						// Tampilkan pesan pemberitahuan
+						pesanPemberitahuan('warning', 'Gagal menghapus data. Silakan mencoba kembali.');
+					},
+					complete: function() {
+						// Hapus pesan loading
+						$('div.overlay').remove();
+					}
+				}); // End ajax
+			} // End konfirmasi akan hapus data
 		}); // End event tombol Hapus
 
 		// Event handler untuk edit data barang
@@ -500,24 +504,32 @@
 						$.ajax({
 							type	: 'post',
 							url		: 'edit-barang',
+							dataType: 'json',
 							data	: {
 								id_barang : id_barang,
 								nama_kolom: namaKolom,
 								nilai_baru: dataSel
 							},
-							success : function() {
-								// Perbarui isi tabel
-								refreshTabel();
+							success : function(data) {
+								if(data == 'success') {
+									// Perbarui isi tabel
+									refreshTabel();
 
-								// Tampilkan pesan pemberitahuan
-								pesanPemberitahuan('success', 'Data berhasil diperbarui');
-
-								// Hapus pesan loading
-								$('div.overlay').remove();
+									// Tampilkan pesan pemberitahuan
+									pesanPemberitahuan('success', 'Data berhasil diperbarui');
+								}
+								else if(data == 'ID used') {
+									// Tambahkan pesan pemberitahuan bahwa data gagal diedit karena ID telah digunakan sebelumnya
+									pesanPemberitahuan('warning', 'ID barang telah digunakan sebelumnya. Silakan memasukkan kembali data yang sesuai.');
+								}								
 							},
 							error	: function() {
 								// Tampilkan pesan pemberitahuan
-								pesanPemberitahuan('warning', 'Terdapat kesalahan saat memuat data. Silakan mencoba kembali.');
+								pesanPemberitahuan('warning', 'Gagal mengedit data. Silakan mencoba kembali.');
+							},
+							complete: function() {
+								// Hapus pesan loading
+								$('div.overlay').remove();
 							}
 						}); // End ajax
 					} // End status != 0
@@ -527,7 +539,7 @@
 			else {
 				$(this).find('div.form-group').removeClass('has-error');
 			}
-		} ); // End event handler untuk edit barang
+		}); // End event handler untuk edit barang
 
 		// Fungsi yang dijalankan setelah selesai memilih gambar
 		$('#inputGambar').change(function() {

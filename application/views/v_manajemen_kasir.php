@@ -113,8 +113,8 @@
 					var isi = '<tbody>';
 					// Untuk baris input data kasir baru
 					isi += '<tr id="barisInput">';
-					isi += '<td><input type="text" class="form-control" placeholder="ID Kasir" name="id_kasir"></td>';
-					isi += '<td><input type="text" class="form-control" placeholder="Password" name="password_kasir"></td>';
+					isi += '<td><input type="text" class="form-control" placeholder="ID Kasir" name="id_kasir" autocomplete="off"></td>';
+					isi += '<td><input type="text" class="form-control" placeholder="Password" name="password_kasir" autocomplete="off"></td>';
 					// Untuk dropdown toko
                     isi += '<td>';
                     isi += '<div class="form-group">';
@@ -136,8 +136,8 @@
                     if(data.kasir != 'no data') {
                         for(var i=0; i<data.kasir.length; i++) {
                             isi += '<tr>';
-                            isi += '<td><p hidden>'+data.kasir[i].id_kasir+'</p><input type="text" class="form-control" name="id_kasir" value="'+data.kasir[i].id_kasir+'" onkeypress="ambilNilaiBaru(this)"></td>';
-                            isi += '<td><p hidden>'+data.kasir[i].password_kasir+'</p><input type="text" class="form-control" name="password_kasir" value="'+data.kasir[i].password_kasir+'" onkeypress="ambilNilaiBaru(this)"></td>';
+                            isi += '<td><p hidden>'+data.kasir[i].id_kasir+'</p><input type="text" class="form-control" name="id_kasir" value="'+data.kasir[i].id_kasir+'" onkeypress="ambilNilaiBaru(this)" autocomplete="off"></td>';
+                            isi += '<td><p hidden>'+data.kasir[i].password_kasir+'</p><input type="text" class="form-control" name="password_kasir" value="'+data.kasir[i].password_kasir+'" onkeypress="ambilNilaiBaru(this)" autocomplete="off"></td>';
                             // Untuk dropdown toko
                             isi += '<td>';
                             isi += '<div class="form-group">';
@@ -156,7 +156,7 @@
                             isi += '</div>';
                             isi += '</td>';
                             // End dropdown toko
-                            isi += '<td><p hidden>'+data.kasir[i].nama_toko+'</p><button id="btnHapus" class="btn btn-xs btn-danger"><i class="fa fa-times"></i></button></td>';
+                            isi += '<td><p hidden>'+data.kasir[i].nama_toko+'</p><button id="btnHapus" class="btn btn-xs btn-danger" data-id="'+data.kasir[i].id_kasir+'"><i class="fa fa-times"></i></button></td>';
                             isi += '</tr>';
                         }
                     }
@@ -207,25 +207,33 @@
             $.ajax({
                 type    : 'post',
                 url     : 'tambah-kasir',
+                dataType: 'json',
                 data    : {
                     id_kasir        : id_kasir,
                     password_kasir  : password_kasir,
                     id_toko         : id_toko
                 },
-                success : function() {
-                    // Perbarui isi tabel
-                    refreshTabel();
+                success : function(data) {
+                    if(data == 'success') {
+                        // Perbarui isi tabel
+                        refreshTabel();
 
-                    // Tambahkan pesan pemberitahuan bahwa data berhasil ditambahkan
-                    pesanPemberitahuan('info', 'Data berhasil ditambahkan.');
-
-                    // Hapus pesan loading
-                    $('div.overlay').remove();
+                        // Tampilkan pesan pemberitahuan bahwa data berhasil ditambahkan
+                        pesanPemberitahuan('info', 'Data berhasil ditambahkan.');
+                    }
+                    else if(data == 'ID used') {
+                        // Tampilkan pesan pemberitahuan bahwa data gagal ditambahkan karena ID telah digunakan sebelumnya
+                        pesanPemberitahuan('warning', 'ID Kasir telah digunakan sebelumnya. Silakan memasukkan kembali data yang sesuai.');
+                    }
                 },
                 error   : function(response) {
                     // console.log(response.responseText);
                     // Tampilkan pesan pemberitahuan
-                    pesanPemberitahuan('warning', 'Terdapat kesalahan saat memuat data. Silakan mencoba kembali.');
+                    pesanPemberitahuan('warning', 'Gagal menambahkan data. Silakan mencoba kembali.');
+                },
+                complete: function() {
+                    // Hapus pesan loading
+                    $('div.overlay').remove();
                 }
             });
         }); // End event input baru
@@ -268,7 +276,7 @@
 					// Karena data yang diperoleh berupa string <input type="text"... , data harus dibersihkan dulu
 					var id_kasir = dataBaris[0];
 					id_kasir = id_kasir.split('value="').pop();
-					id_kasir = id_kasir.replace('" onkeypress="ambilNilaiBaru(this)">', '');
+					id_kasir = id_kasir.replace('" onkeypress="ambilNilaiBaru(this)" autocomplete="off">', '');
 					
 					// Dapatkan nama kolom (field yang ingin diubah nilainya) dari variabel kolom
 					var namaKolom;
@@ -280,25 +288,33 @@
 					$.ajax({
 						type	: 'post',
 						url		: 'edit-kasir',
+                        dataType: 'json',
 						data	: {
 							id_kasir    : id_kasir,
 							nama_kolom  : namaKolom,
 							nilai_baru  : dataSel
 						},
-						success : function() {
-							// Perbarui isi tabel
-							refreshTabel();
+						success : function(data) {
+                            if(data == 'success') {
+                                // Perbarui isi tabel
+                                refreshTabel();
 
-							// Tampilkan pesan pemberitahuan
-							pesanPemberitahuan('success', 'Data berhasil diperbarui');
-
-							// Hapus pesan loading
-							$('div.overlay').remove();
+                                // Tampilkan pesan pemberitahuan
+                                pesanPemberitahuan('success', 'Data berhasil diperbarui');
+                            }
+                            else if(data == 'ID used') {
+                                // Tampilkan pesan pemberitahuan bahwa data gagal diedit karena ID telah digunakan sebelumnya
+                                pesanPemberitahuan('warning', 'ID Kasir telah digunakan sebelumnya. Silakan memasukkan kembali data yang sesuai');
+                            }
 						},
 						error	: function(response) {
 							// Tampilkan pesan pemberitahuan
-							pesanPemberitahuan('warning', 'Terdapat kesalahan saat memuat data. Silakan mencoba kembali.');
-						}
+							pesanPemberitahuan('warning', 'Gagal mengedit data. Silakan mencoba kembali.');
+						},
+                        complete: function() {
+                            // Hapus pesan loading
+							$('div.overlay').remove();
+                        }
 					}); // End ajax
 				} // End if pengecekan baris input
 			} // End if pengecekan tombol Enter
@@ -316,7 +332,7 @@
                 var id_kasir = data[0];
                 // Karena data yang diperoleh berupa string <input type="text"... , data harus dibersihkan dulu
                 id_kasir = id_kasir.split('value="').pop();
-                id_kasir = id_kasir.replace('" onkeypress="ambilNilaiBaru(this)">', '');
+                id_kasir = id_kasir.replace('" onkeypress="ambilNilaiBaru(this)" autocomplete="off">', '');
                 // Ambil data id_toko yang baru
                 var id_toko = $(this).val();
 
@@ -334,13 +350,14 @@
 
                         // Tampilkan pesan pemberitahuan
                         pesanPemberitahuan('success', 'Data berhasil diperbarui');
-
-                        // Hapus pesan loading
-                        $('div.overlay').remove();
                     },
                     error	: function(response) {
                         // Tampilkan pesan pemberitahuan
-                        pesanPemberitahuan('warning', 'Terdapat kesalahan saat memuat data. Silakan mencoba kembali.');
+                        pesanPemberitahuan('warning', 'Gagal mengedit data. Silakan mencoba kembali.');
+                    },
+                    complete: function() {
+                        // Hapus pesan loading
+                        $('div.overlay').remove();
                     }
                 })
             }
@@ -348,37 +365,35 @@
 
         // Fungsi yang dijalankan ketika mengklik tombol Hapus (silang)
 		$('#tabelKasir').on('click', '#btnHapus', function() {
-			// Tampilkan pesan loading
-			pesanLoading();
+            // Ambil ID Kasir dari baris data yang akan dihapus
+            var id_kasir = $(this).data('id');
 
-			// Ambil seluruh data pada baris di mana tombol Hapus diklik
-			var data = tabel.row($(this).parents('td')).data();
+            var konfirmasi = confirm('Apakah Anda yakin untuk menghapus data dengan ID : ' + id_kasir + ' ?');
+            if(konfirmasi == true) {
+                // Tampilkan pesan loading
+			    pesanLoading();
 
-			// Ambil data id_kasir dari data yang diambil sebelumnya
-			var id_kasir = data[0];
-			// Karena data yang diperoleh berupa string <input type="text"... , data harus dibersihkan dulu
-			id_kasir = id_kasir.split('value="').pop();
-			id_kasir = id_kasir.replace('" onkeypress="ambilNilaiBaru(this)">', '');
+                $.ajax({
+                    type	: 'post',
+                    url		: 'hapus-kasir',
+                    data	: { id_kasir : id_kasir },
+                    success	: function() {
+                        // Perbarui isi tabel
+                        refreshTabel();
 
-			$.ajax({
-				type	: 'post',
-				url		: 'hapus-kasir',
-				data	: { id_kasir : id_kasir },
-				success	: function() {
-					// Perbarui isi tabel
-					refreshTabel();
-
-					// Tambahkan pesan pemberitahuan bahwa data telah dihapus
-					pesanPemberitahuan('danger', 'Data berhasil dihapus.');
-
-					// Hapus pesan loading
-					$('div.overlay').remove();
-				},
-				error	: function(response) {
-					// Tampilkan pesan pemberitahuan
-					pesanPemberitahuan('warning', 'Terdapat kesalahan saat memuat data. Silakan mencoba kembali.');
-				}
-			}); // End ajax
+                        // Tambahkan pesan pemberitahuan bahwa data telah dihapus
+                        pesanPemberitahuan('danger', 'Data berhasil dihapus.');					
+                    },
+                    error	: function(response) {
+                        // Tampilkan pesan pemberitahuan
+                        pesanPemberitahuan('warning', 'Gagal menghapus data. Silakan mencoba kembali.');
+                    },
+                    complete: function() {
+                        // Hapus pesan loading
+                        $('div.overlay').remove();
+                    }
+                }); // End ajax
+            } // End konfirmasi akan hapus data
 		}); // End event tombol Hapus
     });
     </script>

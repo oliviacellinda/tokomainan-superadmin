@@ -18,6 +18,29 @@ class m_manajemen_kasir extends CI_Model {
         }
     }
 
+    public function cek_id_kasir($id_kasir) {
+        $this->db->select('id_kasir');
+        $this->db->where('id_kasir', $id_kasir);
+        $query = $this->db->get('kasir');
+
+        if($query->num_rows() > 0) return 0;
+        else return 1;
+    }
+
+    public function cek_id_kasir_dihapus($id_kasir) {
+        $this->db->select('id_kasir');
+        $this->db->where('id_kasir', $id_kasir);
+        $query = $this->db->get('daftar_kasir_dihapus');
+
+        if($query->num_rows() > 0) return 1;
+        else return 0;
+    }
+
+    public function hapus_dari_daftar_kasir_dihapus($id_kasir) {
+        $this->db->where('id_kasir', $id_kasir);
+        $this->db->delete('daftar_kasir_dihapus');
+    }
+
     public function tambah_kasir($input) {
         $this->db->insert('kasir', $input);
     }

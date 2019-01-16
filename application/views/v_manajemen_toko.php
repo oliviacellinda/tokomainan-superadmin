@@ -112,10 +112,10 @@
 					var isi = '<tbody>';
 					// Untuk baris input data toko baru
 					isi += '<tr id="barisInput">';
-					isi += '<td><input type="text" class="form-control" placeholder="ID Toko" name="id_toko"></td>';
-					isi += '<td><input type="text" class="form-control" placeholder="Password" name="password_toko"></td>';
-					isi += '<td><input type="text" class="form-control" placeholder="Nama" name="nama_toko"></td>';
-					isi += '<td><input type="text" class="form-control" placeholder="Alamat" name="alamat_toko"></td>';
+					isi += '<td><input type="text" class="form-control" placeholder="ID Toko" name="id_toko" autocomplete="off"></td>';
+					isi += '<td><input type="text" class="form-control" placeholder="Password" name="password_toko" autocomplete="off"></td>';
+					isi += '<td><input type="text" class="form-control" placeholder="Nama" name="nama_toko" autocomplete="off"></td>';
+					isi += '<td><input type="text" class="form-control" placeholder="Alamat" name="alamat_toko" autocomplete="off"></td>';
 					isi += '<td></td>';
 					isi += '</tr>';
 					// Untuk daftar toko
@@ -123,11 +123,11 @@
                     if(data != 'no data') {
                         for(var i=0; i<data.length; i++) {
                             isi += '<tr>';
-                            isi += '<td><p hidden>'+data[i].id_toko+'</p><input type="text" class="form-control" name="id_toko" value="'+data[i].id_toko+'" onkeypress="ambilNilaiBaru(this)"></td>';
-                            isi += '<td><p hidden>'+data[i].password_toko+'</p><input type="text" class="form-control" name="password_toko" value="'+data[i].password_toko+'" onkeypress="ambilNilaiBaru(this)"></td>';
-                            isi += '<td><p hidden>'+data[i].nama_toko+'</p><input type="text" class="form-control" name="nama_toko" value="'+data[i].nama_toko+'" onkeypress="ambilNilaiBaru(this)"></td>';
-                            isi += '<td><p hidden>'+data[i].alamat_toko+'</p><input type="text" class="form-control" name="alamat_toko" value="'+data[i].alamat_toko+'" onkeypress="ambilNilaiBaru(this)"></td>';
-                            isi += '<td><button id="btnHapus" class="btn btn-xs btn-danger"><i class="fa fa-times"></i></button></td>';
+                            isi += '<td><p hidden>'+data[i].id_toko+'</p><input type="text" class="form-control" name="id_toko" value="'+data[i].id_toko+'" onkeypress="ambilNilaiBaru(this)" autocomplete="off"></td>';
+                            isi += '<td><p hidden>'+data[i].password_toko+'</p><input type="text" class="form-control" name="password_toko" value="'+data[i].password_toko+'" onkeypress="ambilNilaiBaru(this)" autocomplete="off"></td>';
+                            isi += '<td><p hidden>'+data[i].nama_toko+'</p><input type="text" class="form-control" name="nama_toko" value="'+data[i].nama_toko+'" onkeypress="ambilNilaiBaru(this)" autocomplete="off"></td>';
+                            isi += '<td><p hidden>'+data[i].alamat_toko+'</p><input type="text" class="form-control" name="alamat_toko" value="'+data[i].alamat_toko+'" onkeypress="ambilNilaiBaru(this)" autocomplete="off"></td>';
+                            isi += '<td><button id="btnHapus" class="btn btn-xs btn-danger" data-id="'+data[i].id_toko+'"><i class="fa fa-times"></i></button></td>';
                             isi += '</tr>';
                         }
                     }
@@ -182,26 +182,34 @@
                 $.ajax({
                     type    : 'post',
                     url     : 'tambah-toko',
+					dataType: 'json',
                     data    : {
                         id_toko       : id_toko,
 						password_toko : password_toko,
                         nama_toko     : nama_toko,
                         alamat_toko   : alamat_toko
                     },
-                    success : function() {
-                        // Perbarui isi tabel
-                        refreshTabel();
+                    success : function(data) {
+						if(data == 'success') {
+							// Perbarui isi tabel
+							refreshTabel();
 
-                        // Tambahkan pesan pemberitahuan bahwa data berhasil ditambahkan
-                        pesanPemberitahuan('info', 'Data berhasil ditambahkan.');
-
-                        // Hapus pesan loading
-                        $('div.overlay').remove();
+							// Tampilkan pesan pemberitahuan bahwa data berhasil ditambahkan
+							pesanPemberitahuan('info', 'Data berhasil ditambahkan.');
+						}
+                        else if(data == 'ID used') {
+							// Tampilkan pesan pemberitahuan bahwa data gagal ditambahkan karena ID telah digunakan sebelumnya
+							pesanPemberitahuan('warning', 'ID Toko telah digunakan sebelumnya. Silakan memasukkan kembali data yang sesuai.');
+						}
                     },
                     error   : function(response) {
                         // Tampilkan pesan pemberitahuan
-						pesanPemberitahuan('warning', 'Terdapat kesalahan saat memuat data. Silakan mencoba kembali.');
-                    }
+						pesanPemberitahuan('warning', 'Gagal menambahkan data. Silakan mencoba kembali.');
+                    },
+					complete: function() {
+						// Hapus pesan loading
+                        $('div.overlay').remove();
+					}
                 });
             }
         }); // End event input data baru
@@ -244,7 +252,7 @@
 					// Karena data yang diperoleh berupa string <input type="text"... , data harus dibersihkan dulu
 					var id_toko = dataBaris[0];
 					id_toko = id_toko.split('value="').pop();
-					id_toko = id_toko.replace('" onkeypress="ambilNilaiBaru(this)">', '');
+					id_toko = id_toko.replace('" onkeypress="ambilNilaiBaru(this)" autocomplete="off">', '');
 					
 					// Dapatkan nama kolom (field yang ingin diubah nilainya) dari variabel kolom
 					var namaKolom;
@@ -258,24 +266,32 @@
 					$.ajax({
 						type	: 'post',
 						url		: 'edit-toko',
+						dataType: 'json',
 						data	: {
 							id_toko : id_toko,
 							nama_kolom: namaKolom,
 							nilai_baru: dataSel
 						},
-						success : function() {
-							// Perbarui isi tabel
-							refreshTabel();
+						success : function(data) {
+							if(data == 'success') {
+								// Perbarui isi tabel
+								refreshTabel();
 
-							// Tampilkan pesan pemberitahuan
-							pesanPemberitahuan('success', 'Data berhasil diperbarui');
-
-							// Hapus pesan loading
-							$('div.overlay').remove();
+								// Tampilkan pesan pemberitahuan
+								pesanPemberitahuan('success', 'Data berhasil diperbarui');
+							}
+							else if(data == 'ID used') {
+								// Tampilkan pesan pemberitahuan bahwa data gagal diedit karena ID telah digunakan sebelumnya
+								pesanPemberitahuan('warning', 'ID Toko telah digunakan sebelumnya. Silakan memasukkan kembali data yang sesuai.');
+							}
 						},
 						error	: function() {
 							// Tampilkan pesan pemberitahuan
-							pesanPemberitahuan('warning', 'Terdapat kesalahan saat memuat data. Silakan mencoba kembali.');
+							pesanPemberitahuan('warning', 'Gagal mengedit data. Silakan mencoba kembali.');
+						},
+						complete: function() {
+							// Hapus pesan loading
+							$('div.overlay').remove();
 						}
 					}); // End ajax
 				} // End if pengecekan baris input
@@ -284,37 +300,35 @@
 
         // Fungsi yang dijalankan ketika mengklik tombol Hapus (silang)
 		$('#tabelToko').on('click', '#btnHapus', function() {
-			// Tampilkan pesan loading
-			pesanLoading();
+			// Ambil ID Toko dari baris data yang akan dihapus
+			var id_toko = $(this).data('id');
 
-			// Ambil seluruh data pada baris di mana tombol Hapus diklik
-			var data = tabel.row($(this).parents('td')).data();
+			var konfirmasi = confirm('Apakah Anda yakin untuk menghapus data dengan ID : ' + id_toko + ' ?');
+			if(konfirmasi == true) {
+				// Tampilkan pesan loading
+				pesanLoading();
 
-			// Ambil data id_toko dari data yang diambil sebelumnya
-			var id_toko = data[0];
-			// Karena data yang diperoleh berupa string <input type="text"... , data harus dibersihkan dulu
-			id_toko = id_toko.split('value="').pop();
-			id_toko = id_toko.replace('" onkeypress="ambilNilaiBaru(this)">', '');
+				$.ajax({
+					type	: 'post',
+					url		: 'hapus-toko',
+					data	: { id_toko : id_toko },
+					success	: function() {
+						// Perbarui isi tabel
+						refreshTabel();
 
-			$.ajax({
-				type	: 'post',
-				url		: 'hapus-toko',
-				data	: { id_toko : id_toko },
-				success	: function() {
-					// Perbarui isi tabel
-					refreshTabel();
-
-					// Tambahkan pesan pemberitahuan bahwa data telah dihapus
-					pesanPemberitahuan('danger', 'Data berhasil dihapus.');
-
-					// Hapus pesan loading
-					$('div.overlay').remove();
-				},
-				error	: function() {
-					// Tampilkan pesan pemberitahuan
-					pesanPemberitahuan('warning', 'Terdapat kesalahan saat memuat data. Silakan mencoba kembali.');
-				}
-			}); // End ajax
+						// Tambahkan pesan pemberitahuan bahwa data telah dihapus
+						pesanPemberitahuan('danger', 'Data berhasil dihapus.');
+					},
+					error	: function() {
+						// Tampilkan pesan pemberitahuan
+						pesanPemberitahuan('warning', 'Gagal menghapus data. Silakan mencoba kembali.');
+					},
+					complete: function() {
+						// Hapus pesan loading
+						$('div.overlay').remove();
+					}
+				}); // End ajax
+			} // End konfirmasi akan hapus data
 		}); // End event tombol Hapus
     });
     </script>

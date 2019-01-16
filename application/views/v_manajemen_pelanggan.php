@@ -169,7 +169,7 @@
 							isi += '</div>';
 							isi += '</td>';
 							// End dropdown level
-							isi += '<td><button id="btnHapus" class="btn btn-xs btn-danger"><i class="fa fa-times"></i></button></td>';
+							isi += '<td><button id="btnHapus" class="btn btn-xs btn-danger" data-id="'+data[i].id_pelanggan+'"><i class="fa fa-times"></i></button></td>';
                             isi += '</tr>';
                         }
                     }
@@ -249,14 +249,15 @@
 
 					// Tambahkan pesan pemberitahuan bahwa data berhasil ditambahkan
 					pesanPemberitahuan('info', 'Data berhasil ditambahkan.');
-
-					// Hapus pesan loading
-					$('div.overlay').remove();
 				},
 				error   : function(response) {
 					// console.log(response.responseText);
 					// Tampilkan pesan pemberitahuan
-					pesanPemberitahuan('warning', 'Terdapat kesalahan saat memuat data. Silakan mencoba kembali.');
+					pesanPemberitahuan('warning', 'Gagal menambahkan data. Silakan mencoba kembali.');
+				},
+				complete: function() {
+					// Hapus pesan loading
+					$('div.overlay').remove();
 				}
 			});
         }); // End event input data baru
@@ -321,13 +322,14 @@
 
 							// Tampilkan pesan pemberitahuan
 							pesanPemberitahuan('success', 'Data berhasil diperbarui');
-
-							// Hapus pesan loading
-							$('div.overlay').remove();
 						},
 						error	: function() {
 							// Tampilkan pesan pemberitahuan
-							pesanPemberitahuan('warning', 'Terdapat kesalahan saat memuat data. Silakan mencoba kembali.');
+							pesanPemberitahuan('warning', 'Gagal mengedit data. Silakan mencoba kembali.');
+						},
+						complete: function() {
+							// Hapus pesan loading
+							$('div.overlay').remove();
 						}
 					}); // End ajax
 				} // End if pengecekan baris input
@@ -359,13 +361,14 @@
 
 						// Tampilkan pesan pemberitahuan
 						pesanPemberitahuan('success', 'Data berhasil diperbarui');
-
-						// Hapus pesan loading
-						$('div.overlay').remove();
 					},
 					error	: function() {
 						// Tampilkan pesan pemberitahuan
-						pesanPemberitahuan('warning', 'Terdapat kesalahan saat memuat data. Silakan mencoba kembali.');
+						pesanPemberitahuan('warning', 'Gagal mengedit data. Silakan mencoba kembali.');
+					},
+					complete: function() {
+						// Hapus pesan loading
+						$('div.overlay').remove();
 					}
 				});
 			} // End if pengecekan baris input
@@ -373,34 +376,36 @@
 
         // Fungsi yang dijalankan ketika mengklik tombol Hapus (silang)
 		$('#tabelPelanggan').on('click', '#btnHapus', function() {
-			// Tampilkan pesan loading
-			pesanLoading();
+			// Ambil ID Pelanggan dari baris data yang akan dihapus
+			var id_pelanggan = $(this).data('id');
 
-			// Ambil seluruh data pada baris di mana tombol Hapus diklik
-			var data = tabel.row($(this).parents('td')).data();
-			// Ambil data id_pelanggan dari data yang diambil sebelumnya
-			var id_pelanggan = data[0];
+			var konfirmasi = confirm('Apakah Anda yakin akan menghapus data dengan ID : ' + id_pelanggan + ' ?');
+			if(konfirmasi == true) {
+				// Tampilkan pesan loading
+				pesanLoading();
 
-			$.ajax({
-				type	: 'post',
-				url		: 'hapus-pelanggan',
-				data	: { id_pelanggan : id_pelanggan },
-				success	: function() {
-					// Perbarui isi tabel
-					refreshTabel();
+				$.ajax({
+					type	: 'post',
+					url		: 'hapus-pelanggan',
+					data	: { id_pelanggan : id_pelanggan },
+					success	: function() {
+						// Perbarui isi tabel
+						refreshTabel();
 
-					// Tambahkan pesan pemberitahuan bahwa data telah dihapus
-					pesanPemberitahuan('danger', 'Data berhasil dihapus.');
-
-					// Hapus pesan loading
-					$('div.overlay').remove();
-				},
-				error	: function(response) {
-					console.log(response.responseText);
-					// Tampilkan pesan pemberitahuan
-					pesanPemberitahuan('warning', 'Terdapat kesalahan saat memuat data. Silakan mencoba kembali.');
-				}
-			}); // End ajax
+						// Tambahkan pesan pemberitahuan bahwa data telah dihapus
+						pesanPemberitahuan('danger', 'Data berhasil dihapus.');
+					},
+					error	: function(response) {
+						// console.log(response.responseText);
+						// Tampilkan pesan pemberitahuan
+						pesanPemberitahuan('warning', 'Gagal menghapus data. Silakan mencoba kembali.');
+					},
+					complete: function() {
+						// Hapus pesan loading
+						$('div.overlay').remove();
+					}
+				}); // End ajax
+			} // End konfirmasi akan hapus data
 		}); // End event tombol Hapus
     });
     </script>

@@ -5,6 +5,8 @@ class c_manajemen_barang extends CI_Controller {
 
 	public function __construct() {
 		parent::__construct();
+
+		$this->load->model('m_manajemen_barang');
 	}
 	
 	public function manajemen_barang() {
@@ -16,8 +18,6 @@ class c_manajemen_barang extends CI_Controller {
 	}
 
 	public function lihat_barang() {
-		$this->load->model('m_manajemen_barang');
-
 		$data = $this->m_manajemen_barang->lihat_barang();
 		if($data == '') echo json_encode('no data');
 		else echo json_encode($data);
@@ -37,22 +37,33 @@ class c_manajemen_barang extends CI_Controller {
 			'tgl_modifikasi_data'	=> date('Y-m-d H:i:s')
 		);
 		
-		$this->load->model('m_manajemen_barang');
+		// Cek apakah ID Barang yang akan ditambahkan ada dalam database. TRUE jika tidak ada dalam database.
+		if( $this->m_manajemen_barang->cek_id_barang($input['id_barang']) ) {
+			$this->m_manajemen_barang->tambah_data($input);
 
-		$this->m_manajemen_barang->tambah_data($input);
-
-		// Auto insert barang baru ke tabel stok barang
-		$this->load->model('m_manajemen_toko');
-		$this->load->model('m_manajemen_stok_barang');
-
-		$id_barang = $this->input->post('id_barang');
-		$daftar_toko = $this->m_manajemen_toko->lihat_toko();
-
-		if($daftar_toko != '') {
-			$today = date('Y-m-d');
-			for($i=0; $i<count($daftar_toko); $i++) {
-				$this->m_manajemen_stok_barang->auto_insert_stok_barang_baru($id_barang, $daftar_toko[$i]['id_toko'], $today);
+			// Cek apakah ID Barang yang akan ditambahkan ada dalam daftar barang yang pernah dihapus sebelumnya. TRUE jika ada dalam daftar.
+			if( $this->m_manajemen_barang->cek_id_barang_dihapus($input['id_barang']) ) {
+				$this->m_manajemen_barang->hapus_dari_daftar_barang_dihapus($input['id_barang']);
 			}
+
+			// Auto insert barang baru ke tabel stok barang
+			$this->load->model('m_manajemen_toko');
+			$this->load->model('m_manajemen_stok_barang');
+
+			$id_barang = $this->input->post('id_barang');
+			$daftar_toko = $this->m_manajemen_toko->lihat_toko();
+
+			if($daftar_toko != '') {
+				$today = date('Y-m-d');
+				for($i=0; $i<count($daftar_toko); $i++) {
+					$this->m_manajemen_stok_barang->auto_insert_stok_barang_baru($id_barang, $daftar_toko[$i]['id_toko'], $today);
+				}
+			}
+
+			echo json_encode('success');
+		}
+		else {
+			echo json_encode('ID used');
 		}
 	}
 
@@ -62,15 +73,31 @@ class c_manajemen_barang extends CI_Controller {
 		$nilai_baru = $this->input->post('nilai_baru');
 		$today = date('Y-m-d H:i:s');
 
-		$this->load->model('m_manajemen_barang');
+		if($nama_kolom == 'id_barang') {
+			// Cek apakah ID Barang baru ada dalam database. TRUE jika tidak ada dalam database.
+			if( $this->m_manajemen_barang->cek_id_barang($nilai_baru) ) {
+				$this->m_manajemen_barang->edit_barang($id_barang, $nama_kolom, $nilai_baru, $today);
 
-		$this->m_manajemen_barang->edit_barang($id_barang, $nama_kolom, $nilai_baru, $today);
+				// Cek apakah ID Barang baru ada dalam daftar barang yang pernah dihapus sebelumnya. TRUE jika ada dalam daftar
+				if( $this->m_manajemen_barang->cek_id_barang_dihapus($nilai_baru) ) {
+					$this->m_manajemen_barang->hapus_dari_daftar_barang_dihapus($nilai_baru);
+				}
+
+				echo json_encode('success');
+			}
+			else {
+				echo json_encode('ID used');
+			}
+		}
+		else {
+			$this->m_manajemen_barang->edit_barang($id_barang, $nama_kolom, $nilai_baru, $today);
+
+			echo json_encode('success');
+		}
 	}
 
 	public function hapus_barang() {
 		$id_barang = $this->input->post('id_barang');
-
-		$this->load->model('m_manajemen_barang');
 
 		$this->m_manajemen_barang->hapus_barang($id_barang);
         $this->m_manajemen_barang->daftar_barang_dihapus(array('id_barang' => $id_barang));
@@ -115,7 +142,7 @@ class c_manajemen_barang extends CI_Controller {
 				$array_error = explode("<p>", $error); // Pisahkan string menjadi array dgn indikator <p>
 				$count_error = count($array_error);
 				$show_error = substr($array_error[$count_error-1], 0, -4); // Hilangkan </p> di akhir string
-				$pesan[] = $file['fileGambar']['name'][$i] . " -> " . $show_error;
+				$pesan[] = $file['fileGambar']['name'][$i] . " <i class='fa fa-arrow-right fa-fw'></i> " . $show_error;
 			}
 			// Jika berhasil upload gambar, resize gambar tsb
 			else {
