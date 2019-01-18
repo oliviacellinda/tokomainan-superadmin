@@ -24,7 +24,7 @@ class c_manajemen_stok_barang extends CI_Controller {
             for($i=0; $i<count($data); $i++) {
                 $today = new DateTime(date('Y-m-d'));
                 $date = new DateTime($data[$i]['tgl_modifikasi_data']);
-                $data[$i]['umur_barang'] = (date_diff($today, $date))->days;
+                $data[$i]['umur_barang'] = date_diff($today, $date)->days;
                 // days adalah properti dari objek DateInterval
                 // fungsi date_diff di atas menghasilkan objek DateInterval
             }
