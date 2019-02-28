@@ -255,6 +255,8 @@
 
         // Fungsi untuk memuat ulang data tabel
         function refreshTabel() {
+            pesanLoading();
+
             $.ajax({
                 type    : 'post',
                 url     : 'daftar-penjualan-dibatalkan',
@@ -310,6 +312,10 @@
                 error   : function() {
                     // Tampilkan pesan pemberitahuan
 					pesanPemberitahuan('warning', 'Terdapat kesalahan saat memuat data. Silakan mencoba kembali.');
+                },
+                complete: function() {
+                    // Hapus pesan loading
+                    $('div.overlay').remove();
                 }
             });
         } // End fungsi refreshTabel

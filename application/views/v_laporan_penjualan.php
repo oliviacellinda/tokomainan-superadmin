@@ -321,6 +321,7 @@
 					pesanPemberitahuan('warning', 'Terdapat kesalahan saat memuat data. Silakan mencoba kembali.');
                 },
                 complete: function() {
+                    // Hapus pesan loading
                     $('div.overlay').remove();
                 }
             });

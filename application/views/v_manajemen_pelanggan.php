@@ -110,6 +110,8 @@
 
         // Fungsi untuk memuat ulang data tabel
 		function refreshTabel() {
+			pesanLoading();
+
 			$.ajax({
 				type	: 'post',
 				url		: 'lihat-pelanggan',
@@ -200,7 +202,11 @@
 				error	: function() {
 					// Tampilkan pesan pemberitahuan
 					pesanPemberitahuan('warning', 'Terdapat kesalahan saat memuat data. Silakan mencoba kembali.');
-				} // End error
+				}, // End error
+				complete: function() {
+					// Hapus pesan loading
+					$('div.overlay').remove();
+				} // End complete
 			}); // End ajax		
         } // End fungsi refreshTabel
         
