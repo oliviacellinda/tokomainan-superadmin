@@ -182,15 +182,15 @@
 					// Tambahkan data baru ke dalam tabel
 					$('#tabelStok').append(isi);
 
+                    // Beri label pada barang "tua"
+                    labelUmur();
+
                     // Reinitialize DataTable
 					tabel.clear().destroy();
 					tabel = $('#tabelStok').DataTable({
 						'scrollX'		: true,
 						'bInfo'			: false // Untuk menghilangkan tulisan keterangan di bawah tabel
 					});
-                    
-                    // Beri label pada barang "tua"
-                    labelUmur();
                 },
                 error   : function(response) {
                     // Tampilkan pesan pemberitahuan

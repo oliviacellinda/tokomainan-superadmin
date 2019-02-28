@@ -28,7 +28,7 @@ class c_manajemen_barang extends CI_Controller {
 			'id_barang' 			=> $this->input->post('id_barang'),
 			'nama_barang' 			=> $this->input->post('nama_barang'),
 			'jumlah_dlm_koli' 		=> $this->input->post('jumlah_dlm_koli'),
-			'kategori' 				=> $this->input->post('kategori'),
+			'kemasan' 				=> $this->input->post('kemasan'),
 			'fungsi' 				=> $this->input->post('fungsi'),
 			'harga_jual_1' 			=> $this->input->post('harga_jual_1'),
 			'harga_jual_2'	 		=> $this->input->post('harga_jual_2'),

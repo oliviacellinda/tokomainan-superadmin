@@ -98,11 +98,11 @@
                                     <!-- Header Tabel -->
                                     <thead>
                                     <tr>
-                                        <th width="162.6px">No. Invoice</th>
-                                        <th width="162.6px">Tanggal Invoice</th>
-                                        <th width="120px">Sumber Penjualan</th>
-                                        <th width="120px">Total Penjualan</th>
-                                        <th width="162.6px">Nama Pelanggan</th>
+                                        <th>No. Invoice</th>
+                                        <th>Tanggal Invoice</th>
+                                        <th>Sumber Penjualan</th>
+                                        <th>Total Penjualan</th>
+                                        <th>Nama Pelanggan</th>
                                         <th>Menu</th>
                                     </tr>
                                     </thead>
@@ -145,6 +145,7 @@
                                     <th>No.</th>
                                     <th width="162.6px">Kode Barang</th>
                                     <th width="162.6px">Nama Barang</th>
+                                    <th width="162.6px">Kemasan</th>
                                     <th width="162.6px">Jumlah (pcs)</th>
                                     <th width="162.6px">Harga (pcs)</th>
                                     <th width="162.6px">Diskon</th>
@@ -382,6 +383,7 @@
                             baris += '<td>'+(i+1)+'</td>';
                             baris += '<td>'+data.detail_penjualan[i].id_barang+'</td>';
                             baris += '<td>'+data.detail_penjualan[i].nama_barang+'</td>';
+                            baris += '<td>'+data.detail_penjualan[i].kemasan+'</td>';
                             baris += '<td>'+data.detail_penjualan[i].jumlah_barang+'</td>';
                             baris += '<td>'+data.detail_penjualan[i].harga_barang+'</td>';
                             if(data.detail_penjualan[i].status_diskon_barang == 'p') baris += '<td>'+data.detail_penjualan[i].diskon_barang+'%</td>';

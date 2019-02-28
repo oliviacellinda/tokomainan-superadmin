@@ -98,11 +98,11 @@
                                     <!-- Header Tabel -->
                                     <thead>
                                     <tr>
-                                        <th width="162.6px">No. Invoice</th>
-                                        <th width="162.6px">Tanggal Invoice</th>
-                                        <th width="120px">Sumber Penjualan</th>
-                                        <th width="120px">Total Penjualan</th>
-                                        <th width="162.6px">Nama Pelanggan</th>
+                                        <th>No. Invoice</th>
+                                        <th>Tanggal Invoice</th>
+                                        <th>Sumber Penjualan</th>
+                                        <th>Total Penjualan</th>
+                                        <th>Nama Pelanggan</th>
                                         <th>Menu</th>
                                     </tr>
                                     </thead>
@@ -145,6 +145,7 @@
                                     <th>No.</th>
                                     <th width="162.6px">Kode Barang</th>
                                     <th width="162.6px">Nama Barang</th>
+                                    <th width="162.6px">Kemasan</th>
                                     <th width="162.6px">Jumlah (pcs)</th>
                                     <th width="162.6px">Harga (pcs)</th>
                                     <th width="162.6px">Diskon</th>
@@ -393,6 +394,7 @@
                             baris += '<td>'+(i+1)+'</td>';
                             baris += '<td>'+data.detail_penjualan[i].id_barang+'</td>';
                             baris += '<td>'+data.detail_penjualan[i].nama_barang+'</td>';
+                            baris += '<td>'+data.detail_penjualan[i].kemasan+'</td>';
                             baris += '<td>'+data.detail_penjualan[i].jumlah_barang+'</td>';
                             baris += '<td>'+data.detail_penjualan[i].harga_barang+'</td>';
                             if(data.detail_penjualan[i].status_diskon_barang == 'p') baris += '<td>'+data.detail_penjualan[i].diskon_barang+'%</td>';
@@ -489,7 +491,7 @@
         // Fungsi untuk mengambil dan menyusun data yang akan ditampilkan dalam nota, kemudian dicetak
 		function cetakNota(dataNota) {
 			var jumlahHlm = Math.ceil(dataNota.detail_penjualan.length / 10);
-			var kolom = ['No', 'Jumlah', 'Nama Barang', 'Kode Barang', 'Kategori', 'Harga Satuan', 'Diskon', 'Total', 'Dus ke-'];
+			var kolom = ['No', 'Jumlah', 'Nama Barang', 'Kode Barang', 'Kemasan', 'Harga Satuan', 'Diskon', 'Total', 'Dus ke-'];
 			var data = new Array();
 			var namaPelanggan = dataNota.laporan_penjualan.nama_pelanggan;
 			var alamatPelanggan = dataNota.laporan_penjualan.alamat_pelanggan;
@@ -508,7 +510,7 @@
                 var jumlah = dataNota.detail_penjualan[i].jumlah_barang + ' pcs';
                 var nama = dataNota.detail_penjualan[i].nama_barang + ' (' + dataNota.detail_penjualan[i].jumlah_dlm_koli + ' pcs)';
                 var kode = dataNota.detail_penjualan[i].id_barang;
-                var kategori = dataNota.detail_penjualan[i].kategori;
+                var kemasan = dataNota.detail_penjualan[i].kemasan;
                 var harga = 'Rp. ' + dataNota.detail_penjualan[i].harga_barang;
                 var diskon = '';
                 var total = 'Rp. ' + dataNota.detail_penjualan[i].total_harga_barang;
@@ -516,7 +518,7 @@
                 if(dataNota.detail_penjualan[i].status_diskon_barang == 'p') diskon = dataNota.detail_penjualan[i].diskon_barang + '%';
                 else diskon = 'Rp. ' + dataNota.detail_penjualan[i].diskon_barang;
 
-				var baris = [ i+1, jumlah, nama, kode, kategori, harga, diskon, total, '' ];
+				var baris = [ i+1, jumlah, nama, kode, kemasan, harga, diskon, total, '' ];
 				data.push(baris);
 			}
 			// console.log(data);
