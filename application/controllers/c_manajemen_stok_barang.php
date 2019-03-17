@@ -12,7 +12,23 @@ class c_manajemen_stok_barang extends CI_Controller {
             header('Location: login');
             die();
         }
-        else $this->load->view('v_data_barang_masuk');
+        else {
+            $this->load->model('m_manajemen_stok_barang');
+            
+            $data['stok_barang'] = $this->m_manajemen_stok_barang->daftar_stok_barang($this->session->id_toko);
+            
+            if($data['stok_barang'] != '') {
+                for($i=0; $i<count($data['stok_barang']); $i++) {
+                    $today = new DateTime(date('Y-m-d'));
+                    $date = new DateTime($data['stok_barang'][$i]['tgl_modifikasi_data']);
+                    $data['stok_barang'][$i]['umur_barang'] = date_diff($today, $date)->days;
+                    // days adalah properti dari objek DateInterval
+                    // fungsi date_diff di atas menghasilkan objek DateInterval
+                }
+            }
+            
+            $this->load->view('v_data_barang_masuk', $data);
+        }
     }
 
     public function daftar_stok_barang() {
@@ -52,7 +68,23 @@ class c_manajemen_stok_barang extends CI_Controller {
             header('Location: login');
             die();
         }
-        else $this->load->view('v_data_barang_keluar');
+        else {
+            $this->load->model('m_manajemen_stok_barang');
+            
+            $data['stok_barang'] = $this->m_manajemen_stok_barang->daftar_stok_barang($this->session->id_toko);
+            
+            if($data['stok_barang'] != '') {
+                for($i=0; $i<count($data['stok_barang']); $i++) {
+                    $today = new DateTime(date('Y-m-d'));
+                    $date = new DateTime($data['stok_barang'][$i]['tgl_modifikasi_data']);
+                    $data['stok_barang'][$i]['umur_barang'] = date_diff($today, $date)->days;
+                    // days adalah properti dari objek DateInterval
+                    // fungsi date_diff di atas menghasilkan objek DateInterval
+                }
+            }
+            
+            $this->load->view('v_data_barang_keluar', $data);
+        }
     }
 
     public function laporan_barang_keluar() {

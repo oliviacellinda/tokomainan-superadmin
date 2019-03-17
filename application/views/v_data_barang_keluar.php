@@ -51,7 +51,12 @@
                                         <div class="col-xs-3">
                                             <div class="form-group">
                                                 <select class="form-control select2" name="id_barang" id="selectBarang">
-                                                    <!-- Isi option melalui ajax di bawah -->
+                                                    <option></option>
+                                                    <?php if($stok_barang != '') : ?>
+                                                        <?php for($i=0; $i<count($stok_barang); $i++) : ?>
+                                                            <option value="<?php echo $stok_barang[$i]['id_barang'];?>"><?php echo $stok_barang[$i]['nama_barang'];?></option>
+                                                        <?php endfor; ?>
+                                                    <?php endif; ?>
                                                 </select>
                                             </div>
                                         </div>
@@ -145,7 +150,6 @@
             'order'     : [[ 0, 'desc' ]]
         });
 
-        daftarBarang();
         refreshTabel();
 
         // Fungsi untuk memuat daftar barang di dropdown daftar barang
