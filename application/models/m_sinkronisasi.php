@@ -52,8 +52,8 @@ class m_sinkronisasi extends CI_Model {
 
     public function tambah_laporan_penjualan($data) {
         // $this->db->insert('laporan_penjualan', $data);
-        $query = 'INSERT INTO laporan_penjualan (id_invoice, tgl_invoice, id_kasir, sub_total_penjualan, diskon_penjualan, status_diskon_penjualan, total_penjualan, id_pelanggan, nama_pelanggan, alamat_pelanggan, telepon_pelanggan, keterangan) ';
-        $query .= 'VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ';
+        $query = 'INSERT INTO laporan_penjualan (id_invoice, tgl_invoice, id_kasir, sub_total_penjualan, diskon_penjualan, status_diskon_penjualan, total_penjualan, id_pelanggan, nama_pelanggan, alamat_pelanggan, telepon_pelanggan, ekspedisi, keterangan) ';
+        $query .= 'VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ';
         $query .= 'ON DUPLICATE KEY UPDATE ';
         $query .= 'id_invoice=VALUES(id_invoice), ';
         $query .= 'tgl_invoice=VALUES(tgl_invoice), ';
@@ -66,6 +66,7 @@ class m_sinkronisasi extends CI_Model {
         $query .= 'nama_pelanggan=VALUES(nama_pelanggan), ';
         $query .= 'alamat_pelanggan=VALUES(alamat_pelanggan), ';
         $query .= 'telepon_pelanggan=VALUES(telepon_pelanggan), ';
+        $query .= 'ekspedisi=VALUES(ekspedisi), ';
         $query .= 'keterangan=VALUES(keterangan)';
 
         $this->db->query($query, $data);
@@ -106,7 +107,7 @@ class m_sinkronisasi extends CI_Model {
     }
 
     public function lihat_stok_barang($id_toko) {
-        $this->db->select('stok_barang.*, barang.nama_barang, barang.jumlah_dlm_koli, barang.harga_jual_4');
+        $this->db->select('stok_barang.*, barang.nama_barang, barang.jumlah_dlm_koli, barang.harga_jual_1, barang.harga_jual_2, barang.harga_jual_3, barang.harga_jual_4');
         $this->db->from('stok_barang');
         $this->db->join('barang', 'stok_barang.id_barang = barang.id_barang');
         $this->db->where('id_toko', $id_toko);

@@ -7,6 +7,14 @@ class m_laporan_penjualan_dibatalkan extends CI_Model {
         $this->load->database();
     }
 
+    public function daftar_toko() {
+        $query = $this->db->get('toko');
+
+        if($query->num_rows() > 0) {
+            return $query->result_array();
+        }
+    }
+
     public function lihat_seluruh_laporan() {
         $this->db->select('id_invoice, tgl_invoice, id_kasir, total_penjualan, nama_pelanggan');
         $this->db->from('laporan_penjualan');

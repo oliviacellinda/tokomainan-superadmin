@@ -8,13 +8,20 @@
 	<link rel="stylesheet" href="<?php echo base_url('assets/AdminLTE-2.4.2/bower_components/bootstrap/dist/css/bootstrap.min.css');?>">
 	<link rel="stylesheet" href="<?php echo base_url('assets/AdminLTE-2.4.2/bower_components/font-awesome/css/font-awesome.min.css');?>">
 	<link rel="stylesheet" href="<?php echo base_url('assets/AdminLTE-2.4.2/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css');?>">
+    <link rel="stylesheet" href="<?php echo base_url('assets/Buttons-1.5.4/css/buttons.bootstrap.min.css');?>">
+    <link rel="stylesheet" href="<?php echo base_url('assets/Buttons-1.5.4/css/buttons.dataTables.min.css');?>">
     <link rel="stylesheet" href="<?php echo base_url('assets/AdminLTE-2.4.2/bower_components/select2/dist/css/select2.min.css');?>">
 	<link rel="stylesheet" href="<?php echo base_url('assets/AdminLTE-2.4.2/dist/css/AdminLTE.min.css');?>">
 	<link rel="stylesheet" href="<?php echo base_url('assets/AdminLTE-2.4.2/dist/css/skins/skin-blue.min.css');?>">
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+    <style>
+        tbody td {
+            white-space: nowrap;
+        }
+    </style>
 </head>
 
-<body class="hold-transition skin-blue">
+<body class="hold-transition skin-blue sidebar-mini">
     <div class="wrapper">
         <!-- Main Header -->
 		<?php include('application/views/toko_v_navbar_top.php');?>
@@ -92,11 +99,12 @@
                                     <!-- Header Tabel -->
                                     <thead>
                                     <tr>
-                                        <th width="162.6px">Nama Barang</th>
-                                        <th width="162.6px">Nama Toko</th>
-                                        <th width="162.6px">Stok</th>
-                                        <th width="162.6px">Umur Barang</th>
-                                        <th width="162.6px">Jumlah dlm Koli</th>
+                                        <th>ID Barang</th>
+                                        <th>Nama Barang</th>
+                                        <th>Nama Toko</th>
+                                        <th>Stok</th>
+                                        <th>Umur Barang</th>
+                                        <th>Jumlah dlm Koli</th>
                                     </tr>
                                     </thead>
                                     <!-- Isi tabel -->
@@ -116,6 +124,13 @@
 	<script src="<?php echo base_url('assets/AdminLTE-2.4.2/bower_components/bootstrap/dist/js/bootstrap.min.js');?>"></script>
 	<script src="<?php echo base_url('assets/AdminLTE-2.4.2/bower_components/datatables.net/js/jquery.dataTables.min.js');?>"></script>
 	<script src="<?php echo base_url('assets/AdminLTE-2.4.2/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js');?>"></script>
+    <script src="<?php echo base_url('assets/Buttons-1.5.4/js/dataTables.buttons.min.js');?>"></script>
+    <script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.flash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.print.min.js"></script>
     <script src="<?php echo base_url('assets/AdminLTE-2.4.2/bower_components/select2/dist/js/select2.full.min.js');?>"></script>
     <script src="<?php echo base_url('assets/AdminLTE-2.4.2/dist/js/adminlte.min.js');?>"></script>
 
@@ -135,29 +150,6 @@
 
         refreshTabel();
 
-        // Fungsi untuk memuat daftar barang di dropdown daftar barang
-        function daftarBarang() {
-            $.ajax({
-                type    : 'post',
-                url     : '<?php echo base_url("lihat-barang");?>',
-                dataType: 'json',
-                success : function(data) {
-                    // Hapus seluruh child (isi) select
-                    $('#selectBarang').empty();
-
-                    var option = '<option></option>';
-                    if(data != 'no data') {
-                        for(var i=0; i<data.length; i++) {
-                            option += '<option value="'+data[i].id_barang+'">'+data[i].nama_barang+'</option>'
-                        }
-                    }
-
-                    // Tambahkan data ke select
-                    $('#selectBarang').append(option);
-                },
-            });
-        } // End fungsi daftarBarang
-
         // Fungsi untuk memuat ulang data tabel
         function refreshTabel() {
             pesanLoading();
@@ -175,6 +167,7 @@
                     if(data != 'no data') {
                         for(var i=0; i<data.length; i++) {
                             isi += '<tr>';
+                            isi += '<td>'+data[i].id_barang+'</td>';
                             isi += '<td>'+data[i].nama_barang+'</td>';
                             isi += '<td>'+data[i].nama_toko+'</td>';
                             isi += '<td data-order="'+data[i].stok_barang+'">'+data[i].stok_barang+' pcs</td>';
@@ -195,7 +188,18 @@
 					tabel.clear().destroy();
 					tabel = $('#tabelStok').DataTable({
 						'scrollX'		: true,
-						'bInfo'			: false // Untuk menghilangkan tulisan keterangan di bawah tabel
+						'bInfo'			: false, // Untuk menghilangkan tulisan keterangan di bawah tabel
+                        'dom'           : 'lBfrtips',
+                        'buttons'       : [
+                            {
+                                'extend'        : 'excel',
+                                'text'          : 'Simpan dalam Excel',
+                                'className'     : 'btn btn-primary',
+                                'exportOptions' : {
+                                    'columns' : [ 0, 1, 2, 3, 4 ]
+                                }
+                            }
+                        ],
 					});
                 },
                 error   : function(response) {

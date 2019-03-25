@@ -108,7 +108,7 @@ class c_manajemen_barang extends CI_Controller {
 
 		// Tentukan syarat gambar yang diupload
 		$config['upload_path']		= './assets/uploads/';
-		$config['allowed_types']	= 'jpg|png';
+		$config['allowed_types']	= 'jpg|png|jpeg';
 		$config['file_ext_tolower']	= true; // Paksa ekstensi gambar menjadi lowercase
 		$config['overwrite']		= true; // Overwrite file jika ada file dengan nama yg sama
 		$config['remove_spaces']	= false; // Jika TRUE, spasi dlm nama gambar diubah menjadi _

@@ -17,7 +17,7 @@
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 </head>
 
-<body class="hold-transition skin-blue">
+<body class="hold-transition skin-blue sidebar-mini">
     <div class="wrapper">
         <!-- Main Header -->
 		<?php include('application/views/v_navbar_top.php');?>
@@ -49,21 +49,24 @@
                             <div class="box-body">
                                 <form id="formFilter" auto-complete="off">
                                     <div class="row">
-                                        <div class="col-xs-3"><label>Nama Toko</label></div>
-                                        <div class="col-xs-3"><label>Bulan</label></div>
-                                    </div>
-                                    <div class="row">
                                         <!-- Nama toko -->
-                                        <div class="col-xs-3">
+                                        <div class="col-xs-12 col-sm-5 col-md-4">
                                             <div class="form-group">
-                                                <select class="form-control select2" name="id_toko" id="selectToko">
-                                                    <!-- Isi option melalui ajax di bawah -->
+                                                <label>Nama Toko</label>
+                                                <select class="form-control select2" name="id_toko" id="selectToko" style="width: 100%;">
+                                                    <option value="semua">Semua toko</option>
+                                                    <?php if($toko != '') : ?>
+                                                        <?php for($i=0; $i<count($toko); $i++) : ?>
+                                                            <option value="<?php echo $toko[$i]['id_toko'];?>"><?php echo $toko[$i]['nama_toko'];?></option>
+                                                        <?php endfor; ?>
+                                                    <?php endif; ?>
                                                 </select>
                                             </div>
                                         </div>
 
                                         <!-- Bulan -->
-                                        <div class="col-xs-3">
+                                        <div class="col-xs-12 col-sm-5 col-md-4">
+                                            <label>Bulan</label>
                                             <div class="input-group date">
                                                 <div class="input-group-addon">
                                                     <i class="fa fa-calendar"></i>
@@ -73,7 +76,7 @@
                                         </div>
 
                                         <!-- Button submit -->
-                                        <div class="col-xs-3">
+                                        <div class="col-xs-12 col-sm-2" style="padding-top: 25px;">
                                             <div class="form-group">
                                                 <button type="submit" class="btn btn-primary">Filter</button>
                                             </div>
@@ -220,38 +223,7 @@
             'bInfo'         : false // Untuk menghilangkan tulisan keterangan di bawah tabel
         });
 
-        daftarToko();
         refreshTabel();
-        
-        // var today = new Date();
-        // var value = today.getMonth() + 1;
-        // value += ' / ';
-        // value += today.getFullYear();
-        // $('#filterBulan').val(value);
-
-        // Fungsi untuk memuat daftar toko di dropdown daftar toko
-        function daftarToko() {
-            $.ajax({
-                type    : 'post',
-                url     : 'lihat-toko',
-                dataType: 'json',
-                success : function(data) {
-                    // Hapus seluruh child select
-                    $('#selectToko').empty();
-
-                    var option = '<option></option>';
-                    option += '<option value="semua">Semua toko</option>';
-                    if(data != 'no data') {
-                        for(var i=0; i<data.length; i++) {
-                            option += '<option value="'+data[i].id_toko+'">'+data[i].nama_toko+'</option>'
-                        }
-                    }
-                    
-                    $('#selectToko').append(option).trigger('change');
-                    $('#selectToko').val('semua').trigger('change');
-                },
-            });
-        } // End fungsi daftarToko
 
         // Fungsi untuk memuat ulang data tabel
         function refreshTabel() {

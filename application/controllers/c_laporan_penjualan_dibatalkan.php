@@ -15,7 +15,11 @@ class c_laporan_penjualan_dibatalkan extends CI_Controller {
             header('Location: login');
             die();
         }
-        else $this->load->view('v_laporan_penjualan_dibatalkan');
+        else {
+            $data['toko'] = $this->m_laporan_penjualan_dibatalkan->daftar_toko();
+
+            $this->load->view('v_laporan_penjualan_dibatalkan', $data);
+        }
     }
 
     public function daftar_penjualan_dibatalkan() {
