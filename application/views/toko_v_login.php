@@ -73,8 +73,8 @@
         })
 
         function prosesLogin() {
-            var username = $('input[name="username_admin"').val();
-            var password = $('input[name="password_admin"').val();
+            var username = $('input[name="username_admin"]').val();
+            var password = $('input[name="password_admin"]').val();
 
             if(username != '' && password != '') {
                 $.ajax({
